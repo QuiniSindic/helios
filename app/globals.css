@@ -1,0 +1,34 @@
+@import "@fontsource-variable/league-spartan";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #fff;
+  --foreground: #121212;
+  --primary: #fff;
+  --secondary: #5502a6;
+  --focus: #00bcd4;
+}
+
+.dark {
+  --background: #121212;
+  --foreground: #fff;
+  --primary: #121212;
+  --secondary: #bb86fc;
+  --focus: #03dac5;
+}
+
+body {
+  /* color: var(--foreground);
+  background: var(--background); */
+  font-family: "League Spartan Variable", sans-serif;
+}
+
+/* @media (prefers-color-scheme: dark) {
+  :root {
+    --background: #121212;
+    --foreground: #fff;
+  }
+} */

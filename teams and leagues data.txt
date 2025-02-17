@@ -1,0 +1,19 @@
+Listado de Ligas 
+
+Unique-tournament ID:
+- (futbol)
+    LaLiga = 8
+    Premier League = 17
+    Serie A = 23
+    Bundesliga = 35
+    Ligue 1 = 34
+- (basket)
+    NBA = 132
+    EuroLiga = 138
+    Liga ACB = 264
+    Copa del Rey: 396
+    NBA All-Star = 875
+    EuroBasket = 285
+    Mundial FIBA = 441
+    Olimpiadas = 276
+
