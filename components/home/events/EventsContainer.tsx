@@ -1,27 +1,14 @@
-import EventsList from "./EventsList";
+import EventsList from './EventsList';
 
 export default function EventsContainer() {
   return (
-    <>
-      {/* Pantallas grandes (sm en adelante) */}
-      <div className="hidden sm:flex gap-4 w-full">
-        <main className="flex-auto sm:mt-2 lg:mt-0">
-          <h1 className="text-2xl font-bold text-center bg-secondary text-white rounded-lg p-2 mb-4">
-            Eventos
-          </h1>
-          {/* <Event selectedLeague={selectedLeague} /> */}
-          <EventsList />
-        </main>
-      </div>
-
-      {/* Pantallas pequeñas */}
-      <div className="sm:hidden container">
-        <h1 className="text-2xl font-bold text-center mt-2 bg-secondary text-white rounded-lg p-2 mb-4">
+    <div className="container sm:max-w-none sm:p-0 sm:flex sm:gap-4 sm:w-full">
+      <main className="mt-2 sm:mt-2 lg:mt-0 sm:flex-auto">
+        <h1 className="text-2xl font-bold text-center bg-secondary text-white rounded-lg p-2 mb-4">
           Eventos
         </h1>
-        {/* <Event selectedLeague={selectedLeague} /> */}
         <EventsList />
-      </div>
-    </>
+      </main>
+    </div>
   );
 }

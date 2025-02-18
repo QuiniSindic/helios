@@ -1,18 +1,20 @@
-"use client";
+'use client';
 
-import React from "react";
-import { MatchSchedule } from "../MatchSchedule";
-import MatchWidget from "../MatchWidget";
+import { ParsedEvent } from '@/utils/sofascore/types/parsedEvents.types';
+import React from 'react';
+import { MatchSchedule } from '../MatchSchedule';
+import MatchWidget from '../MatchWidget';
 
 export default function EventsList() {
-  const [events, setEvents] = React.useState<any[]>([]);
+  const [events, setEvents] = React.useState<ParsedEvent[]>([]);
   const [loading, setLoading] = React.useState(true);
-  const [error, setError] = React.useState("");
+  const [error, setError] = React.useState('');
+  const [message, setMessage] = React.useState('');
 
   React.useEffect(() => {
     const fetchEvents = async () => {
       setLoading(true);
-      const response = await fetch("/api/events");
+      const response = await fetch('/api/events');
 
       if (!response.ok) {
         setLoading(false);
@@ -21,6 +23,11 @@ export default function EventsList() {
         setError(error);
       }
       const { sortedEvents } = await response.json();
+
+      if (sortedEvents.length === 0) {
+        setLoading(false);
+        setMessage('No hay eventos para hoy.');
+      }
       setEvents(sortedEvents);
       setLoading(false);
     };
@@ -33,7 +40,7 @@ export default function EventsList() {
       {loading && !error ? (
         <p className="text-center text-gray-500">Cargando eventos...</p>
       ) : events.length === 0 && !error ? (
-        <p className="text-center text-gray-500">No hay eventos para hoy.</p>
+        <p className="text-center text-gray-500">{message}</p>
       ) : error ? (
         <p className="text-center text-gray-500">{error}</p>
       ) : (

@@ -1,5 +1,5 @@
-import AppleIcon from "@/icons/AppleIcon";
-import GoogleIcon from "@/icons/GoogleIcon";
+import AppleIcon from '@/icons/AppleIcon';
+import GoogleIcon from '@/icons/GoogleIcon';
 
 interface SignInWithSocialsProps {
   isLogin?: boolean;

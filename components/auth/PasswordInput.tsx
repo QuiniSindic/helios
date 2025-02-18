@@ -1,7 +1,7 @@
-import EyeIcon from "@/icons/EyeIcon";
-import EyeShowIcon from "@/icons/EyeShowIcon";
-import React from "react";
-import { UseFormRegister } from "react-hook-form";
+import EyeIcon from '@/icons/EyeIcon';
+import EyeShowIcon from '@/icons/EyeShowIcon';
+import React from 'react';
+import { UseFormRegister } from 'react-hook-form';
 
 interface PasswordInputProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -16,8 +16,8 @@ const PasswordInput = ({ register }: PasswordInputProps) => {
   return (
     <div className="relative">
       <input
-        {...register("password")}
-        type={isVisible ? "text" : "password"}
+        {...register('password')}
+        type={isVisible ? 'text' : 'password'}
         required
         className="appearance-none rounded-lg relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 dark:text-white dark:bg-[#272727] dark:border-gray-600 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary transition-colors duration-200"
         placeholder="Contraseña"

@@ -1,5 +1,6 @@
-export interface FootballEvents {
-  events: Event[];
+/* eslint-disable @typescript-eslint/no-explicit-any */
+export interface Events<T extends Event> {
+  events: T[];
 }
 
 export interface Event {
@@ -17,8 +18,6 @@ export interface Event {
   changes: Changes;
   hasGlobalHighlights: boolean;
   hasEventPlayerStatistics?: boolean;
-  hasEventPlayerHeatMap?: boolean;
-  detailId?: number;
   crowdsourcingDataDisplayEnabled: boolean;
   id: number;
   startTimestamp: number;
@@ -26,6 +25,20 @@ export interface Event {
   finalResultOnly: boolean;
   feedLocked: boolean;
   isEditor: boolean;
+}
+
+export interface BasketballEvent extends Event {
+  officials: any[];
+  periods: Periods;
+  coverage?: number;
+  isAwarded?: boolean;
+  previousLegEventId?: number;
+  aggregatedWinnerCode?: number;
+}
+
+export interface FootballEvent extends Event {
+  hasEventPlayerHeatMap?: boolean;
+  detailId?: number;
   awayRedCards?: number;
   homeRedCards?: number;
   statusTime?: StatusTime;
@@ -34,12 +47,13 @@ export interface Event {
   streamContentGeoRestrictions?: string[];
 }
 
-export interface StatusTime {
-  prefix: string;
-  initial: number;
-  max: number;
-  timestamp?: number;
-  extra: number;
+export interface Periods {
+  current: string;
+  period1: string;
+  period2: string;
+  period3?: string;
+  period4?: string;
+  overtime: string;
 }
 
 export interface Changes {
@@ -48,9 +62,13 @@ export interface Changes {
 }
 
 export interface Time {
+  played?: number;
+  periodLength?: number;
+  overtimeLength?: number;
+  totalPeriodCount?: number;
+  currentPeriodStartTimestamp?: number;
   injuryTime1?: number;
   injuryTime2?: number;
-  currentPeriodStartTimestamp?: number;
   initial?: number;
   max?: number;
   extra?: number;
@@ -60,8 +78,11 @@ export interface Score {
   current?: number;
   display?: number;
   period1?: number;
-  period2?: number;
   normaltime?: number;
+  period2?: number;
+  period3?: number;
+  period4?: number;
+  overtime?: number;
 }
 
 export interface Team {
@@ -76,9 +97,8 @@ export interface Team {
   national: boolean;
   type: number;
   id: number;
-  country: Country2;
+  country: Country;
   entityType: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   subTeams: any[];
   teamColors: TeamColors;
   fieldTranslations?: FieldTranslations;
@@ -107,13 +127,6 @@ export interface TeamColors {
   primary: string;
   secondary: string;
   text: string;
-}
-
-export interface Country2 {
-  alpha2: string;
-  alpha3: string;
-  name: string;
-  slug: string;
 }
 
 export interface Status {
@@ -147,6 +160,8 @@ export interface Tournament {
   uniqueTournament: UniqueTournament;
   priority: number;
   id: number;
+  isGroup?: boolean;
+  groupName?: string;
 }
 
 export interface UniqueTournament {
@@ -154,10 +169,11 @@ export interface UniqueTournament {
   slug: string;
   category: Category;
   userCount: number;
+  hasPerformanceGraphFeature?: boolean;
   id: number;
   hasEventPlayerStatistics: boolean;
   displayInverseHomeAwayTeams: boolean;
-  hasPerformanceGraphFeature?: boolean;
+  hasBoxScore?: boolean;
 }
 
 export interface Category {
@@ -171,14 +187,22 @@ export interface Category {
 }
 
 export interface Country {
-  alpha2?: string;
-  alpha3?: string;
-  name?: string;
-  slug?: string;
+  alpha2: string;
+  alpha3: string;
+  name: string;
+  slug: string;
 }
 
 export interface Sport {
   name: string;
   slug: string;
   id: number;
+}
+
+export interface StatusTime {
+  prefix: string;
+  initial: number;
+  max: number;
+  timestamp?: number;
+  extra: number;
 }

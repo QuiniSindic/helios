@@ -1,5 +1,5 @@
-import { createClient } from "@/utils/supabase/server";
-import { NextRequest, NextResponse } from "next/server";
+import { createClient } from '@/utils/supabase/server';
+import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest) {
   const supabase = await createClient();
@@ -7,8 +7,8 @@ export async function POST(req: NextRequest) {
 
   if (!email || !password) {
     return NextResponse.json(
-      { error: "Email and password are required" },
-      { status: 400 }
+      { error: 'Email and password are required' },
+      { status: 400 },
     );
   }
 
@@ -23,8 +23,8 @@ export async function POST(req: NextRequest) {
 
   const { session, user } = data;
 
-  console.log("user =>", user);
-  console.log("session =>", session);
+  console.log('user =>', user);
+  console.log('session =>', session);
 
   //   const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -33,6 +33,6 @@ export async function POST(req: NextRequest) {
       user,
       session,
     },
-    { status: 200 }
+    { status: 200 },
   );
 }

@@ -1,29 +1,8 @@
-import {
-  Score as BasketballScore,
-  Tournament as BasketballTournament,
-  Periods,
-} from "@/utils/sofascore/basketball/types/basketball.types";
-import {
-  Score as FootballScore,
-  Tournament as FootballTournament,
-  Status,
-  Team,
-} from "@/utils/sofascore/football/types/football.types";
-import Image from "next/image";
+import { ParsedEvent } from '@/utils/sofascore/types/parsedEvents.types';
+import Image from 'next/image';
 
 interface EventResultWidgetProps {
-  event: {
-    id: number;
-    homeTeam: Team;
-    awayTeam: Team;
-    homeScore?: FootballScore | BasketballScore;
-    awayScore?: FootballScore | BasketballScore;
-    status?: Status;
-    startTimestamp: number;
-    round?: number;
-    periods?: Periods;
-    tournament?: FootballTournament | BasketballTournament;
-  };
+  event: ParsedEvent;
   showScore?: boolean;
 }
 
@@ -48,7 +27,7 @@ export default function EventResultWidget({
         <div className="text-center">
           {showScore
             ? `${event.homeScore?.current} - ${event.awayScore?.current}`
-            : "vs"}
+            : 'vs'}
         </div>
         <Image
           src={event.awayTeam.shield}
@@ -74,7 +53,7 @@ export default function EventResultWidget({
         />
         <span className="text-sm font-medium">{event.homeTeam.name}</span>
         <span className="text-sm font-medium text-right">
-          {showScore ? event.homeScore?.current : ""}
+          {showScore ? event.homeScore?.current : ''}
         </span>
 
         {/* Fila del equipo visitante */}
@@ -87,7 +66,7 @@ export default function EventResultWidget({
         />
         <span className="text-sm font-medium">{event.awayTeam.name}</span>
         <span className="text-sm font-medium text-right">
-          {showScore ? event.awayScore?.current : ""}
+          {showScore ? event.awayScore?.current : ''}
         </span>
       </div>
     </>

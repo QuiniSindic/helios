@@ -1,4 +1,4 @@
-import { formattedDate, formattedTime } from "@/utils/date.utils";
+import { formattedDate, formattedTime } from '@/utils/date.utils';
 
 interface MatchScheduleProps {
   date: string;

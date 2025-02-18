@@ -3,6 +3,7 @@ Listado de endpoints de sofascore:
 BASE_DATA_URL: https://www.sofascore.com/api/v1
 
 - /unique-tournament
+- /config
 - /country
 - /sport
 - /event
@@ -14,12 +15,17 @@ BASE_DATA_URL: https://www.sofascore.com/api/v1
 - /sport-video-highlights
 - /branding
 - /player
+- /stage (motor)
+- /category (motor)
+- unique-stage (motor)
 
 
 
 Listado más detallado (futbol):
 
-- https://www.sofascore.com/api/v1/unique-tournament/8/season/61643/standings/total => devuelve la clasificación de LaLiga
+- https://www.sofascore.com/api/v1/config/default-unique-tournaments/ES/football => devuelve un listado de competiciones
+
+- https://www.sofascore.com/api/v1/unique-tournament/8/season/61643/standings/total => devuelve la clasificación de LaLiga (id 8)
 - https://www.sofascore.com/api/v1/unique-tournament/8/season/61643/rounds => devuelve las jornadas y la jornada actual
 - https://www.sofascore.com/api/v1/unique-tournament/8/season/61643/events/round/{jornada} => devuelve los partidos de esta jornada
 - https://www.sofascore.com/api/v1/event/{id} => devuelve los datos de un partido (por disputar, en juego o finalizado)
@@ -29,10 +35,11 @@ Listado más detallado (basket):
 - https://www.sofascore.com/api/v1/unique-tournament/132/season/65360/events/next/{pagina} => tiene una var hasNextPage, habría que iterar hasta recoger todos
 - https://www.sofascore.com/api/v1/sport/basketball/scheduled-events/{YYY-MM-DD} => devuelve todos los partidos de esa fecha. Habría que filtrar por NBA y EuroLiga (en el futuro ACB, Copa del Rey, Supercopa de España, NBA All-Star)
 
-
-
-
-
+Listado más detallado (motor)
+- https://www.sofascore.com/api/v1/unique-stage/{id}/seasons => devuelve las temporadas de ese deporte
+- https://www.sofascore.com/api/v1/stage/{id-temporada}/substages => devuelve las carreras
+- https://www.sofascore.com/api/v1/stage/{id-carrera} => devuelve info general de la carrera
+- https://www.sofascore.com/api/v1/stage/{id-carrera}/substages => devuelve eventos de un GP (FP1, FP2, FP3, Q1, Q2, Q3 y carrera)
 
 BASE_IMG_URL: https://img.sofascore.com/api/v1
 

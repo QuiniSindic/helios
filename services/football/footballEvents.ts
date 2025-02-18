@@ -1,17 +1,17 @@
-import { SOFASCORE_URL } from "@/core/config";
+import { SOFASCORE_URL } from '@/core/config';
 import {
   parseFootballEventsByDate,
   parseFootballEventsByLeague,
-} from "@/utils/sofascore/football/football.utils";
-import { FootballEvents } from "@/utils/sofascore/football/types/football.types";
-import axios from "axios";
+} from '@/utils/sofascore/football/football.utils';
+import { Events, FootballEvent } from '@/utils/sofascore/types/event.types';
+import axios from 'axios';
 
 export const getTodayFootballEvents = async () => {
   try {
-    const todayDate = new Date().toISOString().split("T")[0];
+    const todayDate = new Date().toISOString().split('T')[0];
 
-    const response = await axios.get<FootballEvents>(
-      `${SOFASCORE_URL}/sport/football/scheduled-events/${todayDate}`
+    const response = await axios.get<Events<FootballEvent>>(
+      `${SOFASCORE_URL}/sport/football/scheduled-events/${todayDate}`,
     );
 
     // Extraemos la data de la API correctamente
@@ -23,14 +23,14 @@ export const getTodayFootballEvents = async () => {
 
     // Ordenar por `startTimestamp` antes de devolverlos
     const sortedEvents = parsedEventsByDate.sort(
-      (a, b) => a.startTimestamp - b.startTimestamp
+      (a, b) => a.startTimestamp - b.startTimestamp,
     );
 
     // console.log("Eventos de hoy:", sortedEvents);
 
     return sortedEvents;
   } catch (error) {
-    console.error("Error obteniendo los eventos de hoy:", error);
+    console.error('Error obteniendo los eventos de hoy:', error);
     return [];
   }
 };
@@ -39,10 +39,10 @@ export const getYesterdaysFootballEvents = async () => {
   try {
     const yesterday = new Date();
     yesterday.setDate(yesterday.getDate() - 1);
-    const yesterdayDate = yesterday.toISOString().split("T")[0];
+    const yesterdayDate = yesterday.toISOString().split('T')[0];
 
-    const response = await axios.get<FootballEvents>(
-      `${SOFASCORE_URL}/sport/football/scheduled-events/${yesterdayDate}`
+    const response = await axios.get<Events<FootballEvent>>(
+      `${SOFASCORE_URL}/sport/football/scheduled-events/${yesterdayDate}`,
     );
 
     // Extraemos la data de la API correctamente
@@ -53,12 +53,12 @@ export const getYesterdaysFootballEvents = async () => {
 
     // Ordenar por `startTimestamp` antes de devolverlos
     const sortedEvents = parsedEventsByLeague.sort(
-      (a, b) => a.startTimestamp - b.startTimestamp
+      (a, b) => a.startTimestamp - b.startTimestamp,
     );
 
     return sortedEvents;
   } catch (error) {
-    console.error("Error obteniendo los eventos de ayer:", error);
+    console.error('Error obteniendo los eventos de ayer:', error);
     return [];
   }
 };
