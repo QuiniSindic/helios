@@ -1,22 +1,27 @@
 'use client';
 
+import { useFilterStore } from '@/store/filterStore';
 import { useIsLargeScreen } from '@/utils/hooks/useIsLargeScreen';
 import { sports } from '@/utils/types/sports.types';
-import React from 'react';
 
 export default function SportsList() {
-  const [selectedSport, setSelectedSport] = React.useState<string | null>(null);
-  const [selectedLeague, setSelectedLeague] = React.useState<string | null>(
-    null,
-  );
   const isLargeScreen = useIsLargeScreen();
+  const { selectedSport, setSelectedSport, selectedLeague, setSelectedLeague } =
+    useFilterStore();
 
   const handleLeagueSelect = (league: string) => {
-    setSelectedLeague(selectedLeague === league ? null : league);
+    // setSelectedLeague(selectedLeague === league ? null : league);
+    // const sport = sports.find((sport) => sport.leagues.includes(league));
+    // setSelectedSport(sport?.name || null);
+    // console.log('seleccionando la liga =>', league);
+    // console.log('seleccionando el deporte =>', sport?.name);
+    setSelectedLeague(league);
   };
 
   const toggleSport = (sport: string) => {
-    setSelectedSport(selectedSport === sport ? null : sport);
+    // console.log('seleccionando el deporte =>', sport);
+    // setSelectedSport(selectedSport === sport ? null : sport);
+    setSelectedSport(sport);
   };
 
   if (isLargeScreen) {
@@ -36,7 +41,7 @@ export default function SportsList() {
                     key={league}
                     onClick={() => handleLeagueSelect(league)}
                     className={`py-1 cursor-pointer hover:text-focus transition-colors duration-300 ${
-                      selectedLeague === league ? 'text-focus' : ''
+                      selectedLeague === league ? 'text-focus' : 'text-white'
                     }`}
                   >
                     {league}
