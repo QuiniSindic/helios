@@ -10,17 +10,10 @@ export default function SportsList() {
     useFilterStore();
 
   const handleLeagueSelect = (league: string) => {
-    // setSelectedLeague(selectedLeague === league ? null : league);
-    // const sport = sports.find((sport) => sport.leagues.includes(league));
-    // setSelectedSport(sport?.name || null);
-    // console.log('seleccionando la liga =>', league);
-    // console.log('seleccionando el deporte =>', sport?.name);
     setSelectedLeague(league);
   };
 
   const toggleSport = (sport: string) => {
-    // console.log('seleccionando el deporte =>', sport);
-    // setSelectedSport(selectedSport === sport ? null : sport);
     setSelectedSport(sport);
   };
 
