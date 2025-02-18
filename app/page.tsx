@@ -7,7 +7,7 @@ export default function Home() {
   return (
     <div className="mb-4 mx-4 sm:mx-8 md:mx-8 lg:mx-12 xl:mx-12">
       <Welcome />
-      <div>
+      <>
         {/* 
           Contenedor padre con flex en resoluciones grandes:
           flex-col en móvil/tablet, y flex-row en pantallas lg en adelante
@@ -22,7 +22,7 @@ export default function Home() {
             <ResultsContainer />
           </div>
         </div>
-      </div>
+      </>
     </div>
   );
 }

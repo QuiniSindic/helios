@@ -1,5 +1,6 @@
 'use client';
 
+import { useIsLargeScreen } from '@/utils/hooks/useIsLargeScreen';
 import { sports } from '@/utils/types/sports.types';
 import React from 'react';
 
@@ -8,6 +9,7 @@ export default function SportsList() {
   const [selectedLeague, setSelectedLeague] = React.useState<string | null>(
     null,
   );
+  const isLargeScreen = useIsLargeScreen();
 
   const handleLeagueSelect = (league: string) => {
     setSelectedLeague(selectedLeague === league ? null : league);
@@ -17,12 +19,12 @@ export default function SportsList() {
     setSelectedSport(selectedSport === sport ? null : sport);
   };
 
-  return (
-    <>
-      {/* Bloque para pantallas medianas y grandes */}
-      <div className="hidden lg:flex gap-4 w-1/5">
+  if (isLargeScreen) {
+    // Versión para pantallas grandes (desktop)
+    return (
+      <div className="flex gap-4 w-1/5">
         <main className="flex-1 bg-secondary text-white p-4 rounded-lg w-60">
-          <h1 className="text-2xl font-bold text-center bg-secondary text-white border-b-2 border-white mb-2">
+          <h1 className="text-2xl font-bold text-center border-b-2 border-white mb-2">
             Deportes
           </h1>
           {sports.map((sport) => (
@@ -45,9 +47,13 @@ export default function SportsList() {
           ))}
         </main>
       </div>
+    );
+  }
 
-      {/* Bloque para pantallas pequeñas */}
-      <div className="lg:hidden overflow-x-auto flex space-x-4 scrollbar-hide ">
+  // Versión para pantallas pequeñas (mobile)
+  return (
+    <>
+      <div className="overflow-x-auto flex space-x-4 scrollbar-hide sm:mb-2">
         {sports.map((sport) => (
           <button
             key={sport.name}
@@ -63,19 +69,17 @@ export default function SportsList() {
         ))}
       </div>
 
-      {/* Mostrar ligas del deporte seleccionado en pantallas pequeñas */}
       {selectedSport && (
-        <div className="lg:hidden my-2 text-center bg-secondary text-white rounded-lg overflow-x-auto flex space-x-4 scrollbar-hide">
+        <div className="my-2 text-center bg-secondary text-white rounded-lg overflow-x-auto flex space-x-4 scrollbar-hide">
           {sports
             .find((sport) => sport.name === selectedSport)
             ?.leagues.map((league) => (
               <button
                 key={league}
                 onClick={() => handleLeagueSelect(league)}
-                className={`flex-1 px-4 py-2 whitespace-nowrap transition-colors duration-300 
-                  ${
-                    selectedLeague === league ? 'bg-focus text-secondary' : ''
-                  }`}
+                className={`flex-1 px-4 py-2 whitespace-nowrap transition-colors duration-300 ${
+                  selectedLeague === league ? 'bg-focus text-secondary' : ''
+                }`}
               >
                 {league}
               </button>
