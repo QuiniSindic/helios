@@ -1,7 +1,7 @@
-import { getTodayBasketballEvents } from "@/services/basketball/basketballEvents";
-import { sortEvents } from "@/services/events.service";
-import { getTodayFootballEvents } from "@/services/football/footballEvents";
-import { NextResponse } from "next/server";
+import { getTodayBasketballEvents } from '@/services/basketball/basketballEvents';
+import { sortEvents } from '@/services/events.service';
+import { getTodayFootballEvents } from '@/services/football/footballEvents';
+import { NextResponse } from 'next/server';
 
 export async function GET() {
   try {
@@ -16,11 +16,11 @@ export async function GET() {
 
     return NextResponse.json({ sortedEvents }, { status: 200 });
   } catch (error) {
-    console.log("error =>", error);
+    console.log('error =>', error);
     if (error instanceof Error) {
       return NextResponse.json({ error: error.message }, { status: 500 });
     } else {
-      return NextResponse.json({ error: "Unknown error" }, { status: 500 });
+      return NextResponse.json({ error: 'Unknown error' }, { status: 500 });
     }
   }
 }

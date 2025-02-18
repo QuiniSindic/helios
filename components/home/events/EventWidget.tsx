@@ -1,13 +1,13 @@
 import {
   Score as BasketballScore,
   Periods,
-} from "@/utils/sofascore/basketball/types/basketball.types";
+} from '@/utils/sofascore/basketball/types/basketball.types';
 import {
   Score as FootballScore,
   Status,
   Team,
-} from "@/utils/sofascore/football/types/football.types";
-import Image from "next/image";
+} from '@/utils/sofascore/football/types/football.types';
+import Image from 'next/image';
 
 interface EventWidgetProps {
   event: {

@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import QuinisindicLogo from "@/icons/QuinisindicLogo";
-import { useAuth } from "@/utils/hooks/useAuth";
-import { createClient } from "@/utils/supabase/client";
+import QuinisindicLogo from '@/icons/QuinisindicLogo';
+import { useAuth } from '@/utils/hooks/useAuth';
+import { createClient } from '@/utils/supabase/client';
 import {
   Navbar,
   NavbarBrand,
@@ -11,24 +11,24 @@ import {
   NavbarMenu,
   NavbarMenuItem,
   NavbarMenuToggle,
-} from "@heroui/navbar";
+} from '@heroui/navbar';
 import {
   Avatar,
   Dropdown,
   DropdownItem,
   DropdownMenu,
   DropdownTrigger,
-} from "@heroui/react";
+} from '@heroui/react';
 // import { User } from "@supabase/supabase-js";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import React, { useEffect } from "react";
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import React, { useEffect } from 'react';
 
 const menuItems = [
-  { name: "Eventos", path: "/events" },
-  { name: "Predicciones", path: "/predictions" },
-  { name: "Quiniela", path: "/quiniela" },
-  { name: "Resultados", path: "/results" },
+  { name: 'Eventos', path: '/events' },
+  { name: 'Predicciones', path: '/predictions' },
+  { name: 'Quiniela', path: '/quiniela' },
+  { name: 'Resultados', path: '/results' },
 ];
 
 export default function Header() {
@@ -36,15 +36,15 @@ export default function Header() {
   const router = useRouter();
   const { user } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
-  const [isSticky, setIsSticky] = React.useState<"sticky" | "static">("sticky");
+  const [isSticky, setIsSticky] = React.useState<'sticky' | 'static'>('sticky');
 
   useEffect(() => {
-    console.log("user =>", user);
+    console.log('user =>', user);
   }, [user]);
 
   React.useEffect(() => {
     if (window.innerWidth < 526) {
-      setIsSticky("static");
+      setIsSticky('static');
     }
   }, []);
 
@@ -65,7 +65,7 @@ export default function Header() {
     >
       {/* Toggle icon */}
       <NavbarMenuToggle
-        aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+        aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
         className="sm:hidden text-foreground"
       />
 
@@ -146,7 +146,7 @@ export default function Header() {
                 onPress={async () => {
                   await supabase.auth.signOut();
                   // setMyUser(null);
-                  router.push("/");
+                  router.push('/');
                 }}
               >
                 Cerrar Sesión

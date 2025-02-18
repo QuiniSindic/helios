@@ -1,7 +1,7 @@
-import EventsContainer from "@/components/home/events/EventsContainer";
-import ResultsContainer from "@/components/home/results/ResultsContainer";
-import SportsList from "@/components/home/SportsList";
-import Welcome from "@/components/home/Welcome";
+import EventsContainer from '@/components/home/events/EventsContainer';
+import ResultsContainer from '@/components/home/results/ResultsContainer';
+import SportsList from '@/components/home/SportsList';
+import Welcome from '@/components/home/Welcome';
 
 export default function Home() {
   return (

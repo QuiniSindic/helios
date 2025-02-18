@@ -1,20 +1,20 @@
-"use client";
+'use client';
 
-import { ParsedEvent } from "@/utils/sofascore/types/parsedEvents.types";
-import React from "react";
-import { MatchSchedule } from "../MatchSchedule";
-import MatchWidget from "../MatchWidget";
+import { ParsedEvent } from '@/utils/sofascore/types/parsedEvents.types';
+import React from 'react';
+import { MatchSchedule } from '../MatchSchedule';
+import MatchWidget from '../MatchWidget';
 
 export default function EventsList() {
   const [events, setEvents] = React.useState<ParsedEvent[]>([]);
   const [loading, setLoading] = React.useState(true);
-  const [error, setError] = React.useState("");
-  const [message, setMessage] = React.useState("");
+  const [error, setError] = React.useState('');
+  const [message, setMessage] = React.useState('');
 
   React.useEffect(() => {
     const fetchEvents = async () => {
       setLoading(true);
-      const response = await fetch("/api/events");
+      const response = await fetch('/api/events');
 
       if (!response.ok) {
         setLoading(false);
@@ -26,7 +26,7 @@ export default function EventsList() {
 
       if (sortedEvents.length === 0) {
         setLoading(false);
-        setMessage("No hay eventos para hoy.");
+        setMessage('No hay eventos para hoy.');
       }
       setEvents(sortedEvents);
       setLoading(false);

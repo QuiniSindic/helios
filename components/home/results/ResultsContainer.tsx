@@ -1,4 +1,4 @@
-import ResultsList from "./ResultsList";
+import ResultsList from './ResultsList';
 
 export default function ResultsContainer() {
   return (

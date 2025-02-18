@@ -1,8 +1,8 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 export const loginDTOSchema = z.object({
-  email: z.string().email("El email debe ser válido"),
-  password: z.string().min(6, "La contraseña debe tener al menos 6 caracteres"),
+  email: z.string().email('El email debe ser válido'),
+  password: z.string().min(6, 'La contraseña debe tener al menos 6 caracteres'),
 });
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type

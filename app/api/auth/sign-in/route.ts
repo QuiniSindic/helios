@@ -1,5 +1,5 @@
-import { createClient } from "@/utils/supabase/server";
-import { NextRequest, NextResponse } from "next/server";
+import { createClient } from '@/utils/supabase/server';
+import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest) {
   const supabase = await createClient();
@@ -16,14 +16,14 @@ export async function POST(req: NextRequest) {
 
   const { user, session } = data;
 
-  console.log("user =>", user);
-  console.log("session =>", session);
+  console.log('user =>', user);
+  console.log('session =>', session);
 
   return NextResponse.json(
     {
       user,
       session,
     },
-    { status: 200 }
+    { status: 200 },
   );
 }

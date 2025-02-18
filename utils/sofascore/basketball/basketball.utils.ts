@@ -1,14 +1,14 @@
-import { BasketballEvent, Events } from "../types/event.types";
-import { ParsedBasketballEvent } from "../types/parsedEvents.types";
+import { BasketballEvent, Events } from '../types/event.types';
+import { ParsedBasketballEvent } from '../types/parsedEvents.types';
 
 export const parsedBasketballEventsByLeague = (
-  eventsList: Events<BasketballEvent>
+  eventsList: Events<BasketballEvent>,
 ): ParsedBasketballEvent[] => {
   return eventsList.events
     .filter((event) =>
       [132, 138, 264, 276, 285, 396, 441, 875].includes(
-        event.tournament?.uniqueTournament?.id
-      )
+        event.tournament?.uniqueTournament?.id,
+      ),
     )
     .map((event) => ({
       id: event.id,
@@ -30,7 +30,7 @@ export const parsedBasketballEventsByLeague = (
 };
 
 export const parseBasketballEventsByDate = (
-  basketballEvents: ParsedBasketballEvent[]
+  basketballEvents: ParsedBasketballEvent[],
 ) => {
   const now = Math.floor(Date.now() / 1000);
 

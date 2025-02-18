@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import { sports } from "@/utils/types/sports.types";
-import React from "react";
+import { sports } from '@/utils/types/sports.types';
+import React from 'react';
 
 export default function SportsList() {
   const [selectedSport, setSelectedSport] = React.useState<string | null>(null);
   const [selectedLeague, setSelectedLeague] = React.useState<string | null>(
-    null
+    null,
   );
 
   const handleLeagueSelect = (league: string) => {
@@ -34,7 +34,7 @@ export default function SportsList() {
                     key={league}
                     onClick={() => handleLeagueSelect(league)}
                     className={`py-1 cursor-pointer hover:text-focus transition-colors duration-300 ${
-                      selectedLeague === league ? "text-focus" : ""
+                      selectedLeague === league ? 'text-focus' : ''
                     }`}
                   >
                     {league}
@@ -54,8 +54,8 @@ export default function SportsList() {
             onClick={() => toggleSport(sport.name)}
             className={`flex-1 px-4 py-2 rounded-lg whitespace-nowrap transition-colors duration-300 ${
               selectedSport === sport.name
-                ? "bg-focus text-secondary"
-                : "bg-secondary text-white"
+                ? 'bg-focus text-secondary'
+                : 'bg-secondary text-white'
             }`}
           >
             {sport.name}
@@ -74,7 +74,7 @@ export default function SportsList() {
                 onClick={() => handleLeagueSelect(league)}
                 className={`flex-1 px-4 py-2 whitespace-nowrap transition-colors duration-300 
                   ${
-                    selectedLeague === league ? "bg-focus text-secondary" : ""
+                    selectedLeague === league ? 'bg-focus text-secondary' : ''
                   }`}
               >
                 {league}

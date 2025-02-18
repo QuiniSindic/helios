@@ -1,4 +1,4 @@
-import { Periods, Score, Status, Team, Tournament } from "./event.types";
+import { Periods, Score, Status, Team, Tournament } from './event.types';
 
 export interface ParsedFootballEvent {
   id: number;
