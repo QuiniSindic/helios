@@ -1,4 +1,5 @@
 import ResultsList from '@/components/home/results/ResultsList';
+import FilterBar from '@/components/results/FilterBar';
 
 export default function ResultsPage() {
   return (
@@ -8,6 +9,7 @@ export default function ResultsPage() {
           <h1 className="text-2xl font-bold text-center bg-secondary text-white rounded-lg p-2 mb-4">
             Resultados
           </h1>
+          <FilterBar />
           <ResultsList full />
         </main>
       </div>

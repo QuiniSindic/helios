@@ -1,3 +1,42 @@
+/**
+leagues: [
+      'La Liga',
+      'Premier League',
+      'Bundesliga',
+      'Serie A',
+      'Ligue 1',
+
+      'Champions League',
+      'Europa League',
+      'Conference League',
+
+      'Libertadores',
+
+      'Liga Hypermotion',
+      'Copa del Rey',
+      'Supercopa de España',
+      'Supercopa Europa',
+
+      'Fa Cup',
+      'EFL Cup',
+
+      'Mundialito',
+
+      'Nations League',
+
+      'Eurocopa',
+      'Eurocopa (femenino)',
+
+      'Copa América',
+
+      'Mundial',
+      'Mundial (femenino)',
+
+      'Olimpiadas',
+      'Olimpiadas (femenino)',
+    ],
+  */
+
 export const sports = [
   {
     name: 'Fútbol',
