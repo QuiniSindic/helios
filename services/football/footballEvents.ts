@@ -3,14 +3,14 @@ import {
   parseFootballEventsByDate,
   parseFootballEventsByLeague,
 } from "@/utils/sofascore/football/football.utils";
-import { FootballEvents } from "@/utils/sofascore/football/types/football.types";
+import { Events, FootballEvent } from "@/utils/sofascore/types/event.types";
 import axios from "axios";
 
 export const getTodayFootballEvents = async () => {
   try {
     const todayDate = new Date().toISOString().split("T")[0];
 
-    const response = await axios.get<FootballEvents>(
+    const response = await axios.get<Events<FootballEvent>>(
       `${SOFASCORE_URL}/sport/football/scheduled-events/${todayDate}`
     );
 
@@ -41,7 +41,7 @@ export const getYesterdaysFootballEvents = async () => {
     yesterday.setDate(yesterday.getDate() - 1);
     const yesterdayDate = yesterday.toISOString().split("T")[0];
 
-    const response = await axios.get<FootballEvents>(
+    const response = await axios.get<Events<FootballEvent>>(
       `${SOFASCORE_URL}/sport/football/scheduled-events/${yesterdayDate}`
     );
 

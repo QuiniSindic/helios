@@ -3,14 +3,14 @@ import {
   parseBasketballEventsByDate,
   parsedBasketballEventsByLeague,
 } from "@/utils/sofascore/basketball/basketball.utils";
-import { BasketballEvents } from "@/utils/sofascore/basketball/types/basketball.types";
+import { BasketballEvent, Events } from "@/utils/sofascore/types/event.types";
 import axios from "axios";
 
 export const getTodayBasketballEvents = async () => {
   try {
     const todayDate = new Date().toISOString().split("T")[0];
 
-    const response = await axios.get<BasketballEvents>(
+    const response = await axios.get<Events<BasketballEvent>>(
       `${SOFASCORE_URL}/sport/basketball/scheduled-events/${todayDate}`
     );
 
@@ -42,7 +42,7 @@ export const getYesterdaysBasketballEvents = async () => {
     yesterday.setDate(yesterday.getDate() - 1);
     const yesterdayDate = yesterday.toISOString().split("T")[0];
 
-    const response = await axios.get<BasketballEvents>(
+    const response = await axios.get<Events<BasketballEvent>>(
       `${SOFASCORE_URL}/sport/basketball/scheduled-events/${yesterdayDate}`
     );
 
@@ -51,8 +51,6 @@ export const getYesterdaysBasketballEvents = async () => {
 
     // Procesamos los eventos
     const parsedEventsByLeague = parsedBasketballEventsByLeague(eventsData);
-
-    console.log("Eventos de ayer:", parsedEventsByLeague);
 
     // Ordenar por `startTimestamp` antes de devolverlos
     const sortedEvents = parsedEventsByLeague.sort(

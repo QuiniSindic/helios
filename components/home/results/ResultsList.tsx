@@ -1,13 +1,15 @@
 "use client";
 
+import { ParsedEvent } from "@/utils/sofascore/types/parsedEvents.types";
 import React from "react";
 import { MatchSchedule } from "../MatchSchedule";
 import MatchWidget from "../MatchWidget";
 
 export default function ResultsList() {
-  const [events, setEvents] = React.useState<any[]>([]);
+  const [results, setResults] = React.useState<ParsedEvent[]>([]);
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState("");
+  const [message, setMessage] = React.useState("");
 
   React.useEffect(() => {
     const fetchEvents = async () => {
@@ -20,9 +22,15 @@ export default function ResultsList() {
         // console.error("Error obteniendo los eventos de hoy:", response);
         setError(error);
       }
-      const { sortedEvents } = await response.json();
-      //   console.log("sortedEvents", sortedEvents);
-      setEvents(sortedEvents);
+
+      const { sortedResults } = await response.json();
+
+      if (sortedResults.length === 0) {
+        setLoading(false);
+        setMessage("No hay resultados disponibles.");
+      }
+
+      setResults(sortedResults);
       setLoading(false);
     };
 
@@ -33,21 +41,20 @@ export default function ResultsList() {
     <div className="bg-white dark:bg-[#272727] rounded-lg mb-4 cursor-pointer">
       {loading && !error ? (
         <p className="text-center text-gray-500">Cargando eventos...</p>
-      ) : events.length === 0 && !error ? (
-        <p className="text-center text-gray-500">No hay eventos para hoy.</p>
+      ) : results.length === 0 && !error ? (
+        <p className="text-center text-gray-500">{message}</p>
       ) : error ? (
         <p className="text-center text-gray-500">{error}</p>
       ) : (
-        events.map((event) => (
+        results.map((result) => (
           <div
-            key={event.id}
+            key={result.id}
             className="bg-white dark:bg-[#272727] mb-4 p-3 md:p-4 rounded-lg shadow-md cursor-pointer transition-all duration-200 sm:hover:shadow-lg sm:hover:scale-[1.02] active:scale-[0.98] sm:active:scale-100 flex flex-row sm:flex-col items-center"
           >
-            {/* <ResultWidget event={event} /> */}
-            <MatchWidget event={event} showScore />
+            <MatchWidget event={result} showScore />
             <div className="ml-auto sm:ml-0 sm:mt-4">
               <MatchSchedule
-                date={new Date(event.startTimestamp * 1000).toISOString()}
+                date={new Date(result.startTimestamp * 1000).toISOString()}
               />
             </div>
           </div>

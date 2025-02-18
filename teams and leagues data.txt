@@ -17,3 +17,13 @@ Unique-tournament ID:
     Mundial FIBA = 441
     Olimpiadas = 276
 
+Unique-stages ID:
+    Formula 1 = 40
+    Moto3 = 16
+    Moto2 = 15
+    MotoGP = 17
+
+
+- Category:
+    Formula 1 = 36
+    Motos = 50

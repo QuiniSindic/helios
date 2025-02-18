@@ -1,15 +1,9 @@
-import {
-  BasketballEvents,
-  Periods,
-  Score,
-  Status,
-  Team,
-  Tournament,
-} from "./types/basketball.types";
+import { BasketballEvent, Events } from "../types/event.types";
+import { ParsedBasketballEvent } from "../types/parsedEvents.types";
 
 export const parsedBasketballEventsByLeague = (
-  eventsList: BasketballEvents
-) => {
+  eventsList: Events<BasketballEvent>
+): ParsedBasketballEvent[] => {
   return eventsList.events
     .filter((event) =>
       [132, 138, 264, 276, 285, 396, 441, 875].includes(
@@ -36,17 +30,7 @@ export const parsedBasketballEventsByLeague = (
 };
 
 export const parseBasketballEventsByDate = (
-  basketballEvents: {
-    id: number;
-    homeTeam: Team;
-    awayTeam: Team;
-    homeScore: Score;
-    awayScore: Score;
-    startTimestamp: number;
-    periods: Periods;
-    status: Status;
-    tournament: Tournament;
-  }[]
+  basketballEvents: ParsedBasketballEvent[]
 ) => {
   const now = Math.floor(Date.now() / 1000);
 

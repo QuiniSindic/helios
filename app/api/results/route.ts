@@ -8,7 +8,7 @@ export async function GET() {
     const yesterdayFootballEvents = await getYesterdaysFootballEvents();
     const yesterdaysBasketballEvents = await getYesterdaysBasketballEvents();
 
-    const sortedEvents = await sortEvents(
+    const sortedResults = sortEvents(
       yesterdayFootballEvents,
       yesterdaysBasketballEvents
     );
@@ -17,13 +17,10 @@ export async function GET() {
       yesterdayFootballEvents.length === 0 &&
       yesterdaysBasketballEvents.length === 0
     ) {
-      return NextResponse.json(
-        { error: "No events for yesterday" },
-        { status: 404 }
-      );
+      return NextResponse.json({ sortedResults: [] }, { status: 200 });
     }
 
-    return NextResponse.json({ sortedEvents }, { status: 200 });
+    return NextResponse.json({ sortedResults }, { status: 200 });
   } catch (error) {
     console.log("error =>", error);
     if (error instanceof Error) {

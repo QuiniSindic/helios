@@ -8,13 +8,10 @@ export async function GET() {
     const footballEvents = await getTodayFootballEvents();
     const basketballEvents = await getTodayBasketballEvents();
 
-    const sortedEvents = await sortEvents(footballEvents, basketballEvents);
+    const sortedEvents = sortEvents(footballEvents, basketballEvents);
 
     if (sortedEvents.length === 0) {
-      return NextResponse.json(
-        { error: "No events for today" },
-        { status: 404 }
-      );
+      return NextResponse.json({ sortedEvents: [] }, { status: 200 });
     }
 
     return NextResponse.json({ sortedEvents }, { status: 200 });

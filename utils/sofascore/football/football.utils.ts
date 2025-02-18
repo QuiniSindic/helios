@@ -1,13 +1,10 @@
-import {
-  FootballEvents,
-  Score,
-  Status,
-  Team,
-  Tournament,
-} from "./types/football.types";
+import { Events, FootballEvent } from "../types/event.types";
+import { ParsedFootballEvent } from "../types/parsedEvents.types";
 
 // Filtrar solo eventos de las 5 grandes ligas
-export const parseFootballEventsByLeague = (eventsList: FootballEvents) => {
+export const parseFootballEventsByLeague = (
+  eventsList: Events<FootballEvent>
+): ParsedFootballEvent[] => {
   return eventsList.events
     .filter((event) =>
       [8, 17, 23, 34, 35].includes(event.tournament?.uniqueTournament?.id)
@@ -33,17 +30,7 @@ export const parseFootballEventsByLeague = (eventsList: FootballEvents) => {
 
 // Filtrar solo eventos futuros (con timestamps correctos)
 export const parseFootballEventsByDate = (
-  eventsList: {
-    id: number;
-    homeTeam: Team;
-    awayTeam: Team;
-    homeScore: Score;
-    awayScore: Score;
-    status: Status;
-    startTimestamp: number;
-    round: number | undefined;
-    tournament: Tournament;
-  }[]
+  eventsList: ParsedFootballEvent[]
 ) => {
   const now = Math.floor(Date.now() / 1000); // Convertir milisegundos a segundos
 
