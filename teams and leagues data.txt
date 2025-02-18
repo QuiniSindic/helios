@@ -2,11 +2,35 @@ Listado de Ligas
 
 Unique-tournament ID:
 - (futbol)
+    Eurocopa = 1
+    Champions League = 7
     LaLiga = 8
+    Mundial = 16
     Premier League = 17
+    Fa Cup = 19
+    EFL Cup = 21
     Serie A = 23
+    Clasificatiorio Eurocopa = 27
     Bundesliga = 35
     Ligue 1 = 34
+    Liga Hypermotion = 54
+    Copa America = 133
+    Supercopa de España = 213
+    Mundial (femenino) = 290
+    Copa del Rey = 329
+    Mundialito = 357
+    Libertadores = 384
+    Olimpiadas = 436
+    Olimpiadas (femenino) = 437
+    Supercopa Europa = 465
+    Eurocopa (femenino) = 477
+    Europa League = 679
+    Conference League = 17015
+    Nations League = 10783
+
+    TODO:
+    - Copas, Supercopas de: (Alemania, Italia, Francia)
+
 - (basket)
     NBA = 132
     EuroLiga = 138
@@ -16,6 +40,11 @@ Unique-tournament ID:
     EuroBasket = 285
     Mundial FIBA = 441
     Olimpiadas = 276
+
+    TODO:
+    - Copas del Rey, Supercopas de España
+    - PlayOff de NBA (?)
+    - Final Four de EuroLiga (?)
 
 Unique-stages ID:
     Formula 1 = 40

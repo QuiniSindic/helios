@@ -3,6 +3,7 @@ Listado de endpoints de sofascore:
 BASE_DATA_URL: https://www.sofascore.com/api/v1
 
 - /unique-tournament
+- /config
 - /country
 - /sport
 - /event
@@ -22,7 +23,9 @@ BASE_DATA_URL: https://www.sofascore.com/api/v1
 
 Listado más detallado (futbol):
 
-- https://www.sofascore.com/api/v1/unique-tournament/8/season/61643/standings/total => devuelve la clasificación de LaLiga
+- https://www.sofascore.com/api/v1/config/default-unique-tournaments/ES/football => devuelve un listado de competiciones
+
+- https://www.sofascore.com/api/v1/unique-tournament/8/season/61643/standings/total => devuelve la clasificación de LaLiga (id 8)
 - https://www.sofascore.com/api/v1/unique-tournament/8/season/61643/rounds => devuelve las jornadas y la jornada actual
 - https://www.sofascore.com/api/v1/unique-tournament/8/season/61643/events/round/{jornada} => devuelve los partidos de esta jornada
 - https://www.sofascore.com/api/v1/event/{id} => devuelve los datos de un partido (por disputar, en juego o finalizado)

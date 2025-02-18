@@ -1,29 +1,8 @@
-import {
-  Score as BasketballScore,
-  Tournament as BasketballTournament,
-  Periods,
-} from '@/utils/sofascore/basketball/types/basketball.types';
-import {
-  Score as FootballScore,
-  Tournament as FootballTournament,
-  Status,
-  Team,
-} from '@/utils/sofascore/football/types/football.types';
+import { ParsedEvent } from '@/utils/sofascore/types/parsedEvents.types';
 import Image from 'next/image';
 
 interface EventResultWidgetProps {
-  event: {
-    id: number;
-    homeTeam: Team;
-    awayTeam: Team;
-    homeScore?: FootballScore | BasketballScore;
-    awayScore?: FootballScore | BasketballScore;
-    status?: Status;
-    startTimestamp: number;
-    round?: number;
-    periods?: Periods;
-    tournament?: FootballTournament | BasketballTournament;
-  };
+  event: ParsedEvent;
   showScore?: boolean;
 }
 
