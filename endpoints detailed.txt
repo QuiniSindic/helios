@@ -1,0 +1,66 @@
+Clasificación Premier League:
+- ID de liga/torneo = 17
+- ID de la temporada = 61627
+
+- https://www.sofascore.com/api/v1/unique-tournament/17/season/61627/standings/total 
+	- Devuelve la clasificación de la liga
+
+- https://www.sofascore.com/api/v1/unique-tournament/17/season/61627/team-events/total 
+	- Devuelve los ultimos 5 partidos de cada equipo
+
+- https://www.sofascore.com/api/v1/unique-tournament/17/season/61627/team/44/team-performance-graph-data
+	- ID del equipo = 44
+	- Devuelve el partido y la poscion en la que quedaba luego del resultado (es el grafo que indica si sube o baja posiciones en comparacion con otro equipo)
+
+- https://www.sofascore.com/api/v1/unique-tournament/17/featured-events
+	- Deuvelve el partido destacado
+
+- https://www.sofascore.com/api/v1/unique-tournament/17/season/61627/team-of-the-week/rounds
+	- Devuelve un listado de ids y jornada corresponidente al equipos de la jornada
+
+- https://www.sofascore.com/api/v1/unique-tournament/17/season/61627/info
+	- Devuelve estadisticas de la liga (tarjetas amarillas, rojas, victorias locales, visitantes, empates, equipos recien ascendidos)
+
+- https://www.sofascore.com/api/v1/unique-tournament/17/season/61627/rounds
+	- Devuelve el listado de jornadas y la jornada actual
+
+- https://www.sofascore.com/api/v1/unique-tournament/17/season/61627/venues
+	- Devuelve información del estaio de cada equipo
+- https://www.sofascore.com/api/v1/unique-tournament/17/season/61627/top-teams/overall
+	- Devuelve el ranking de quipos en diferentes areas (puntuacion media, más goles marcados, faltas, corners etc.)
+
+- https://www.sofascore.com/api/v1/unique-tournament/17/season/61627/top-players/overall
+	- Devuelve el ranking de jugadores en diferentes areas (puntuacion media, más goles marcados, asistencias, paradas etc.)
+
+- https://www.sofascore.com/api/v1/unique-tournament/17/season/61627/top-players-per-game/all/overall
+	- Devuelve el ranking de jugadores en diferentes areas (puntuacion media, más goles marcados, asistencias, paradas etc.) en un solo partido
+
+- https://www.sofascore.com/api/v1/unique-tournament/17/season/61627/team-of-the-week/17335
+	- ID de jornada = 17335
+	- Devuelve la formacion y alineación del equipo de la semana
+	
+- https://www.sofascore.com/api/v1/unique-tournament/17/season/61627/events/round/29
+	- Número de la jornada = 29
+	- Devuelve la lista de partidos de una jornada
+
+- https://www.sofascore.com/api/v1/team/40/team-statistics/seasons
+	- ID del equipo = 40
+	- Devuelve un listado de competiciones y temporada donde participa y ha participado (historico) (Ej: season actual champions, liga, copa, season 2024 europa. liga copa, supercopa)
+
+- https://www.sofascore.com/api/v1/team/40/unique-tournament/17/season/61627/statistics/overall
+	- ID del equipo: 40
+	- Devuelve las estadisticas de un equipo en esa liga y temporada
+
+- https://www.sofascore.com/api/v1/tournament/1/season/61627/standings/total
+	- Devuelve la clasificación (no distingo la diferencia del otro endpoint)
+
+- https://www.sofascore.com/api/v1/unique-tournament/17/season/61627/statistics?limit=20&order=-rating&accumulation=total&group=summary
+	- Limite = 20
+	- Orden: Rating descendente
+	- Acumulacion: todos los partidos, por partido o cada 90 minutos
+	- Agrupacion: resumen, detallado, ataque, defensa, portero o pases
+	- Devuelve una lista de jugadores y sus estadisticas, limitadas, ordenadas etc.
+	
+- https://www.sofascore.com/api/v1/unique-tournament/17/season/61627/statistics/info
+	- Devuelve el listado de equipos ademas de diferentes modos para filtrar alguna data (no se que datos, pero probablemente algo como la tabla del endpoint anterior)
+	

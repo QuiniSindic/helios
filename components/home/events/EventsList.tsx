@@ -1,11 +1,18 @@
 'use client';
 
+import MatchWidget from '@/components/ui/matchWidget/MatchWidget';
+import { filterEvents } from '@/services/events.service';
+import { useFilterStore } from '@/store/filterStore';
 import { ParsedEvent } from '@/utils/sofascore/types/parsedEvents.types';
+import Link from 'next/link';
 import React from 'react';
-import { MatchSchedule } from '../MatchSchedule';
-import MatchWidget from '../MatchWidget';
 
-export default function EventsList() {
+interface EventsListProps {
+  full?: boolean;
+}
+
+export default function EventsList({ full = false }: EventsListProps) {
+  const { selectedSport, selectedLeague } = useFilterStore();
   const [events, setEvents] = React.useState<ParsedEvent[]>([]);
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState('');
@@ -22,18 +29,37 @@ export default function EventsList() {
         // console.error("Error obteniendo los eventos de hoy:", response);
         setError(error);
       }
-      const { sortedEvents } = await response.json();
+
+      const data: { sortedEvents: ParsedEvent[] } = await response.json();
+      const { sortedEvents } = data;
 
       if (sortedEvents.length === 0) {
         setLoading(false);
         setMessage('No hay eventos para hoy.');
       }
-      setEvents(sortedEvents);
+
+      const filteredEvents = filterEvents(
+        sortedEvents,
+        selectedLeague,
+        selectedSport,
+      );
+
+      if (filteredEvents.length === 0) {
+        setMessage(
+          `No hay eventos próximos para ${
+            selectedLeague ? selectedLeague : 'esta liga'
+          }`,
+        );
+      }
+
+      setEvents(filteredEvents);
       setLoading(false);
     };
 
     fetchEvents();
-  }, []);
+  }, [selectedSport, selectedLeague]);
+
+  const displayedEvents = full ? events : events.slice(0, 6);
 
   return (
     <div className="bg-white dark:bg-[#272727] rounded-lg mb-4 cursor-pointer">
@@ -44,19 +70,46 @@ export default function EventsList() {
       ) : error ? (
         <p className="text-center text-gray-500">{error}</p>
       ) : (
-        events.map((event) => (
-          <div
-            key={event.id}
-            className="bg-white dark:bg-[#272727] mb-4 p-3 md:p-4 rounded-lg shadow-md cursor-pointer transition-all duration-200 sm:hover:shadow-lg sm:hover:scale-[1.02] active:scale-[0.98] sm:active:scale-100 flex flex-row sm:flex-col items-center"
-          >
-            <MatchWidget event={event} />
-            <div className="ml-auto sm:ml-0 sm:mt-4">
-              <MatchSchedule
-                date={new Date(event.startTimestamp * 1000).toISOString()}
-              />
+        <>
+          {displayedEvents.map((event) => {
+            switch (event.status.type) {
+              case 'notstarted':
+                return (
+                  <Link href={`/event/${event.id}`} key={event.id}>
+                    <MatchWidget event={event} />
+                  </Link>
+                );
+
+              case 'inprogress':
+                return (
+                  <Link href={`/event/${event.id}`} key={event.id}>
+                    <MatchWidget key={event.id} event={event} isLive />
+                  </Link>
+                );
+
+              case 'finished':
+                return (
+                  <Link href={`/event/${event.id}`} key={event.id}>
+                    <MatchWidget key={event.id} event={event} isFinished />
+                  </Link>
+                );
+
+              default:
+                return (
+                  <Link href={`/event/${event.id}`} key={event.id}>
+                    <MatchWidget key={event.id} event={event} />
+                  </Link>
+                );
+            }
+          })}
+          {!full && events.length > 6 && (
+            <div className="text-center text-gray-500">
+              <Link href="/events">
+                <p>Ver todos los eventos</p>
+              </Link>
             </div>
-          </div>
-        ))
+          )}
+        </>
       )}
     </div>
   );

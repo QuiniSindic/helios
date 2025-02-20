@@ -11,8 +11,8 @@ Unique-tournament ID:
     EFL Cup = 21
     Serie A = 23
     Clasificatiorio Eurocopa = 27
-    Bundesliga = 35
     Ligue 1 = 34
+    Bundesliga = 35
     Liga Hypermotion = 54
     Copa America = 133
     Supercopa de España = 213
