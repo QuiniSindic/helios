@@ -40,7 +40,15 @@ leagues: [
 export const sports = [
   {
     name: 'Fútbol',
-    leagues: ['La Liga', 'Premier League', 'Bundesliga', 'Serie A', 'Ligue 1'],
+    leagues: [
+      'La Liga',
+      'Premier League',
+      'Bundesliga',
+      'Serie A',
+      'Ligue 1',
+      'Champions League',
+      'Europa League',
+    ],
   },
   {
     name: 'Baloncesto',
@@ -79,6 +87,8 @@ export const leaguesMap: { [key: string]: string } = {
   Bundesliga: 'Bundesliga',
   'Serie A': 'Serie A',
   'Ligue 1': 'Ligue 1',
+  'Champions League': 'UEFA Champions League',
+  'Europa League': 'UEFA Europa League',
   // NBA: 'nba',
   // Euroliga: 'euroliga',
   // 'Abierto de Australia': 'australian-open',
