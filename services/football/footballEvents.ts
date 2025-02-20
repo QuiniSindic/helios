@@ -35,6 +35,8 @@ export const getTodayFootballEvents = async () => {
     // Extraemos la data de la API correctamente
     const eventsData = response.data;
 
+    console.log('Eventos futbol:', eventsData);
+
     // Procesamos los eventos
     const parsedEventsByLeague = parseFootballEventsByLeague(eventsData);
     const parsedEventsByDate = parseFootballEventsByDate(parsedEventsByLeague);

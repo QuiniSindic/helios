@@ -35,6 +35,8 @@ export const getTodayBasketballEvents = async () => {
     // Extraemos la data de la API correctamente
     const eventsData = response.data;
 
+    console.log('Eventos basket:', eventsData);
+
     // Procesamos los eventos
     const parsedEventsByLeague = parsedBasketballEventsByLeague(eventsData);
     const parsedEventsByDate =

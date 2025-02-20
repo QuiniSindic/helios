@@ -13,7 +13,6 @@ export default function Home() {
   const [sportsDefaultURL, setSportsDefaultURL] = React.useState(null);
   const [sportsNewURL, setSportsNewURL] = React.useState(null);
   React.useEffect(() => {
-    console.log('Home');
     setSelectedLeague(null);
     setSelectedSport(null);
   }, [setSelectedLeague, setSelectedSport]);
@@ -30,7 +29,7 @@ export default function Home() {
 
     const fetchSportsNewURL = async () => {
       const response = await fetch(
-        'http://api.sofascore.com/api/v1/sport/football/scheduled-events/2025-02-20',
+        'https://api.sofascore.com/api/v1/sport/football/scheduled-events/2025-02-20',
         {
           headers: {
             accept: '*/*',
