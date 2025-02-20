@@ -1,53 +1,89 @@
 import { QUINIELA_DATA_URL } from '@/core/config';
+import { createClient } from '@/utils/supabase/server';
 import { QuinielaData, QuinielaResponse } from '@/utils/types/quiniela.types';
 import axios from 'axios';
 
 export const getQuinielaData = async (): Promise<QuinielaResponse | []> => {
-  try {
-    const maxDays = 7;
-    let quinielaResponse = null;
-    let foundDate = '';
+  const supabase = await createClient();
+  const maxDays = 7;
 
-    // Iterar desde hoy hasta maxDays en el futuro
-    for (let i = 0; i < maxDays; i++) {
+  try {
+    // 1. Precalculamos todas las fechas posibles
+    const dates = Array.from({ length: maxDays }, (_, i) => {
       const date = new Date();
       date.setDate(date.getDate() + i);
-      const formattedDate = date.toISOString().slice(0, 10).replace(/-/g, ''); // formato YYYYMMDD
-      const url = `${QUINIELA_DATA_URL}${formattedDate}`;
+      return {
+        queryDate: date.toISOString().split('T')[0], // YYYY-MM-DD
+        formattedDate: date.toISOString().split('T')[0].replace(/-/g, ''), // YYYYMMDD
+      };
+    });
 
-      const response = await axios.get<QuinielaData[] | string>(url, {
-        headers: {
-          'User-Agent':
-            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-        },
-      });
+    // 2. Consulta única a Supabase para todas las fechas
+    const { data: supabaseResults } = await supabase
+      .from('quinielas')
+      .select('*')
+      .in(
+        'fecha_sorteo::date',
+        dates.map((d) => d.queryDate),
+      )
+      .order('fecha_sorteo', { ascending: true });
 
-      const data = response.data;
+    if (supabaseResults?.length) {
+      return {
+        data: supabaseResults[0].data,
+        date: supabaseResults[0].fecha_sorteo,
+      };
+    }
 
-      // Suponiendo que cuando no hay quiniela la respuesta incluye un mensaje de error
-      if (
-        data ===
-        'No se ha encontrado ningún registro para los parámetros introducidos.'
-      ) {
-        // No hay quiniela para esta fecha, seguimos al siguiente día
+    // 3. Búsqueda iterativa en la API con caché automático
+    for (const date of dates) {
+      try {
+        const url = `${QUINIELA_DATA_URL}${date.formattedDate}`;
+        const response = await axios.get<QuinielaData[] | string>(url, {
+          headers: {
+            'User-Agent':
+              'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+          },
+        });
+
+        const data = response.data;
+
+        if (
+          data ===
+          'No se ha encontrado ningún registro para los parámetros introducidos.'
+        ) {
+          continue;
+        }
+
+        const quinielaData = data as QuinielaData[];
+
+        // 4. Cachear en Supabase para futuras consultas
+        await supabase.from('quinielas').upsert(
+          [
+            {
+              fecha_sorteo: date.queryDate,
+              data: quinielaData[0],
+              updated_at: new Date().toISOString(),
+            },
+          ],
+          {
+            onConflict: 'fecha_sorteo',
+          },
+        );
+
+        return {
+          data: quinielaData[0],
+          date: date.formattedDate,
+        };
+      } catch (error) {
+        console.error(`Error en fecha ${date.formattedDate}:`, error);
         continue;
-      } else {
-        quinielaResponse = data as QuinielaData[];
-        foundDate = formattedDate;
-        break;
       }
     }
 
-    if (!quinielaResponse) {
-      return [];
-    }
-
-    return {
-      data: quinielaResponse[0],
-      date: foundDate,
-    };
+    return [];
   } catch (error) {
-    console.log('error =>', error);
+    console.error('Error general:', error);
     return [];
   }
 };
