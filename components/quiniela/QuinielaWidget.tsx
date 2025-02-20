@@ -11,6 +11,7 @@ interface QuinielaWidgetProps {
 export default function QuinielaWidget({
   partido,
   isLastMatch = false,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   predictions = [],
 }: QuinielaWidgetProps) {
   if (isLastMatch) {
