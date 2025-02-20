@@ -10,23 +10,10 @@ import axios from 'axios';
 const headers = {
   accept: '*/*',
   'accept-language': 'es-ES,es;q=0.9',
-  baggage:
-    'sentry-environment=production,sentry-release=cqsIxcqQoB4OLYQ-ciM8j,sentry-public_key=d693747a6bb242d9bb9cf7069fb57988,sentry-trace_id=ce494bdb4d6eda5ae6efeecb4c9277ce',
-  'cache-control': 'max-age=0',
-  'if-none-match': '"dd10a71d36"',
-  priority: 'u=1, i',
   referer: 'https://www.sofascore.com/es-la/',
-  'sec-ch-ua':
-    '"Not(A:Brand";v="99", "Google Chrome";v="133", "Chromium";v="133"',
-  'sec-ch-ua-mobile': '?1',
-  'sec-ch-ua-platform': '"Android"',
-  'sec-fetch-dest': 'empty',
-  'sec-fetch-mode': 'cors',
-  'sec-fetch-site': 'same-origin',
-  'sentry-trace': 'ce494bdb4d6eda5ae6efeecb4c9277ce-a57a7e941607af53',
+  origin: 'https://www.sofascore.com',
   'user-agent':
     'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Mobile Safari/537.36',
-  'x-requested-with': 'ca1ede',
 };
 
 export const getTodayFootballEvents = async () => {
