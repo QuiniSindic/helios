@@ -1,19 +1,19 @@
 import { ParsedEvent } from '@/utils/sofascore/types/parsedEvents.types';
 import Image from 'next/image';
 
-interface EventResultWidgetProps {
+interface EventTeamsProps {
   event: ParsedEvent;
   showScore?: boolean;
 }
 
-export default function EventResultWidget({
+export default function EventTeamsData({
   event,
   showScore = false,
-}: EventResultWidgetProps) {
+}: EventTeamsProps) {
   return (
     <>
       {/* Vista para PC (pantallas grandes) */}
-      <div className="hidden sm:grid grid-cols-[1fr_40px_80px_40px_1fr] items-center">
+      <div className="hidden sm:grid grid-cols-[1fr_40px_80px_40px_1fr] items-center mt-4">
         <span className="text-base font-medium text-right mt-2">
           {event.homeTeam.name}
         </span>
@@ -42,7 +42,7 @@ export default function EventResultWidget({
       </div>
 
       {/* Vista para móvil */}
-      <div className="sm:hidden w-2/3 grid grid-cols-[auto_1fr_auto] gap-x-2 gap-y-4 items-center mr-1">
+      <div className="sm:hidden w-2/3 grid grid-cols-[auto_1fr_auto] gap-x-2 gap-y-4 items-center mr-1 mt-4">
         {/* Fila del equipo local */}
         <Image
           src={event.homeTeam.shield}
