@@ -44,6 +44,7 @@ export const getTodayFootballEvents = async () => {
     return sortedEvents;
   } catch (error) {
     console.error('Error obteniendo los eventos de hoy:', error);
+    console.error({ error });
     return [];
   }
 };
