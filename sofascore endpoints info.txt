@@ -17,7 +17,7 @@ BASE_DATA_URL: https://www.sofascore.com/api/v1
 - /player
 - /stage (motor)
 - /category (motor)
-- unique-stage (motor)
+- /unique-stage (motor)
 
 
 
