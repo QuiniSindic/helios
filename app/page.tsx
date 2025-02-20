@@ -10,7 +10,6 @@ import React from 'react';
 export default function Home() {
   const { setSelectedLeague, setSelectedSport } = useFilterStore();
   React.useEffect(() => {
-    console.log('Home');
     setSelectedLeague(null);
     setSelectedSport(null);
   }, [setSelectedLeague, setSelectedSport]);

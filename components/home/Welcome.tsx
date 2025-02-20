@@ -5,11 +5,12 @@ export default function Welcome() {
   const { user, loading } = useAuth();
 
   if (loading) {
-    return (
-      <div className="bg-secondary text-white p-4 rounded-lg shadow-md">
-        <h2 className="text-2xl font-bold mb-4">Cargando</h2>
-      </div>
-    );
+    return <></>;
+    // return (
+    //   <div className="bg-secondary text-white p-4 rounded-lg shadow-md">
+    //     <h2 className="text-2xl font-bold mb-4">Cargando</h2>
+    //   </div>
+    // );
   }
 
   if (!user) {

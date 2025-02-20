@@ -6,3 +6,6 @@ export const SOFASCORE_IMG_URL =
 export const QUINIELA_DATA_URL =
   process.env.QUINIELA_DATA_URL ||
   'https://www.loteriasyapuestas.es/servicios/fechav3?game_id=LAQU&fecha_sorteo=';
+
+export const baseUrl =
+  process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';

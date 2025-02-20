@@ -38,8 +38,14 @@ export default function EventsList({ full = false }: EventsListProps) {
         setMessage('No hay eventos para hoy.');
       }
 
+      const eventsToPlay = sortedEvents.filter(
+        (event) =>
+          event.status.type === 'notstarted' ||
+          event.status.type === 'inprogress',
+      );
+
       const filteredEvents = filterEvents(
-        sortedEvents,
+        eventsToPlay,
         selectedLeague,
         selectedSport,
       );
@@ -76,28 +82,14 @@ export default function EventsList({ full = false }: EventsListProps) {
               case 'notstarted':
                 return (
                   <Link href={`/event/${event.id}`} key={event.id}>
-                    <MatchWidget event={event} />
+                    <MatchWidget key={event.id} event={event} isLive={false} />
                   </Link>
                 );
 
               case 'inprogress':
                 return (
                   <Link href={`/event/${event.id}`} key={event.id}>
-                    <MatchWidget key={event.id} event={event} isLive />
-                  </Link>
-                );
-
-              case 'finished':
-                return (
-                  <Link href={`/event/${event.id}`} key={event.id}>
-                    <MatchWidget key={event.id} event={event} isFinished />
-                  </Link>
-                );
-
-              default:
-                return (
-                  <Link href={`/event/${event.id}`} key={event.id}>
-                    <MatchWidget key={event.id} event={event} />
+                    <MatchWidget event={event} isLive={true} />
                   </Link>
                 );
             }

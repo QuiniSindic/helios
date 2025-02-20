@@ -1,9 +1,6 @@
 import { SOFASCORE_URL } from '@/core/config';
 import { Events, FootballEvent } from '@/types/sofascoreTypes/event.types';
-import {
-  parseFootballEventsByDate,
-  parseFootballEventsByLeague,
-} from '@/utils/sofascore/football/football.utils';
+import { parseFootballEventsByLeague } from '@/utils/sofascore/football/football.utils';
 import axios from 'axios';
 
 export const getTodayFootballEvents = async () => {
@@ -19,10 +16,10 @@ export const getTodayFootballEvents = async () => {
 
     // Procesamos los eventos
     const parsedEventsByLeague = parseFootballEventsByLeague(eventsData);
-    const parsedEventsByDate = parseFootballEventsByDate(parsedEventsByLeague);
+    // const parsedEventsByDate = parseFootballEventsByDate(parsedEventsByLeague);
 
     // Ordenar por `startTimestamp` antes de devolverlos
-    const sortedEvents = parsedEventsByDate.sort(
+    const sortedEvents = parsedEventsByLeague.sort(
       (a, b) => a.startTimestamp - b.startTimestamp,
     );
 

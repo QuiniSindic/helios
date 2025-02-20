@@ -1,4 +1,5 @@
 import { Partido } from '@/types/quiniela.types';
+import SaveButton from '../ui/SaveButton';
 import QuinielaWidget from './QuinielaWidget';
 
 interface PredictionsProps {
@@ -21,12 +22,7 @@ export default function Predictions({
         />
       ))}
       <div className="flex justify-center">
-        <button
-          className="bg-secondary text-white px-6 py-2 rounded-lg hover:bg-secondary/90 transition-colors"
-          //   onClick={() => console.log(predicciones)}
-        >
-          Guardar Quiniela
-        </button>
+        <SaveButton label="Guardar quiniela" />
       </div>
     </div>
   );

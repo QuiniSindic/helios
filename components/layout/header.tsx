@@ -22,7 +22,7 @@ import {
 // import { User } from "@supabase/supabase-js";
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import React, { useEffect } from 'react';
+import React from 'react';
 
 const menuItems = [
   { name: 'Eventos', path: '/events' },
@@ -38,9 +38,9 @@ export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [isSticky, setIsSticky] = React.useState<'sticky' | 'static'>('sticky');
 
-  useEffect(() => {
-    console.log('user =>', user);
-  }, [user]);
+  // useEffect(() => {
+  //   // console.log('user =>', user);
+  // }, [user]);
 
   React.useEffect(() => {
     if (window.innerWidth < 526) {

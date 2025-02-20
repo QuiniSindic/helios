@@ -36,6 +36,7 @@ export default function ResultsList({ full = false }: ResultsListProps) {
         setLoading(false);
         setMessage('No hay resultados disponibles.');
       }
+
       const filteredEvents = filterEvents(
         sortedResults,
         selectedLeague,

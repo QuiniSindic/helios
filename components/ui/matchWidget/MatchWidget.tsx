@@ -10,16 +10,16 @@ interface MatchWidgetProps {
 
 export default function MatchWidget({
   event,
-  isLive,
-  isFinished,
+  isLive = false,
+  isFinished = false,
 }: MatchWidgetProps) {
   return (
     <div
       key={event.id}
-      className="bg-white dark:bg-[#272727] mb-4 p-3 md:p-4 rounded-lg shadow-md cursor-pointer transition-all duration-200 sm:hover:shadow-lg sm:hover:scale-[1.02] active:scale-[0.98] sm:active:scale-100 flex flex-row sm:flex-col items-center"
+      className="relative bg-white dark:bg-[#272727] mb-4 p-3 md:p-4 rounded-lg shadow-md cursor-pointer transition-all duration-200 sm:hover:shadow-lg sm:hover:scale-[1.02] active:scale-[0.98] sm:active:scale-100 flex flex-row sm:flex-col items-center"
     >
-      {isLive && (
-        <div className="absolute top-2 right-2 flex items-center mr-4">
+      {isLive && isLive === true && (
+        <div className="absolute top-2 right-2 flex items-center mr-2 sm:mr-4">
           <span className="mr-1 text-sm font-semibold">Live</span>
           <div className="bg-red-600 h-4 w-4 rounded-full animate-pulse"></div>
         </div>
@@ -27,6 +27,8 @@ export default function MatchWidget({
       <EventTeamsData event={event} showScore={isFinished} />
       <div className="mt-4 ml-auto sm:ml-0 sm:mt-4">
         <MatchSchedule
+          isLive={isLive}
+          event={event}
           date={new Date(event.startTimestamp * 1000).toISOString()}
         />
       </div>
