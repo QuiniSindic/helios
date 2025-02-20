@@ -1,5 +1,8 @@
-import { Events, FootballEvent } from '../types/event.types';
-import { ParsedFootballEvent } from '../types/parsedEvents.types';
+import {
+  Events,
+  FootballEvent,
+} from '../../../types/sofascoreTypes/event.types';
+import { ParsedFootballEvent } from '../../../types/sofascoreTypes/parsedEvents.types';
 
 // Filtrar solo eventos de las 5 grandes ligas
 export const parseFootballEventsByLeague = (

@@ -1,5 +1,8 @@
-import { BasketballEvent, Events } from '../types/event.types';
-import { ParsedBasketballEvent } from '../types/parsedEvents.types';
+import {
+  BasketballEvent,
+  Events,
+} from '../../../types/sofascoreTypes/event.types';
+import { ParsedBasketballEvent } from '../../../types/sofascoreTypes/parsedEvents.types';
 
 export const parsedBasketballEventsByLeague = (
   eventsList: Events<BasketballEvent>,

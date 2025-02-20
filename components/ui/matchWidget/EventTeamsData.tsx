@@ -1,4 +1,4 @@
-import { ParsedEvent } from '@/utils/sofascore/types/parsedEvents.types';
+import { ParsedEvent } from '@/types/sofascoreTypes/parsedEvents.types';
 import Image from 'next/image';
 
 interface EventTeamsProps {

@@ -1,7 +1,7 @@
 'use client';
 
 import { useFilterStore } from '@/store/filterStore';
-import { sports } from '@/utils/types/sports.types';
+import { sports } from '@/types/sports.types';
 
 export default function FilterBar() {
   const { selectedSport, setSelectedSport, selectedLeague, setSelectedLeague } =

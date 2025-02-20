@@ -3,7 +3,7 @@
 import MatchWidget from '@/components/ui/matchWidget/MatchWidget';
 import { filterEvents } from '@/services/events.service';
 import { useFilterStore } from '@/store/filterStore';
-import { ParsedEvent } from '@/utils/sofascore/types/parsedEvents.types';
+import { ParsedEvent } from '@/types/sofascoreTypes/parsedEvents.types';
 import Link from 'next/link';
 import React from 'react';
 

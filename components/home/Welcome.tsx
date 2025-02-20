@@ -1,5 +1,5 @@
 'use client';
-import { useAuth } from '@/utils/hooks/useAuth';
+import { useAuth } from '@/hooks/useAuth';
 
 export default function Welcome() {
   const { user, loading } = useAuth();

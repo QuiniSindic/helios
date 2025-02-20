@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { sports } from '../utils/types/sports.types';
+import { sports } from '../types/sports.types';
 
 interface FilterStore {
   selectedSport: string | null;

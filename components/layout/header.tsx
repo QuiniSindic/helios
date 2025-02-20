@@ -1,7 +1,7 @@
 'use client';
 
+import { useAuth } from '@/hooks/useAuth';
 import QuinisindicLogo from '@/icons/QuinisindicLogo';
-import { useAuth } from '@/utils/hooks/useAuth';
 import { createClient } from '@/utils/supabase/client';
 import {
   Navbar,

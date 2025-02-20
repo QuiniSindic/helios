@@ -1,4 +1,4 @@
-import { Partido } from '@/utils/types/quiniela.types';
+import { Partido } from '@/types/quiniela.types';
 import NormalPredictionWidget from './NormalPredictionWidget';
 import ResultPredictionWidget from './ResultPredictionWidget';
 

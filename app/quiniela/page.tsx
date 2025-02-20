@@ -1,7 +1,7 @@
 'use client';
 
 import Predictions from '@/components/quiniela/Predictions';
-import { Partido, QuinielaResponse } from '@/utils/types/quiniela.types';
+import { Partido, QuinielaResponse } from '@/types/quiniela.types';
 import React from 'react';
 
 export default function QuinielaPage() {

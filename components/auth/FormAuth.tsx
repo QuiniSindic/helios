@@ -1,4 +1,4 @@
-import { FormData } from '@/lib/modules/auth/types/login.types';
+import { FormData } from '@/types/authTypes/login.types';
 import { Button } from '@heroui/react';
 import { useRouter } from 'next/navigation';
 import React from 'react';

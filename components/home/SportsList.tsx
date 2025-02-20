@@ -1,8 +1,8 @@
 'use client';
 
+import { useIsLargeScreen } from '@/hooks/useIsLargeScreen';
 import { useFilterStore } from '@/store/filterStore';
-import { useIsLargeScreen } from '@/utils/hooks/useIsLargeScreen';
-import { sports } from '@/utils/types/sports.types';
+import { sports } from '@/types/sports.types';
 
 export default function SportsList() {
   const isLargeScreen = useIsLargeScreen();

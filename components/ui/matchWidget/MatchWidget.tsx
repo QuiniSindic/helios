@@ -1,6 +1,6 @@
 import EventTeamsData from '@/components/ui/matchWidget/EventTeamsData';
 import { MatchSchedule } from '@/components/ui/matchWidget/MatchSchedule';
-import { ParsedEvent } from '@/utils/sofascore/types/parsedEvents.types';
+import { ParsedEvent } from '@/types/sofascoreTypes/parsedEvents.types';
 
 interface MatchWidgetProps {
   event: ParsedEvent;

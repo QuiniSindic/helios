@@ -1,9 +1,9 @@
 import { SOFASCORE_URL } from '@/core/config';
+import { BasketballEvent, Events } from '@/types/sofascoreTypes/event.types';
 import {
   parseBasketballEventsByDate,
   parsedBasketballEventsByLeague,
 } from '@/utils/sofascore/basketball/basketball.utils';
-import { BasketballEvent, Events } from '@/utils/sofascore/types/event.types';
 import axios from 'axios';
 
 export const getTodayBasketballEvents = async () => {

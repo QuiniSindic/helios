@@ -2,8 +2,8 @@ import {
   ParsedBasketballEvent,
   ParsedEvent,
   ParsedFootballEvent,
-} from '@/utils/sofascore/types/parsedEvents.types';
-import { leaguesMap, sportsMap } from '@/utils/types/sports.types';
+} from '@/types/sofascoreTypes/parsedEvents.types';
+import { leaguesMap, sportsMap } from '@/types/sports.types';
 
 export const sortEvents = (
   footballEvents: ParsedFootballEvent[],
