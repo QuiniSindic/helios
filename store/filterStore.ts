@@ -15,7 +15,7 @@ export const useFilterStore = create<FilterStore>((set) => ({
     set((state) => {
       // Si el deporte ya está seleccionado, se hace toggle a null
       if (state.selectedSport === sport) {
-        return { selectedSport: null };
+        return { selectedSport: null, selectedLeague: null };
       }
       // Si se selecciona un deporte diferente, se guarda el nuevo deporte y se resetea la liga
       return { selectedSport: sport, selectedLeague: null };
