@@ -1,7 +1,7 @@
 'use client';
 
 import MatchWidget from '@/components/ui/matchWidget/MatchWidget';
-import { filterEvents } from '@/services/events.service';
+import { filterEvents, getEvents } from '@/services/events.service';
 import { useFilterStore } from '@/store/filterStore';
 import { ParsedEvent } from '@/utils/sofascore/types/parsedEvents.types';
 import Link from 'next/link';
@@ -21,21 +21,16 @@ export default function EventsList({ full = false }: EventsListProps) {
   React.useEffect(() => {
     const fetchEvents = async () => {
       setLoading(true);
-      const response = await fetch('/api/events');
+      const response = await getEvents();
 
-      if (!response.ok) {
-        setLoading(false);
-        const { error } = await response.json();
-        // console.error("Error obteniendo los eventos de hoy:", response);
-        setError(error);
-      }
+      const sortedEvents = response.sortedEvents;
 
-      const data: { sortedEvents: ParsedEvent[] } = await response.json();
-      const { sortedEvents } = data;
+      console.log('response =>', response);
 
       if (sortedEvents.length === 0) {
         setLoading(false);
         setMessage('No hay eventos para hoy.');
+        setError('No hay eventos para hoy.');
       }
 
       const filteredEvents = filterEvents(
@@ -54,6 +49,40 @@ export default function EventsList({ full = false }: EventsListProps) {
 
       setEvents(filteredEvents);
       setLoading(false);
+
+      // sin uso, la API externa no devuelve los eventos en producción
+
+      // if (!response.ok) {
+      //   setLoading(false);
+      //   const { error } = await response.json();
+      //   // console.error("Error obteniendo los eventos de hoy:", response);
+      //   setError(error);
+      // }
+
+      // const data: { sortedEvents: ParsedEvent[] } = await response.json();
+      // const { sortedEvents } = data;
+
+      // if (sortedEvents.length === 0) {
+      //   setLoading(false);
+      //   setMessage('No hay eventos para hoy.');
+      // }
+
+      // const filteredEvents = filterEvents(
+      //   sortedEvents,
+      //   selectedLeague,
+      //   selectedSport,
+      // );
+
+      // if (filteredEvents.length === 0) {
+      //   setMessage(
+      //     `No hay eventos próximos para ${
+      //       selectedLeague ? selectedLeague : 'esta liga'
+      //     }`,
+      //   );
+      // }
+
+      // setEvents(filteredEvents);
+      // setLoading(false);
     };
 
     fetchEvents();
