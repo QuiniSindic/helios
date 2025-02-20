@@ -3,15 +3,11 @@ import { baseUrl } from '@/core/config';
 import { Match, MatchEvent } from '@/types/sofascoreTypes/match.types';
 import { createClient } from '@/utils/supabase/server';
 
-interface EventDetailPageProps {
-  params: {
-    id: string;
-  };
-}
-
 export default async function EventDetailPage({
   params,
-}: EventDetailPageProps) {
+}: {
+  params: Promise<{ id: string }>;
+}) {
   const supabase = await createClient();
   const { id } = await params;
 

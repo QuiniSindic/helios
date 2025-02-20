@@ -11,6 +11,7 @@ export default function QuinielaPage() {
   const [error, setError] = React.useState('');
   const [jornada, setJornada] = React.useState<string>('');
   const [partidos, setPartidos] = React.useState<Partido[]>([]);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [predictions, setPredictions] = React.useState<string[]>([]);
 
   React.useEffect(() => {
