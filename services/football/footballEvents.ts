@@ -38,7 +38,9 @@ export const getTodayFootballEvents = async () => {
     const todayDate = new Date().toISOString().split('T')[0];
     const url = `${SOFASCORE_URL}/sport/football/scheduled-events/${todayDate}`;
 
-    const eventsData = await fetchData(url);
+    const eventsData: Events<FootballEvent> = (await fetchData(
+      url,
+    )) as Events<FootballEvent>;
 
     // const response = await axios.get<Events<FootballEvent>>(
     //   `${SOFASCORE_URL}/sport/football/scheduled-events/${todayDate}`,
@@ -53,7 +55,7 @@ export const getTodayFootballEvents = async () => {
 
     // const eventsData = await response.json();
 
-    console.log('Eventos de hoy:', eventsData);
+    // console.log('Eventos de hoy:', eventsData);
 
     // // Extraemos la data de la API correctamente
     // const eventsData = response.data;
