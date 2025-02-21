@@ -4,8 +4,14 @@ import {
   ParsedFootballEvent,
 } from '@/utils/sofascore/types/parsedEvents.types';
 import { leaguesMap, sportsMap } from '@/utils/types/sports.types';
-import { getTodayBasketballEvents } from './basketball/basketballEvents';
-import { getTodayFootballEvents } from './football/footballEvents';
+import {
+  getTodayBasketballEvents,
+  getYesterdaysBasketballEvents,
+} from './basketball/basketballEvents';
+import {
+  getTodayFootballEvents,
+  getYesterdaysFootballEvents,
+} from './football/footballEvents';
 
 export const sortEvents = (
   footballEvents: ParsedFootballEvent[],
@@ -54,7 +60,7 @@ export const filterEvents = (
   return filteredResults;
 };
 
-export const getEvents = async () => {
+export const getTodayEvents = async () => {
   const footballEvents = await getTodayFootballEvents();
   const basketballEvents = await getTodayBasketballEvents();
 
@@ -65,4 +71,23 @@ export const getEvents = async () => {
   }
 
   return { sortedEvents };
+};
+
+export const getYesterdayEvents = async () => {
+  const yesterdayFootballEvents = await getYesterdaysFootballEvents();
+  const yesterdaysBasketballEvents = await getYesterdaysBasketballEvents();
+
+  const sortedResults = sortEvents(
+    yesterdayFootballEvents,
+    yesterdaysBasketballEvents,
+  );
+
+  if (
+    yesterdayFootballEvents.length === 0 &&
+    yesterdaysBasketballEvents.length === 0
+  ) {
+    return { sortedResults: [] };
+  }
+
+  return { sortedResults };
 };

@@ -20,11 +20,11 @@ export const parseFootballEventsByLeague = (
         id: event.id, // ID del partido
         homeTeam: {
           ...event.homeTeam,
-          shield: `https://api.sofascore.app/api/v1/team/${event.homeTeam.id}/image`,
+          shield: `https://sofascore.app/api/v1/team/${event.homeTeam.id}/image`,
         },
         awayTeam: {
           ...event.awayTeam,
-          shield: `https://api.sofascore.app/api/v1/team/${event.awayTeam.id}/image`,
+          shield: `https://sofascore.app/api/v1/team/${event.awayTeam.id}/image`,
         },
         homeScore: event.homeScore,
         awayScore: event.awayScore,
