@@ -22,6 +22,8 @@ export default function EventsList({ full = false }: EventsListProps) {
     const fetchEvents = async () => {
       setLoading(true);
       const response = await fetch('/api/events');
+
+      console.log('response =>', response);
       // const response = await getTodayEvents();
 
       // const sortedEvents = response.sortedEvents;

@@ -5,23 +5,53 @@ import {
 } from '@/utils/sofascore/football/football.utils';
 import { Events, FootballEvent } from '@/utils/sofascore/types/event.types';
 import axios from 'axios';
+import https from 'https';
+
+const fetchData = (url: string) => {
+  return new Promise((resolve, reject) => {
+    https
+      .get(url, (res) => {
+        let data = '';
+
+        // Acumulamos los datos recibidos
+        res.on('data', (chunk) => {
+          data += chunk;
+        });
+
+        // Cuando la respuesta esté completa, resolvemos la promesa
+        res.on('end', () => {
+          try {
+            resolve(JSON.parse(data));
+          } catch (error) {
+            reject(error);
+          }
+        });
+      })
+      .on('error', (error) => {
+        reject(error);
+      });
+  });
+};
 
 export const getTodayFootballEvents = async () => {
   try {
     const todayDate = new Date().toISOString().split('T')[0];
+    const url = `${SOFASCORE_URL}/sport/football/scheduled-events/${todayDate}`;
+
+    const eventsData = await fetchData(url);
 
     // const response = await axios.get<Events<FootballEvent>>(
     //   `${SOFASCORE_URL}/sport/football/scheduled-events/${todayDate}`,
     // );
 
-    const response = await fetch(
-      `${SOFASCORE_URL}/sport/football/scheduled-events/${todayDate}`,
-      {
-        method: 'GET',
-      },
-    );
+    // const response = await fetch(
+    //   `${SOFASCORE_URL}/sport/football/scheduled-events/${todayDate}`,
+    //   {
+    //     method: 'GET',
+    //   },
+    // );
 
-    const eventsData = await response.json();
+    // const eventsData = await response.json();
 
     console.log('Eventos de hoy:', eventsData);
 
