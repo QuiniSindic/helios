@@ -14,8 +14,6 @@ export async function GET() {
       return NextResponse.json({ sortedEvents: [] }, { status: 200 });
     }
 
-    console.log('sortedEvents =>', sortedEvents.length);
-
     return NextResponse.json({ sortedEvents }, { status: 200 });
   } catch (error) {
     console.log('error =>', error);

@@ -2,6 +2,7 @@
 'use client';
 
 import MatchWidget from '@/components/ui/matchWidget/MatchWidget';
+import { filterEvents, getTodayEvents } from '@/services/events.service';
 import { useFilterStore } from '@/store/filterStore';
 import { ParsedEvent } from '@/utils/sofascore/types/parsedEvents.types';
 import Link from 'next/link';
@@ -21,39 +22,33 @@ export default function EventsList({ full = false }: EventsListProps) {
   React.useEffect(() => {
     const fetchEvents = async () => {
       setLoading(true);
-      const response = await fetch('/api/events');
+      // const response = await fetch('/api/events');
+      const response = await getTodayEvents();
 
-      const data: { sortedEvents: ParsedEvent[] } = await response.json();
-      const { sortedEvents } = data;
+      const sortedEvents = response.sortedEvents;
 
-      console.log('sortedEvents ==>', sortedEvents);
+      if (sortedEvents.length === 0) {
+        setLoading(false);
+        setMessage('No hay eventos para hoy.');
+        setError('No hay eventos para hoy.');
+      }
 
-      // const response = await getTodayEvents();
+      const filteredEvents = filterEvents(
+        sortedEvents,
+        selectedLeague,
+        selectedSport,
+      );
 
-      // const sortedEvents = response.sortedEvents;
+      if (filteredEvents.length === 0) {
+        setMessage(
+          `No hay eventos próximos para ${
+            selectedLeague ? selectedLeague : 'esta liga'
+          }`,
+        );
+      }
 
-      // if (sortedEvents.length === 0) {
-      //   setLoading(false);
-      //   setMessage('No hay eventos para hoy.');
-      //   setError('No hay eventos para hoy.');
-      // }
-
-      // const filteredEvents = filterEvents(
-      //   sortedEvents,
-      //   selectedLeague,
-      //   selectedSport,
-      // );
-
-      // if (filteredEvents.length === 0) {
-      //   setMessage(
-      //     `No hay eventos próximos para ${
-      //       selectedLeague ? selectedLeague : 'esta liga'
-      //     }`,
-      //   );
-      // }
-
-      // setEvents(filteredEvents);
-      // setLoading(false);
+      setEvents(filteredEvents);
+      setLoading(false);
 
       /* sin uso, la API externa no devuelve los eventos en producción*/
 
