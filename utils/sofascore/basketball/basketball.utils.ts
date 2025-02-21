@@ -14,11 +14,11 @@ export const parsedBasketballEventsByLeague = (
       id: event.id,
       homeTeam: {
         ...event.homeTeam,
-        shield: `https://img.sofascore.com/api/v1/team/${event.homeTeam.id}/image`,
+        shield: `/nba-escudos/${event.homeTeam.id}.png`,
       },
       awayTeam: {
         ...event.awayTeam,
-        shield: `https://img.sofascore.com/api/v1/team/${event.awayTeam.id}/image`,
+        shield: `/nba-escudos/${event.awayTeam.id}.png`,
       },
       homeScore: event.homeScore,
       awayScore: event.awayScore,
