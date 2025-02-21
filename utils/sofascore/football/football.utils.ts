@@ -1,8 +1,6 @@
-import {
-  Events,
-  FootballEvent,
-} from '../../../types/sofascoreTypes/event.types';
-import { ParsedFootballEvent } from '../../../types/sofascoreTypes/parsedEvents.types';
+import { LOGOS_BUCKET_NAME, PROJECT_ID } from '@/core/config';
+import { Events, FootballEvent } from '@/types/sofascoreTypes/event.types';
+import { ParsedFootballEvent } from '@/types/sofascoreTypes/parsedEvents.types';
 
 // Filtrar solo eventos de las 5 grandes ligas
 export const parseFootballEventsByLeague = (
@@ -23,11 +21,13 @@ export const parseFootballEventsByLeague = (
         id: event.id, // ID del partido
         homeTeam: {
           ...event.homeTeam,
-          shield: `https://api.sofascore.app/api/v1/team/${event.homeTeam.id}/image`,
+          // shield: `https://img.sofascore.com/api/v1/team/${event.homeTeam.id}/image`,
+          shield: `https://${PROJECT_ID}.supabase.co/storage/v1/object/public/${LOGOS_BUCKET_NAME}/teams/${event.homeTeam.id}.png`,
         },
         awayTeam: {
           ...event.awayTeam,
-          shield: `https://api.sofascore.app/api/v1/team/${event.awayTeam.id}/image`,
+          // shield: `https://img.sofascore.com/api/v1/team/${event.awayTeam.id}/image`,
+          shield: `https://${PROJECT_ID}.supabase.co/storage/v1/object/public/${LOGOS_BUCKET_NAME}/teams/${event.awayTeam.id}.png`,
         },
         homeScore: event.homeScore,
         awayScore: event.awayScore,

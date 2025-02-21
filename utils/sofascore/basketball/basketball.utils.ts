@@ -1,8 +1,6 @@
-import {
-  BasketballEvent,
-  Events,
-} from '../../../types/sofascoreTypes/event.types';
-import { ParsedBasketballEvent } from '../../../types/sofascoreTypes/parsedEvents.types';
+import { LOGOS_BUCKET_NAME, PROJECT_ID } from '@/core/config';
+import { BasketballEvent, Events } from '@/types/sofascoreTypes/event.types';
+import { ParsedBasketballEvent } from '@/types/sofascoreTypes/parsedEvents.types';
 
 export const parsedBasketballEventsByLeague = (
   eventsList: Events<BasketballEvent>,
@@ -17,11 +15,13 @@ export const parsedBasketballEventsByLeague = (
       id: event.id,
       homeTeam: {
         ...event.homeTeam,
-        shield: `https://api.sofascore.app/api/v1/team/${event.homeTeam.id}/image`,
+        // shield: `/nba-escudos/${event.homeTeam.id}.png`,
+        shield: `https://${PROJECT_ID}.supabase.co/storage/v1/object/public/${LOGOS_BUCKET_NAME}/teams/${event.homeTeam.id}.png`,
       },
       awayTeam: {
         ...event.awayTeam,
-        shield: `https://api.sofascore.app/api/v1/team/${event.awayTeam.id}/image`,
+        // shield: `/nba-escudos/${event.awayTeam.id}.png`,
+        shield: `https://${PROJECT_ID}.supabase.co/storage/v1/object/public/${LOGOS_BUCKET_NAME}/teams/${event.awayTeam.id}.png`,
       },
       homeScore: event.homeScore,
       awayScore: event.awayScore,

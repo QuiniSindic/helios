@@ -1,7 +1,7 @@
 'use client';
 
 import MatchWidget from '@/components/ui/matchWidget/MatchWidget';
-import { filterEvents } from '@/services/events.service';
+import { filterEvents, getYesterdayEvents } from '@/services/events.service';
 import { useFilterStore } from '@/store/filterStore';
 import { ParsedEvent } from '@/types/sofascoreTypes/parsedEvents.types';
 import Link from 'next/link';
@@ -21,8 +21,37 @@ export default function ResultsList({ full = false }: ResultsListProps) {
   React.useEffect(() => {
     const fetchEvents = async () => {
       setLoading(true);
-      const response = await fetch('/api/results');
+      // const response = await fetch('/api/results');
+      const response = await getYesterdayEvents();
 
+      const sortedResults = response.sortedResults;
+
+      if (sortedResults.length === 0) {
+        setLoading(false);
+        setMessage('No hay resultados disponibles.');
+        setError('No hay resultados disponibles.');
+      }
+
+      const filteredEvents = filterEvents(
+        sortedResults,
+        selectedLeague,
+        selectedSport,
+      );
+
+      if (filteredEvents.length === 0) {
+        setMessage(
+          `No hay resultados disponibles para ${
+            selectedLeague ? selectedLeague : 'este deporte'
+          }`,
+        );
+      }
+      console.log('filteredEvents:', filteredEvents);
+
+      setResults(filteredEvents);
+      setLoading(false);
+
+      /* sin uso, la API externa no devuelve los resultados en producción
+      
       if (!response.ok) {
         setLoading(false);
         const { error } = await response.json();
@@ -52,7 +81,7 @@ export default function ResultsList({ full = false }: ResultsListProps) {
       }
 
       setResults(filteredEvents);
-      setLoading(false);
+      setLoading(false);*/
     };
 
     fetchEvents();

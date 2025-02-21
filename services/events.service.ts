@@ -4,6 +4,14 @@ import {
   ParsedFootballEvent,
 } from '@/types/sofascoreTypes/parsedEvents.types';
 import { leaguesMap, sportsMap } from '@/types/sports.types';
+import {
+  getTodayBasketballEvents,
+  getYesterdaysBasketballEvents,
+} from './basketball/basketballEvents';
+import {
+  getTodayFootballEvents,
+  getYesterdaysFootballEvents,
+} from './football/footballEvents';
 
 export const sortEvents = (
   footballEvents: ParsedFootballEvent[],
@@ -50,4 +58,36 @@ export const filterEvents = (
   });
 
   return filteredResults;
+};
+
+export const getTodayEvents = async () => {
+  const footballEvents = await getTodayFootballEvents();
+  const basketballEvents = await getTodayBasketballEvents();
+
+  const sortedEvents = sortEvents(footballEvents, basketballEvents);
+
+  if (sortedEvents.length === 0) {
+    return { sortedEvents: [] };
+  }
+
+  return { sortedEvents };
+};
+
+export const getYesterdayEvents = async () => {
+  const yesterdayFootballEvents = await getYesterdaysFootballEvents();
+  const yesterdaysBasketballEvents = await getYesterdaysBasketballEvents();
+
+  const sortedResults = sortEvents(
+    yesterdayFootballEvents,
+    yesterdaysBasketballEvents,
+  );
+
+  if (
+    yesterdayFootballEvents.length === 0 &&
+    yesterdaysBasketballEvents.length === 0
+  ) {
+    return { sortedResults: [] };
+  }
+
+  return { sortedResults };
 };
