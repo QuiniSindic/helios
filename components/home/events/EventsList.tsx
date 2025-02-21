@@ -61,6 +61,8 @@ export default function EventsList({ full = false }: EventsListProps) {
       const data: { sortedEvents: ParsedEvent[] } = await response.json();
       const { sortedEvents } = data;
 
+      console.log('sortedEvents =>', sortedEvents);
+
       if (sortedEvents.length === 0) {
         setLoading(false);
         setMessage('No hay eventos para hoy.');
