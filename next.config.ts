@@ -8,6 +8,14 @@ const nextConfig: NextConfig = {
         hostname: 'sofascore.app',
         protocol: 'https',
       },
+      {
+        hostname: 'img.sofascore.com',
+        protocol: 'https',
+      },
+      {
+        hostname: 'sofascore.com',
+        protocol: 'https',
+      },
     ],
   },
 };
