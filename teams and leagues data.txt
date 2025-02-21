@@ -9,6 +9,7 @@ Unique-tournament ID:
     Premier League = 17
     Fa Cup = 19
     EFL Cup = 21
+    Community Shield = 346
     Serie A = 23
     Clasificatiorio Eurocopa = 27
     Ligue 1 = 34
@@ -42,7 +43,6 @@ Unique-tournament ID:
     Olimpiadas = 276
 
     TODO:
-    - Copas del Rey, Supercopas de España
     - PlayOff de NBA (?)
     - Final Four de EuroLiga (?)
 

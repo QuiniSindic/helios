@@ -17,6 +17,10 @@ const nextConfig: NextConfig = {
         hostname: 'sofascore.com',
         protocol: 'https',
       },
+      {
+        protocol: 'https',
+        hostname: 'dzlfucomvqgxarmyvsgl.supabase.co',
+      },
     ],
   },
 };

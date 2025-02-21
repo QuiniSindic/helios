@@ -1,3 +1,4 @@
+import { LOGOS_BUCKET_NAME, PROJECT_ID } from '@/core/config';
 import { Events, FootballEvent } from '../types/event.types';
 import { ParsedFootballEvent } from '../types/parsedEvents.types';
 
@@ -20,11 +21,13 @@ export const parseFootballEventsByLeague = (
         id: event.id, // ID del partido
         homeTeam: {
           ...event.homeTeam,
-          shield: `https://img.sofascore.com/api/v1/team/${event.homeTeam.id}/image`,
+          // shield: `https://img.sofascore.com/api/v1/team/${event.homeTeam.id}/image`,
+          shield: `https://${PROJECT_ID}.supabase.co/storage/v1/object/public/${LOGOS_BUCKET_NAME}/nba_teams/${event.homeTeam.id}.png`,
         },
         awayTeam: {
           ...event.awayTeam,
-          shield: `https://img.sofascore.com/api/v1/team/${event.awayTeam.id}/image`,
+          // shield: `https://img.sofascore.com/api/v1/team/${event.awayTeam.id}/image`,
+          shield: `https://${PROJECT_ID}.supabase.co/storage/v1/object/public/${LOGOS_BUCKET_NAME}/nba_teams/${event.awayTeam.id}.png`,
         },
         homeScore: event.homeScore,
         awayScore: event.awayScore,
