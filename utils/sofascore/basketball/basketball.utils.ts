@@ -5,8 +5,6 @@ import { ParsedBasketballEvent } from '../types/parsedEvents.types';
 export const parsedBasketballEventsByLeague = (
   eventsList: Events<BasketballEvent>,
 ): ParsedBasketballEvent[] => {
-  console.log(LOGOS_BUCKET_NAME, PROJECT_ID);
-
   return eventsList.events
     .filter((event) =>
       [132, 138, 264, 276, 285, 396, 441, 875].includes(
@@ -18,12 +16,12 @@ export const parsedBasketballEventsByLeague = (
       homeTeam: {
         ...event.homeTeam,
         // shield: `/nba-escudos/${event.homeTeam.id}.png`,
-        shield: `https://${PROJECT_ID}.supabase.co/storage/v1/object/public/${LOGOS_BUCKET_NAME}/nba_teams/${event.homeTeam.id}.png`,
+        shield: `https://${PROJECT_ID}.supabase.co/storage/v1/object/public/${LOGOS_BUCKET_NAME}/teams/${event.homeTeam.id}.png`,
       },
       awayTeam: {
         ...event.awayTeam,
         // shield: `/nba-escudos/${event.awayTeam.id}.png`,
-        shield: `https://${PROJECT_ID}.supabase.co/storage/v1/object/public/${LOGOS_BUCKET_NAME}/nba_teams/${event.awayTeam.id}.png`,
+        shield: `https://${PROJECT_ID}.supabase.co/storage/v1/object/public/${LOGOS_BUCKET_NAME}/teams/${event.awayTeam.id}.png`,
       },
       homeScore: event.homeScore,
       awayScore: event.awayScore,
