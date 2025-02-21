@@ -12,6 +12,7 @@ interface FormAuthProps {
 
 const FormAuth = ({ isLogin }: FormAuthProps) => {
   const router = useRouter();
+  const [error, setError] = React.useState<Error | null>(null);
   const [loading, setLoading] = React.useState(false);
   const { register, watch, handleSubmit } = useForm<FormData>();
 
@@ -19,19 +20,28 @@ const FormAuth = ({ isLogin }: FormAuthProps) => {
   const passwordValue = watch('password');
 
   const onSubmit = async (data: FormData) => {
+    setError(null);
     setLoading(true);
     const { email, password } = data;
 
     const url = isLogin ? '/api/auth/sign-in' : '/api/auth/sign-up';
 
     try {
-      await fetch(url, {
+      const res = await fetch(url, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ email, password }),
       });
+
+      const response = await res.json();
+      const { error } = response;
+
+      if (error) {
+        setError(new Error(error));
+        return;
+      }
 
       router.push('/');
     } catch (error) {
@@ -42,7 +52,7 @@ const FormAuth = ({ isLogin }: FormAuthProps) => {
   };
 
   return (
-    <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
+    <form className="mt-8 space-y-4" onSubmit={handleSubmit(onSubmit)}>
       <div className="rounded-md shadow-sm space-y-4">
         <div>
           <input
@@ -57,6 +67,12 @@ const FormAuth = ({ isLogin }: FormAuthProps) => {
           <PasswordInput register={register} />
         </div>
       </div>
+
+      {error && (
+        <div className="text-red-500 text-sm text-center">
+          Credenciales incorrectas. Por favor, inténtalo de nuevo.
+        </div>
+      )}
 
       <Button
         type="submit"

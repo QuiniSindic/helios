@@ -18,7 +18,7 @@ export default function Welcome() {
       <div className="bg-secondary text-white p-4 rounded-lg shadow-md mb-4">
         <h2 className="text-2xl font-bold mb-4">Bienvenido</h2>
         <h2 className="text-lg font-semibold mb-4">
-          Por favor inicia sesión si quieres realizar alguna predicción.
+          Por favor inicia sesión para guardar tus predicciones.
         </h2>
       </div>
     );

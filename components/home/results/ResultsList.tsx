@@ -45,7 +45,7 @@ export default function ResultsList({ full = false }: ResultsListProps) {
           }`,
         );
       }
-      console.log('filteredEvents:', filteredEvents);
+      // console.log('filteredEvents:', filteredEvents);
 
       setResults(filteredEvents);
       setLoading(false);

@@ -1,4 +1,4 @@
-@import "@fontsource-variable/league-spartan";
+@import '@fontsource-variable/league-spartan';
 
 @tailwind base;
 @tailwind components;
@@ -23,7 +23,7 @@
 body {
   /* color: var(--foreground);
   background: var(--background); */
-  font-family: "League Spartan Variable", sans-serif;
+  font-family: 'League Spartan Variable', sans-serif;
 }
 
 /* @media (prefers-color-scheme: dark) {
@@ -32,3 +32,16 @@ body {
     --foreground: #fff;
   }
 } */
+
+/* Remove arrows from number inputs */
+/* Para Chrome, Safari, Edge y Opera */
+.no-arrows::-webkit-inner-spin-button,
+.no-arrows::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Para Firefox */
+.no-arrows {
+  -moz-appearance: textfield;
+}

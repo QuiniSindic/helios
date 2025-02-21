@@ -38,10 +38,6 @@ export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [isSticky, setIsSticky] = React.useState<'sticky' | 'static'>('sticky');
 
-  // useEffect(() => {
-  //   // console.log('user =>', user);
-  // }, [user]);
-
   React.useEffect(() => {
     if (window.innerWidth < 526) {
       setIsSticky('static');
@@ -159,7 +155,7 @@ export default function Header() {
               isBordered
               showFallback
               as="button"
-              className="transition-transform cursor-pointer text-foreground-50"
+              className="transition-transform cursor-pointer text-foreground-50 active:scale-95"
               color="secondary"
               size="sm"
             />
