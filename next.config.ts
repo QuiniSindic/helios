@@ -9,8 +9,9 @@ const nextConfig: NextConfig = {
         protocol: 'https',
       },
       {
-        hostname: 'img.sofascore.com',
         protocol: 'https',
+        hostname: 'img.sofascore.com',
+        pathname: '/api/v1/team/*/image',
       },
       {
         hostname: 'sofascore.com',
