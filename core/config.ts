@@ -9,4 +9,4 @@ export const QUINIELA_DATA_URL =
 
 export const PROJECT_ID = process.env.NEXT_PUBLIC_SUPABASE_PROJECT_ID || '';
 export const LOGOS_BUCKET_NAME =
-  process.env.NEXT_PUBLIC_SUPBASE_LOGOS_BUCKET_NAME || '';
+  process.env.NEXT_PUBLIC_SUPABASE_LOGOS_BUCKET_NAME || '';
