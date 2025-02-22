@@ -53,6 +53,19 @@ export default function EventsList({ full = false }: EventsListProps) {
       }
 
       setEvents(filteredEvents);
+
+      // // insertar los eventos en la base de datos (de momento a mano)
+      // const inserted_events_response = await fetch('/api/events', {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      //   body: JSON.stringify({ sortedEvents }),
+      // });
+
+      // const inserted_events_data = await inserted_events_response.json();
+      // console.log('inserted_events_data ==>', inserted_events_data);
+
       setLoading(false);
 
       /* sin uso, la API externa no devuelve los eventos en producción*/

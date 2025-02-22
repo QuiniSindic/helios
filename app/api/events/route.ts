@@ -1,7 +1,9 @@
 import { getTodayBasketballEvents } from '@/services/basketball/basketballEvents';
-import { sortEvents } from '@/services/events.service';
+import { parseEventDataToSave, sortEvents } from '@/services/events.service';
 import { getTodayFootballEvents } from '@/services/football/footballEvents';
-import { NextResponse } from 'next/server';
+import { ParsedEvent } from '@/types/sofascoreTypes/parsedEvents.types';
+import { createClient } from '@/utils/supabase/server';
+import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET() {
   try {
@@ -23,4 +25,23 @@ export async function GET() {
       return NextResponse.json({ error: 'Unknown error' }, { status: 500 });
     }
   }
+}
+
+export async function POST(req: NextRequest) {
+  const supabase = await createClient();
+  const data = await req.json();
+  const { sortedEvents } = data as { sortedEvents: ParsedEvent[] };
+
+  const events = parseEventDataToSave(sortedEvents);
+
+  // Inserta los eventos en la base de datos
+  const { data: eventsData, error } = await supabase
+    .from('events')
+    .insert(events);
+
+  if (error) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+
+  return NextResponse.json({ eventsData }, { status: 200 });
 }

@@ -4,6 +4,7 @@ import { LOGOS_BUCKET_NAME, PROJECT_ID } from '@/core/config';
 import { useAuth } from '@/hooks/useAuth';
 import { MatchEvent } from '@/types/sofascoreTypes/match.types';
 import Image from 'next/image';
+import React from 'react';
 import SaveButton from '../ui/SaveButton';
 import ScoreInput from './ScoreInput';
 
@@ -14,6 +15,49 @@ interface MatchInfoProps {
 export default function MatchInfo({ event }: MatchInfoProps) {
   const { user } = useAuth();
   const isInProgress = event.status.type === 'inprogress';
+
+  const [homeScore, setHomeScore] = React.useState('');
+  const [awayScore, setAwayScore] = React.useState('');
+
+  const handleSavePrediction = async () => {
+    if (!user) {
+      alert('Debes iniciar sesión para guardar una predicción.');
+      return;
+    }
+
+    const prediction = {
+      home_score: parseInt(homeScore, 10),
+      away_score: parseInt(awayScore, 10),
+      // winner: 'home',
+      // draw: false,
+      // overtime: false,
+      // penalties: false,
+
+      // TODO: revisar que campos mas se pueden agregar
+    };
+
+    // Enviar la predicción a través de un endpoint de la API
+    const response = await fetch('/api/predictions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        event_id: event.id,
+        user_id: user.id,
+        prediction,
+      }),
+    });
+
+    const data = await response.json();
+    console.log('data ==>', data);
+
+    // if (result.error) {
+    //   console.error('Error al guardar la predicción:', result.error);
+    // } else {
+    //   console.log('Predicción guardada correctamente:', result.data);
+    // }
+  };
 
   return (
     <>
@@ -56,8 +100,8 @@ export default function MatchInfo({ event }: MatchInfoProps) {
       {/* Sección de inputs o mensaje centrado */}
       {!isInProgress ? (
         <div className="flex justify-around mb-2">
-          <ScoreInput />
-          <ScoreInput />
+          <ScoreInput value={homeScore} onChange={(val) => setHomeScore(val)} />
+          <ScoreInput value={awayScore} onChange={(val) => setAwayScore(val)} />
         </div>
       ) : (
         <p className="text-center text-red-500 mt-2 mb-2">
@@ -71,7 +115,10 @@ export default function MatchInfo({ event }: MatchInfoProps) {
           {user === null ? (
             <SaveButton label="Compartir predicción" />
           ) : (
-            <SaveButton label="Guardar predicción" />
+            <SaveButton
+              label="Guardar predicción"
+              onClick={handleSavePrediction}
+            />
           )}
         </div>
       )}

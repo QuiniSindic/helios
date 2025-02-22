@@ -91,3 +91,19 @@ export const getYesterdayEvents = async () => {
 
   return { sortedResults };
 };
+
+export const parseEventDataToSave = (sortedEvents: ParsedEvent[]) => {
+  return sortedEvents.map((event) => {
+    return {
+      competition_id: event.tournament.uniqueTournament.id,
+      event_date: new Date(event.startTimestamp * 1000).toISOString(),
+      status: event.status.type,
+      extra_info: {
+        homeTeam: event.homeTeam.name,
+        awayTeam: event.awayTeam.name,
+        competition_name: event.tournament.uniqueTournament.name,
+      },
+      sofascore_event_id: event.id,
+    };
+  });
+};
