@@ -19,12 +19,12 @@ import {
   DropdownMenu,
   DropdownTrigger,
 } from '@heroui/react';
-// import { User } from "@supabase/supabase-js";
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 
 const menuItems = [
+  { name: 'Clasificación', path: '/leaderboard' },
   { name: 'Eventos', path: '/events' },
   { name: 'Predicciones', path: '/predictions' },
   { name: 'Quiniela', path: '/quiniela' },
@@ -38,6 +38,7 @@ export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [isSticky, setIsSticky] = React.useState<'sticky' | 'static'>('sticky');
 
+  // Si el ancho de la pantalla es menor a 526px, el header no es sticky
   React.useEffect(() => {
     if (window.innerWidth < 526) {
       setIsSticky('static');
@@ -49,7 +50,6 @@ export default function Header() {
     setTimeout(() => router.push(path), 0); // Navega después del cierre del menú
   };
 
-  // console.log("myUser", myUser);
   return (
     <Navbar
       onMenuOpenChange={setIsMenuOpen}
@@ -57,7 +57,6 @@ export default function Header() {
       position={isSticky}
       isBlurred={false}
       isMenuOpen={isMenuOpen} // Enlazamos el estado manualmente
-      // className="mb-4"
     >
       {/* Toggle icon */}
       <NavbarMenuToggle
@@ -127,7 +126,6 @@ export default function Header() {
                 color="secondary"
                 name={user.email?.substring(0, 2).toUpperCase()}
                 size="sm"
-                // src={myUser.user_metadata || "https://i.pravatar.cc/150"}
               />
             </DropdownTrigger>
             <DropdownMenu aria-label="Profile Actions" variant="flat">
@@ -141,7 +139,6 @@ export default function Header() {
                 color="danger"
                 onPress={async () => {
                   await supabase.auth.signOut();
-                  // setMyUser(null);
                   router.push('/');
                 }}
               >

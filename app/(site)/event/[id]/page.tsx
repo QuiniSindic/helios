@@ -19,14 +19,9 @@ export default async function EventDetailPage({
   //   console.log('user =>', user);
   //   console.log('error =>', error);
 
-  console.log('url', `${baseUrl}/api/event/${id}`);
-
   const res = await fetch(`${baseUrl}/api/event/${id}`);
-  console.log('res', res);
   const data = await res.json();
-  console.log('data', data);
   const matchData: Match = data;
-  console.log('matchData', matchData);
   const event: MatchEvent = matchData.event;
 
   return (

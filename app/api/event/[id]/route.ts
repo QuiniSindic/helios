@@ -1,9 +1,11 @@
 import { Match } from '@/types/sofascoreTypes/match.types';
 import axios from 'axios';
 import { NextRequest, NextResponse } from 'next/server';
+
 async function getEventById(id: string) {
   const res = await axios.get<Match>(
     `https://api.sofascore.app/api/v1/event/${id}`,
+    // https://www.sofascore.com/api/v1/event/{id}
   );
   const data = res.data;
 
