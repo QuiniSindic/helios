@@ -13,7 +13,7 @@ export const parseFootballEventsByLeague = (
       //   436, 437, 465, 477, 679, 17015, 10783,
       // ].includes(event.tournament?.uniqueTournament?.id),
       .filter((event) =>
-        [7, 8, 17, 23, 34, 35, 679].includes(
+        [7, 8, 17, 23, 34, 35, 329, 679].includes(
           event.tournament?.uniqueTournament?.id,
         ),
       )

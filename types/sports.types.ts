@@ -9,6 +9,7 @@ export const sports = [
       'Ligue 1',
       'Champions League',
       'Europa League',
+      'Copa del Rey',
     ],
   },
   {
