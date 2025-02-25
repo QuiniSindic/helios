@@ -8,6 +8,7 @@ async function getEventById(id: string) {
     // https://www.sofascore.com/api/v1/event/{id}
   );
   const data = res.data;
+  console.log('data =>', data);
 
   return data;
 }
@@ -16,8 +17,10 @@ export async function GET(request: NextRequest) {
   try {
     const url = new URL(request.url);
     const id = url.pathname.split('/').pop();
+    console.log('id =>', id);
 
     const res = await getEventById(id as string);
+    console.log('res =>', res);
 
     return NextResponse.json(res, { status: 200 });
   } catch (error) {

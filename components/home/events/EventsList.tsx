@@ -153,6 +153,6 @@ import { getTodayEvents } from '@/services/events.service';
 
 export default async function EventsList({ full = false }: { full?: boolean }) {
   const { sortedEvents } = await getTodayEvents(); // Obtiene datos en el servidor
-
+  console.log('sortedEvents ==>', sortedEvents);
   return <FilteredEvents events={sortedEvents} full={full} />;
 }
