@@ -9,6 +9,19 @@ export const getTodayFootballEvents = async () => {
 
     const response = await axios.get<Events<FootballEvent>>(
       `${SOFASCORE_URL}/sport/football/scheduled-events/${todayDate}`,
+      {
+        headers: {
+          'User-Agent':
+            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36',
+          cors: 'no-cors',
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+          'Access-Control-Allow-Headers':
+            'Content-Type, Authorization, X-Requested-With',
+          'Access-Control-Allow-Credentials': 'true',
+          'Content-Type': 'application/json',
+        },
+      },
     );
 
     // Extraemos la data de la API correctamente
