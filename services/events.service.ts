@@ -4,6 +4,7 @@ import {
   ParsedFootballEvent,
 } from '@/types/sofascoreTypes/parsedEvents.types';
 import { leaguesMap, sportsMap } from '@/types/sports.types';
+import { createClient } from '@/utils/supabase/client';
 import {
   getTodayBasketballEvents,
   getYesterdaysBasketballEvents,
@@ -95,15 +96,32 @@ export const getYesterdayEvents = async () => {
 export const parseEventDataToSave = (sortedEvents: ParsedEvent[]) => {
   return sortedEvents.map((event) => {
     return {
-      competition_id: event.tournament.uniqueTournament.id,
       event_date: new Date(event.startTimestamp * 1000).toISOString(),
+      sport_id: event.tournament.category.sport.id,
+      sport_name: event.tournament.category.sport.name,
+      sofascore_event_id: event.id,
+      competition_id: event.tournament.uniqueTournament.id,
+      competition_name: event.tournament.uniqueTournament.name,
       status: event.status.type,
       extra_info: {
         homeTeam: event.homeTeam.name,
+        homeScore: event.homeScore.display,
         awayTeam: event.awayTeam.name,
-        competition_name: event.tournament.uniqueTournament.name,
+        awayScore: event.awayScore.display,
       },
-      sofascore_event_id: event.id,
     };
   });
+};
+
+export const fetchAndStore = async () => {
+  const supabase = createClient();
+  const todayEvents = await getTodayEvents();
+
+  const events = parseEventDataToSave(todayEvents.sortedEvents);
+
+  for (const event of events) {
+    await supabase.from('events').upsert(event);
+  }
+
+  return todayEvents;
 };

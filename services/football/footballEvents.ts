@@ -59,3 +59,13 @@ export const getYesterdaysFootballEvents = async () => {
     return [];
   }
 };
+
+// export const getStandings = async (league_id: string, season: string) => {
+//   const url = `${SOFASCORE_URL}/unique-tournament/${league_id}/season/${season}/standings/total`;
+
+//   try {
+//     const response = await axios.get<Standings>(url);
+//     const standingsData = response.data;
+//     const standings = standingsData.standings;
+//   } catch (error) {}
+// };

@@ -47,3 +47,9 @@ export const parseFootballEventsByDate = (
 
   return eventsList.filter((event) => event.startTimestamp > now);
 };
+
+// export const parseFootballStandings = (standings: Standing[]) => {
+//   return standings.map((standing) => ({
+
+//   }));
+// };

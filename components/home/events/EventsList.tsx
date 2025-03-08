@@ -1,7 +1,7 @@
 'use client';
 
 import MatchWidget from '@/components/ui/matchWidget/MatchWidget';
-import { filterEvents, getTodayEvents } from '@/services/events.service';
+import { fetchAndStore, filterEvents } from '@/services/events.service';
 import { useFilterStore } from '@/store/filterStore';
 import { ParsedEvent } from '@/types/sofascoreTypes/parsedEvents.types';
 import Link from 'next/link';
@@ -22,7 +22,7 @@ export default function EventsList({ full = false }: EventsListProps) {
     const fetchEvents = async () => {
       setLoading(true);
       // const response = await fetch('/api/events');
-      const response = await getTodayEvents();
+      const response = await fetchAndStore();
 
       const sortedEvents = response.sortedEvents;
 
@@ -67,40 +67,6 @@ export default function EventsList({ full = false }: EventsListProps) {
       // console.log('inserted_events_data ==>', inserted_events_data);
 
       setLoading(false);
-
-      /* sin uso, la API externa no devuelve los eventos en producción*/
-
-      // if (!response.ok) {
-      //   setLoading(false);
-      //   const { error } = await response.json();
-      //   // console.error("Error obteniendo los eventos de hoy:", response);
-      //   setError(error);
-      // }
-
-      // const data: { sortedEvents: ParsedEvent[] } = await response.json();
-      // const { sortedEvents } = data;
-
-      // if (sortedEvents.length === 0) {
-      //   setLoading(false);
-      //   setMessage('No hay eventos para hoy.');
-      // }
-
-      // const filteredEvents = filterEvents(
-      //   sortedEvents,
-      //   selectedLeague,
-      //   selectedSport,
-      // );
-
-      // if (filteredEvents.length === 0) {
-      //   setMessage(
-      //     `No hay eventos próximos para ${
-      //       selectedLeague ? selectedLeague : 'esta liga'
-      //     }`,
-      //   );
-      // }
-
-      // setEvents(filteredEvents);
-      // setLoading(false);
     };
 
     fetchEvents();
@@ -147,11 +113,3 @@ export default function EventsList({ full = false }: EventsListProps) {
     </div>
   );
 }
-
-// import FilteredEvents from '@/components/home/events/FilteredEvents';
-// import { getTodayEvents } from '@/services/events.service';
-
-// export default async function EventsList({ full = false }: { full?: boolean }) {
-//   const { sortedEvents } = await getTodayEvents(); // Obtiene datos en el servidor
-//   return <FilteredEvents events={sortedEvents} full={full} />;
-// }
