@@ -7,12 +7,17 @@ export const getTodayBasketballEvents = async () => {
   try {
     const todayDate = new Date().toISOString().split('T')[0];
 
-    const response = await axios.get<Events<BasketballEvent>>(
+    const response = await fetch(
       `${SOFASCORE_URL}/sport/basketball/scheduled-events/${todayDate}`,
     );
 
+    if (!response.ok) {
+      throw new Error('Error al obtener los eventos de hoy');
+    }
+
     // Extraemos la data de la API correctamente
-    const eventsData = response.data;
+    const eventsData = await response.json();
+    // const eventsData = response.data;
 
     // Procesamos los eventos
     const parsedEventsByLeague = parsedBasketballEventsByLeague(eventsData);
