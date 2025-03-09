@@ -26,6 +26,7 @@ export const laLigaNormalized: Record<string, string> = {
 };
 
 export const laLigaCrests: Record<string, string> = {
+  // propiedad nickname
   'Atlético de Madrid':
     'https://raw.githubusercontent.com/luukhopman/football-logos/refs/heads/master/logos/Spain%20-%20LaLiga/Atl%C3%A9tico%20de%20Madrid.png',
   'FC Barcelona':
@@ -38,11 +39,11 @@ export const laLigaCrests: Record<string, string> = {
     'https://raw.githubusercontent.com/luukhopman/football-logos/refs/heads/master/logos/Spain%20-%20LaLiga/Getafe%20CF.png',
   'CA Osasuna':
     'https://raw.githubusercontent.com/luukhopman/football-logos/refs/heads/master/logos/Spain%20-%20LaLiga/CA%20Osasuna.png',
-  'Athletic Bilbao':
+  'Athletic Club':
     'https://raw.githubusercontent.com/luukhopman/football-logos/refs/heads/master/logos/Spain%20-%20LaLiga/Athletic%20Bilbao.png',
   'Sevilla FC':
     'https://raw.githubusercontent.com/luukhopman/football-logos/refs/heads/master/logos/Spain%20-%20LaLiga/Sevilla%20FC.png',
-  'Real Betis Balompié':
+  'Real Betis':
     'https://raw.githubusercontent.com/luukhopman/football-logos/refs/heads/master/logos/Spain%20-%20LaLiga/Real%20Betis%20Balompi%C3%A9.png',
   'CD Leganés':
     'https://raw.githubusercontent.com/luukhopman/football-logos/refs/heads/master/logos/Spain%20-%20LaLiga/CD%20Legan%C3%A9s.png',
@@ -54,11 +55,11 @@ export const laLigaCrests: Record<string, string> = {
     'https://raw.githubusercontent.com/luukhopman/football-logos/refs/heads/master/logos/Spain%20-%20LaLiga/Real%20Madrid.png',
   'Villarreal CF':
     'https://raw.githubusercontent.com/luukhopman/football-logos/refs/heads/master/logos/Spain%20-%20LaLiga/Villarreal%20CF.png',
-  'RCD Espanyol Barcelona':
+  'RCD Espanyol de Barcelona':
     'https://raw.githubusercontent.com/luukhopman/football-logos/refs/heads/master/logos/Spain%20-%20LaLiga/RCD%20Espanyol%20Barcelona.png',
   'RCD Mallorca':
     'https://raw.githubusercontent.com/luukhopman/football-logos/refs/heads/master/logos/Spain%20-%20LaLiga/RCD%20Mallorca.png',
-  'Celta de Vigo':
+  'RC Celta':
     'https://raw.githubusercontent.com/luukhopman/football-logos/refs/heads/master/logos/Spain%20-%20LaLiga/Celta%20de%20Vigo.png',
   'Real Valladolid CF':
     'https://raw.githubusercontent.com/luukhopman/football-logos/refs/heads/master/logos/Spain%20-%20LaLiga/Real%20Valladolid%20CF.png',
