@@ -1,0 +1,7 @@
+partidos = https://apim.laliga.com/webview/api/web/subscriptions/laliga-easports-2024/week/27/matches?contentLanguage=es&subscription-key=ee7fcd5c543f4485ba2a48856fc7ece9
+
+jornada actual = https://apim.laliga.com/public-service/api/v1/subscriptions/laliga-easports-2024/current-gameweek?&contentLanguage=es&subscription-key=c13c3a8e2f6b46da9c5c425cf61fab3e
+
+jornadas = https://apim.laliga.com/public-service/api/v1/subscriptions/laliga-easports-2024/gameweeks?&contentLanguage=es&subscription-key=c13c3a8e2f6b46da9c5c425cf61fab3e
+
+clasificacion por jornada = https://apim.laliga.com/webview/api/web/subscriptions/laliga-easports-2024/standing?week=27&contentLanguage=es&subscription-key=ee7fcd5c543f4485ba2a48856fc7ece9
