@@ -1,21 +1,25 @@
-import { THE_ODDS_API_KEY, THE_ODDS_API_URL } from '@/core/config';
-import { TheOddsEvent } from '@/types/the_odds/the_odds.types';
-import { addCrests, normalizeTeams } from '@/utils/the_odds.utils';
 import { NextResponse } from 'next/server';
 
 export async function GET() {
   try {
     const response = await fetch(
-      `${THE_ODDS_API_URL}/sports/soccer_spain_la_liga/events?apiKey=${THE_ODDS_API_KEY}`,
+      'https://apim.laliga.com/public-service/api/v1/teams?subscriptionSlug=laliga-easports-2024&limit=99&offset=0&orderField=nickname&orderType=ASC&contentLanguage=es&countryCode=GB&subscription-key=c13c3a8e2f6b46da9c5c425cf61fab3e',
     );
 
+    if (!response.ok) {
+      return NextResponse.json({ error: 'Error en el fetch' }, { status: 500 });
+    }
     const data = await response.json();
-    const events: TheOddsEvent[] = data.data;
+    // console.log('data =>', data);
+    const { total } = data;
+    console.log('total de equipos en la liga =>', total);
 
-    const normalizedEvents = normalizeTeams(events);
-    const eventsWithCrests = addCrests(normalizedEvents);
+    // const events: TheOddsEvent[] = data.data;
 
-    return NextResponse.json({ events: eventsWithCrests }, { status: 200 });
+    // const normalizedEvents = normalizeTeams(events);
+    // const eventsWithCrests = addCrests(normalizedEvents);
+
+    return NextResponse.json({ team_number: total }, { status: 200 });
 
     return;
   } catch (error) {
