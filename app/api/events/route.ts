@@ -9,7 +9,32 @@ export async function GET() {
     // const todayDate = new Date().toISOString().split('T')[0];
 
     const response = await fetch(
-      `https://www.sofascore.com/api/v1/sport/football/scheduled-events/2025-03-09`,
+      'https://www.sofascore.com/api/v1/sport/football/scheduled-events/2025-03-09',
+      {
+        headers: {
+          accept: '*/*',
+          'accept-language': 'es-ES,es;q=0.9',
+          baggage:
+            'sentry-environment=production,sentry-release=7h7ehBAnU9zFgSM1qx8rU,sentry-public_key=d693747a6bb242d9bb9cf7069fb57988,sentry-trace_id=bf3bb03897a3442690d6a5708098b90f',
+          'cache-control': 'max-age=0',
+          priority: 'u=1, i',
+          'sec-ch-ua':
+            '"Not(A:Brand";v="99", "Google Chrome";v="133", "Chromium";v="133"',
+          'sec-ch-ua-mobile': '?0',
+          'sec-ch-ua-platform': '"Windows"',
+          'sec-fetch-dest': 'empty',
+          'sec-fetch-mode': 'cors',
+          'sec-fetch-site': 'same-origin',
+          'sentry-trace': 'bf3bb03897a3442690d6a5708098b90f-aa8674b56a545df0',
+          'x-requested-with': '71c460',
+          Referer: 'https://www.sofascore.com/es-la/',
+          'Referrer-Policy': 'strict-origin-when-cross-origin',
+          'User-Agent':
+            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36',
+        },
+        body: null,
+        method: 'GET',
+      },
     );
     console.log('response ==>', response);
 
