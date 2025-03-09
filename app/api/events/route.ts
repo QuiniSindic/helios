@@ -6,11 +6,12 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET() {
   try {
-    const todayDate = new Date().toISOString().split('T')[0];
+    // const todayDate = new Date().toISOString().split('T')[0];
 
     const response = await fetch(
-      `https://www.sofascore.com/api/v1/sport/football/scheduled-events/${todayDate}`,
+      `https://www.sofascore.com/api/v1/sport/football/scheduled-events/2025-03-09`,
     );
+    console.log('response ==>', response);
 
     if (!response.ok) {
       throw new Error('Error al obtener los eventos de hoy');
