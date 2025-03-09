@@ -8,7 +8,7 @@ export const getTodayFootballEvents = async () => {
     const todayDate = new Date().toISOString().split('T')[0];
 
     const response = await fetch(
-      `${SOFASCORE_URL}/sport/football/scheduled-events/${todayDate}`,
+      `https://www.sofascore.com/api/v1/sport/football/scheduled-events/${todayDate}`,
     );
 
     if (!response.ok) {

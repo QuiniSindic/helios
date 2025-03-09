@@ -9,6 +9,8 @@ export async function GET() {
   try {
     const footballEvents = await getTodayFootballEvents();
     const basketballEvents = await getTodayBasketballEvents();
+    console.log('footballEvents ==>', footballEvents);
+    console.log('basketballEvents ==>', basketballEvents);
 
     const sortedEvents = sortEvents(footballEvents, basketballEvents);
 
