@@ -1,7 +1,7 @@
 'use client';
 
 import MatchWidget from '@/components/ui/matchWidget/MatchWidget';
-import { fetchAndStore, filterEvents } from '@/services/events.service';
+import { filterEvents } from '@/services/events.service';
 import { useFilterStore } from '@/store/filterStore';
 import { ParsedEvent } from '@/types/sofascoreTypes/parsedEvents.types';
 import Link from 'next/link';
@@ -21,10 +21,16 @@ export default function EventsList({ full = false }: EventsListProps) {
   React.useEffect(() => {
     const fetchEvents = async () => {
       setLoading(true);
-      // const response = await fetch('/api/events');
-      const response = await fetchAndStore();
+      const response = await fetch('/api/events');
+      console.log('response ==>', response);
+      const data = await response.json();
+      console.log('data ==>', data);
+      const { sortedEvents } = data;
+      console.log('sortedEvents ==>', sortedEvents);
 
-      const sortedEvents = response.sortedEvents;
+      // const response = await fetchAndStore();
+
+      // const sortedEvents = response.sortedEvents;
 
       if (sortedEvents.length === 0) {
         setLoading(false);
@@ -33,7 +39,8 @@ export default function EventsList({ full = false }: EventsListProps) {
       }
 
       const eventsToPlay = sortedEvents.filter(
-        (event) =>
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (event: any) =>
           event.status.type === 'notstarted' ||
           event.status.type === 'inprogress',
       );
