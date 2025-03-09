@@ -1,6 +1,4 @@
-import MatchInfo from '@/components/event/MatchInfo';
-import { baseUrl } from '@/core/config';
-import { Match, MatchEvent } from '@/types/sofascore/match.types';
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { createClient } from '@/utils/supabase/server';
 
 export default async function EventDetailPage({
@@ -9,7 +7,7 @@ export default async function EventDetailPage({
   params: Promise<{ id: string }>;
 }) {
   const supabase = await createClient();
-  const { id } = await params;
+  // const { id } = await params;
 
   const {
     data: { user },
@@ -19,22 +17,23 @@ export default async function EventDetailPage({
   //   console.log('user =>', user);
   //   console.log('error =>', error);
 
-  const res = await fetch(`${baseUrl}/api/event/${id}`);
-  const data = await res.json();
-  const matchData: Match = data;
-  const event: MatchEvent = matchData.event;
+  // const res = await fetch(`${baseUrl}/api/event/${id}`);
+  // const data = await res.json();
+  // const matchData: Match = data;
+  // const event: MatchEvent = matchData.event;
 
   return (
-    <>
-      {user === null && (
-        <div className="text-center bg-yellow-200 py-1">
-          <h1>Debes iniciar sesión para poder guardar tus predicciones</h1>
-        </div>
-      )}
-      <div className="p-4">
-        {/* User: {user?.email || 'No user'} borrar */}
-        <MatchInfo event={event} />
-      </div>
-    </>
+    // <>
+    //   {user === null && (
+    //     <div className="text-center bg-yellow-200 py-1">
+    //       <h1>Debes iniciar sesión para poder guardar tus predicciones</h1>
+    //     </div>
+    //   )}
+    //   <div className="p-4">
+    //     {/* User: {user?.email || 'No user'} borrar */}
+    //     <MatchInfo event={event} />
+    //   </div>
+    // </>
+    <>{user}</>
   );
 }
