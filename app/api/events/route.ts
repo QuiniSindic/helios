@@ -1,47 +1,31 @@
-import { getTodayBasketballEvents } from '@/services/basketball/basketballEvents';
-import { parseEventDataToSave, sortEvents } from '@/services/events.service';
-import { getTodayFootballEvents } from '@/services/football/footballEvents';
-import { ParsedEvent } from '@/types/sofascoreTypes/parsedEvents.types';
-import { createClient } from '@/utils/supabase/server';
-import { NextRequest, NextResponse } from 'next/server';
+import { THE_ODDS_API_KEY, THE_ODDS_API_URL } from '@/core/config';
+import { TheOddsEvent } from '@/types/the_odds/the_odds.types';
+import { addCrests, normalizeTeams } from '@/utils/the_odds.utils';
+import axios from 'axios';
+import { NextResponse } from 'next/server';
 
 export async function GET() {
   try {
-    const footballEvents = await getTodayFootballEvents();
-    const basketballEvents = await getTodayBasketballEvents();
+    const response = await axios.get(
+      `${THE_ODDS_API_URL}/sports/soccer_spain_la_liga/events?apiKey=${THE_ODDS_API_KEY}`,
+    );
 
-    const sortedEvents = sortEvents(footballEvents, basketballEvents);
-
-    if (sortedEvents.length === 0) {
-      return NextResponse.json({ sortedEvents: [] }, { status: 200 });
+    if (response.status !== 200) {
     }
 
-    return NextResponse.json({ sortedEvents }, { status: 200 });
+    const events: TheOddsEvent[] = response.data;
+
+    const normalizedEvents = normalizeTeams(events);
+    const eventsWithCrests = addCrests(normalizedEvents);
+
+    return NextResponse.json({ events: eventsWithCrests }, { status: 200 });
+
+    return;
   } catch (error) {
     console.log('error =>', error);
-    if (error instanceof Error) {
-      return NextResponse.json({ error: error.message }, { status: 500 });
-    } else {
-      return NextResponse.json({ error: 'Unknown error' }, { status: 500 });
-    }
+    return NextResponse.json(
+      { error: 'Error fetching events' },
+      { status: 500 },
+    );
   }
-}
-
-export async function POST(req: NextRequest) {
-  const supabase = await createClient();
-  const data = await req.json();
-  const { sortedEvents } = data as { sortedEvents: ParsedEvent[] };
-
-  const events = parseEventDataToSave(sortedEvents);
-
-  // Inserta los eventos en la base de datos
-  const { data: eventsData, error } = await supabase
-    .from('events')
-    .insert(events);
-
-  if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
-  }
-
-  return NextResponse.json({ eventsData }, { status: 200 });
 }

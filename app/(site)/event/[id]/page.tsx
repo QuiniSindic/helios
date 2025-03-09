@@ -1,6 +1,6 @@
 import MatchInfo from '@/components/event/MatchInfo';
 import { baseUrl } from '@/core/config';
-import { Match, MatchEvent } from '@/types/sofascoreTypes/match.types';
+import { Match, MatchEvent } from '@/types/sofascore/match.types';
 import { createClient } from '@/utils/supabase/server';
 
 export default async function EventDetailPage({

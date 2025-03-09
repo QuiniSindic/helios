@@ -1,9 +1,9 @@
 import EventTeamsData from '@/components/ui/matchWidget/EventTeamsData';
 import { MatchSchedule } from '@/components/ui/matchWidget/MatchSchedule';
-import { ParsedEvent } from '@/types/sofascoreTypes/parsedEvents.types';
+import { Event } from '@/types/the_odds/the_odds.types';
 
 interface MatchWidgetProps {
-  event: ParsedEvent;
+  event: Event;
   isLive?: boolean;
   isFinished?: boolean;
 }
@@ -29,7 +29,7 @@ export default function MatchWidget({
         <MatchSchedule
           isLive={isLive}
           event={event}
-          date={new Date(event.startTimestamp * 1000).toISOString()}
+          date={new Date(event.commence_time).toISOString()}
         />
       </div>
     </div>

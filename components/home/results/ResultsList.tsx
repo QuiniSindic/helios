@@ -1,9 +1,8 @@
 'use client';
 
 import MatchWidget from '@/components/ui/matchWidget/MatchWidget';
-import { filterEvents, getYesterdayEvents } from '@/services/events.service';
 import { useFilterStore } from '@/store/filterStore';
-import { ParsedEvent } from '@/types/sofascoreTypes/parsedEvents.types';
+
 import Link from 'next/link';
 import React from 'react';
 
@@ -13,79 +12,19 @@ interface ResultsListProps {
 
 export default function ResultsList({ full = false }: ResultsListProps) {
   const { selectedSport, selectedLeague } = useFilterStore();
-  const [results, setResults] = React.useState<ParsedEvent[]>([]);
+  const [results, setResults] = React.useState<any>([]);
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState('');
   const [message, setMessage] = React.useState('');
 
-  React.useEffect(() => {
-    const fetchEvents = async () => {
-      setLoading(true);
-      // const response = await fetch('/api/results');
-      const response = await getYesterdayEvents();
+  // React.useEffect(() => {
+  //   const fetchEvents = async () => {
+  //     setLoading(true);
+  //     // const response = await fetch('/api/results');
+  //   };
 
-      const sortedResults = response.sortedResults;
-
-      if (sortedResults.length === 0) {
-        setLoading(false);
-        setMessage('No hay resultados disponibles.');
-        setError('No hay resultados disponibles.');
-      }
-
-      const filteredEvents = filterEvents(
-        sortedResults,
-        selectedLeague,
-        selectedSport,
-      );
-
-      if (filteredEvents.length === 0) {
-        setMessage(
-          `No hay resultados disponibles para ${
-            selectedLeague ? selectedLeague : 'este deporte'
-          }`,
-        );
-      }
-      // console.log('filteredEvents:', filteredEvents);
-
-      setResults(filteredEvents);
-      setLoading(false);
-
-      /* sin uso, la API externa no devuelve los resultados en producción
-      
-      if (!response.ok) {
-        setLoading(false);
-        const { error } = await response.json();
-        setError(error);
-      }
-
-      const data: { sortedResults: ParsedEvent[] } = await response.json();
-      const { sortedResults } = data;
-
-      if (sortedResults.length === 0) {
-        setLoading(false);
-        setMessage('No hay resultados disponibles.');
-      }
-
-      const filteredEvents = filterEvents(
-        sortedResults,
-        selectedLeague,
-        selectedSport,
-      );
-
-      if (filteredEvents.length === 0) {
-        setMessage(
-          `No hay resultados disponibles para ${
-            selectedLeague ? selectedLeague : 'este deporte'
-          }`,
-        );
-      }
-
-      setResults(filteredEvents);
-      setLoading(false);*/
-    };
-
-    fetchEvents();
-  }, [selectedSport, selectedLeague]);
+  //   fetchEvents();
+  // }, [selectedSport, selectedLeague]);
 
   const displayedResults = full ? results : results.slice(0, 6);
 

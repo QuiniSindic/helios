@@ -2,7 +2,7 @@
 
 import { LOGOS_BUCKET_NAME, PROJECT_ID } from '@/core/config';
 import { useAuth } from '@/hooks/useAuth';
-import { MatchEvent } from '@/types/sofascoreTypes/match.types';
+import { MatchEvent } from '@/types/sofascore/match.types';
 import Image from 'next/image';
 import React from 'react';
 import SaveButton from '../ui/SaveButton';

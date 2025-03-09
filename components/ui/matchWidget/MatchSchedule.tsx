@@ -1,10 +1,10 @@
-import { ParsedEvent } from '@/types/sofascoreTypes/parsedEvents.types';
+import { Event } from '@/types/the_odds/the_odds.types';
 import { formattedDate, formattedTime } from '@/utils/date.utils';
 
 interface MatchScheduleProps {
   date: string;
   isLive?: boolean;
-  event: ParsedEvent;
+  event: Event;
 }
 
 export const MatchSchedule = ({ date, isLive, event }: MatchScheduleProps) => {

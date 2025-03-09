@@ -1,139 +1,75 @@
 'use client';
 
 import MatchWidget from '@/components/ui/matchWidget/MatchWidget';
-import { filterEvents, getTodayEvents } from '@/services/events.service';
 import { useFilterStore } from '@/store/filterStore';
-import { ParsedEvent } from '@/types/sofascoreTypes/parsedEvents.types';
+import { Event } from '@/types/the_odds/the_odds.types';
+import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
-import React from 'react';
 
 interface EventsListProps {
   full?: boolean;
 }
 
+// Definimos la duración del partido en minutos (ajústalo según necesites)
+const GAME_DURATION_MINUTES = 150;
+
+// Helper para determinar el estado del evento basado en el commence_time
+const getEventStatus = (
+  commenceTime: string,
+): 'notstarted' | 'inprogress' | 'completed' => {
+  const now = new Date();
+  const eventTime = new Date(commenceTime);
+  const diffMinutes = (now.getTime() - eventTime.getTime()) / 60000;
+  if (diffMinutes < 0) {
+    return 'notstarted';
+  } else if (diffMinutes < GAME_DURATION_MINUTES) {
+    return 'inprogress';
+  }
+  return 'completed';
+};
+
 export default function EventsList({ full = false }: EventsListProps) {
   const { selectedSport, selectedLeague } = useFilterStore();
-  const [events, setEvents] = React.useState<ParsedEvent[]>([]);
-  const [loading, setLoading] = React.useState(true);
-  const [error, setError] = React.useState('');
-  const [message, setMessage] = React.useState('');
 
-  React.useEffect(() => {
-    const fetchEvents = async () => {
-      setLoading(true);
-      // const response = await fetch('/api/events');
-      const response = await getTodayEvents();
-
-      const sortedEvents = response.sortedEvents;
-
-      if (sortedEvents.length === 0) {
-        setLoading(false);
-        setMessage('No hay eventos para hoy.');
-        setError('No hay eventos para hoy.');
+  const {
+    data: events = [],
+    isLoading,
+    error,
+  } = useQuery<Event[]>({
+    queryKey: ['events', selectedSport, selectedLeague],
+    queryFn: async () => {
+      const response = await fetch('/api/events');
+      if (!response.ok) {
+        const { error } = await response.json();
+        throw new Error(error);
       }
-
-      const eventsToPlay = sortedEvents.filter(
-        (event) =>
-          event.status.type === 'notstarted' ||
-          event.status.type === 'inprogress',
-      );
-
-      const filteredEvents = filterEvents(
-        eventsToPlay,
-        selectedLeague,
-        selectedSport,
-      );
-
-      if (filteredEvents.length === 0) {
-        setMessage(
-          `No hay eventos próximos para ${
-            selectedLeague ? selectedLeague : 'esta liga'
-          }`,
-        );
-      }
-
-      setEvents(filteredEvents);
-
-      // // insertar los eventos en la base de datos (de momento a mano)
-      // const inserted_events_response = await fetch('/api/events', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      //   body: JSON.stringify({ sortedEvents }),
-      // });
-
-      // const inserted_events_data = await inserted_events_response.json();
-      // console.log('inserted_events_data ==>', inserted_events_data);
-
-      setLoading(false);
-
-      /* sin uso, la API externa no devuelve los eventos en producción*/
-
-      // if (!response.ok) {
-      //   setLoading(false);
-      //   const { error } = await response.json();
-      //   // console.error("Error obteniendo los eventos de hoy:", response);
-      //   setError(error);
-      // }
-
-      // const data: { sortedEvents: ParsedEvent[] } = await response.json();
-      // const { sortedEvents } = data;
-
-      // if (sortedEvents.length === 0) {
-      //   setLoading(false);
-      //   setMessage('No hay eventos para hoy.');
-      // }
-
-      // const filteredEvents = filterEvents(
-      //   sortedEvents,
-      //   selectedLeague,
-      //   selectedSport,
-      // );
-
-      // if (filteredEvents.length === 0) {
-      //   setMessage(
-      //     `No hay eventos próximos para ${
-      //       selectedLeague ? selectedLeague : 'esta liga'
-      //     }`,
-      //   );
-      // }
-
-      // setEvents(filteredEvents);
-      // setLoading(false);
-    };
-
-    fetchEvents();
-  }, [selectedSport, selectedLeague]);
+      const data: { events: Event[] } = await response.json();
+      return data.events;
+    },
+    // Puedes ajustar staleTime o refetchInterval si lo necesitas
+  });
 
   const displayedEvents = full ? events : events.slice(0, 6);
 
   return (
     <div className="bg-white dark:bg-[#272727] rounded-lg mb-4 cursor-pointer">
-      {loading && !error ? (
+      {isLoading ? (
         <p className="text-center text-gray-500">Cargando eventos...</p>
-      ) : events.length === 0 && !error ? (
-        <p className="text-center text-gray-500">{message}</p>
       ) : error ? (
-        <p className="text-center text-gray-500">{error}</p>
+        <p className="text-center text-gray-500">{(error as Error).message}</p>
+      ) : events.length === 0 ? (
+        <p className="text-center text-gray-500">No hay eventos para hoy.</p>
       ) : (
         <>
           {displayedEvents.map((event) => {
-            switch (event.status.type) {
-              case 'notstarted':
-                return (
-                  <Link href={`/event/${event.id}`} key={event.id}>
-                    <MatchWidget key={event.id} event={event} isLive={false} />
-                  </Link>
-                );
-
-              case 'inprogress':
-                return (
-                  <Link href={`/event/${event.id}`} key={event.id}>
-                    <MatchWidget event={event} isLive={true} />
-                  </Link>
-                );
-            }
+            const status = getEventStatus(event.commence_time);
+            const isLive = status === 'inprogress';
+            // Si es necesario, podrías manejar el caso "completed" de forma distinta
+            return (
+              <Link href={`/event/${event.id}`} key={event.id}>
+                <MatchWidget event={event} isLive={isLive} />
+              </Link>
+            );
           })}
           {!full && events.length > 6 && (
             <div className="text-center text-gray-500">
@@ -147,11 +83,3 @@ export default function EventsList({ full = false }: EventsListProps) {
     </div>
   );
 }
-
-// import FilteredEvents from '@/components/home/events/FilteredEvents';
-// import { getTodayEvents } from '@/services/events.service';
-
-// export default async function EventsList({ full = false }: { full?: boolean }) {
-//   const { sortedEvents } = await getTodayEvents(); // Obtiene datos en el servidor
-//   return <FilteredEvents events={sortedEvents} full={full} />;
-// }
