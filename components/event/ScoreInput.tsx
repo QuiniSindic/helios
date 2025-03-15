@@ -1,9 +1,14 @@
 interface ScoreInputProps {
   value?: number | string;
   onChange: (value: string) => void;
+  disabled?: boolean;
 }
 
-export default function ScoreInput({ value, onChange }: ScoreInputProps) {
+export default function ScoreInput({
+  value,
+  onChange,
+  disabled,
+}: ScoreInputProps) {
   const initialStyle =
     'no-arrows mt-2 bg-white w-16 h-16 rounded-xl text-black text-2xl text-center border border-secondary';
   const filledStyle =
@@ -14,6 +19,7 @@ export default function ScoreInput({ value, onChange }: ScoreInputProps) {
 
   return (
     <input
+      disabled={disabled}
       type="number"
       value={value}
       onChange={(e) => onChange(e.target.value)}

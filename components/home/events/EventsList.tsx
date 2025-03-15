@@ -1,40 +1,33 @@
 'use client';
 
 import MatchWidget from '@/components/ui/matchWidget/MatchWidget';
-import { useFilterStore } from '@/store/filterStore';
 import { Match } from '@/types/la_liga/la_liga.types';
-import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 
 interface EventsListProps {
   full?: boolean;
+  events: Match[];
+  isLoading: boolean;
+  error: Error | null;
 }
 
-export default function EventsList({ full = false }: EventsListProps) {
-  const { selectedSport, selectedLeague } = useFilterStore();
+export default function EventsList({
+  full = false,
+  events,
+  isLoading,
+  error,
+}: EventsListProps) {
+  const eventsToPlay = events.filter(
+    (event: Match) =>
+      event.status === 'PreMatch' ||
+      event.status === 'FirstHalf' ||
+      event.status === 'HalfTime' ||
+      event.status === 'SecondHalf',
+  );
 
-  const {
-    data: events = [],
-    isLoading,
-    error,
-  } = useQuery<Match[]>({
-    queryKey: ['events', selectedSport, selectedLeague],
-    queryFn: async () => {
-      const response = await fetch('/api/events');
-      if (!response.ok) {
-        const { error } = await response.json();
-        throw new Error(error);
-      }
-      const data: { matches: Match[] } = await response.json();
-      return data.matches;
-    },
-    // TODO: ajustar staleTime o refetchInterval
-  });
+  // console.log('eventsToPlay =>', eventsToPlay);
 
-  const displayedEvents = full ? events : events.slice(0, 6);
-
-  console.log('events =>', events);
-  console.log('displayedEvents =>', displayedEvents);
+  const displayedEvents = full ? eventsToPlay : eventsToPlay.slice(0, 6);
 
   return (
     <div className="bg-white dark:bg-[#272727] rounded-lg mb-4 cursor-pointer">
@@ -53,7 +46,7 @@ export default function EventsList({ full = false }: EventsListProps) {
               status !== 'FullTime' &&
               status !== 'Canceled';
             return (
-              <Link href={`/event/${event.id}`} key={event.id}>
+              <Link href={`/event/${event.slug}`} key={event.id}>
                 <MatchWidget event={event} isLive={isLive} />
               </Link>
             );

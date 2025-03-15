@@ -23,9 +23,9 @@ export type MatchStatus =
   | 'PreMatch'
   | 'Canceled'
   | 'FullTime'
-  | 'HalfTime'
   | 'FirstHalf'
-  | 'SecondHalf'; // falta cuando esta en juego por ahora inventado
+  | 'HalfTime'
+  | 'SecondHalf';
 
 export interface Match {
   id: number;

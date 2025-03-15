@@ -23,8 +23,6 @@ export async function GET() {
     const normalizedMatches = normalizeTeamCrests(matches);
 
     return NextResponse.json({ matches: normalizedMatches }, { status: 200 });
-
-    return;
   } catch (error) {
     console.log('error =>', error);
     console.log({ error });
