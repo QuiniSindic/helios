@@ -83,6 +83,23 @@ export const getLaLigaMatches = async () => {
   return normalizedMatches;
 };
 
+export const getLaLigaMatch = async (slug: string) => {
+  const response = await fetch(
+    `https://apim.laliga.com/webview/api/web/matches/${slug}?contentLanguage=es&countryCode=GB&subscription-key=ee7fcd5c543f4485ba2a48856fc7ece9`,
+  );
+
+  if (!response.ok) {
+    throw new Error('Error en el fetch');
+  }
+
+  const data = await response.json();
+  const match: Match = data.match;
+
+  const normalizedMatch = normalizeTeamCrests(match);
+
+  return normalizedMatch;
+};
+
 // export const filterEvents = (
 //   results: ParsedEvent[],
 //   selectedLeague: string | null,
