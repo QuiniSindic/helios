@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import MatchInfo from '@/components/event/MatchInfo';
-import { BASE_URL } from '@/core/config';
 import { createClient } from '@/utils/supabase/server';
 
 export default async function EventDetailPage({
@@ -16,7 +15,7 @@ export default async function EventDetailPage({
     error,
   } = await supabase.auth.getUser();
 
-  const res = await fetch(`${BASE_URL}/api/event/${slug}`);
+  const res = await fetch(`${process.env.VERCEL_URL}/api/event/${slug}`);
   const data = await res.json();
   const { match } = data;
 
