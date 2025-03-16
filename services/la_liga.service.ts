@@ -64,6 +64,25 @@ export const normalizeTeamCrests = (
   };
 };
 
+export const getLaLigaMatches = async () => {
+  const { week } = await getCurrentGameweek();
+
+  const response = await fetch(
+    `https://apim.laliga.com/webview/api/web/subscriptions/laliga-easports-2024/week/${week}/matches?contentLanguage=es&subscription-key=ee7fcd5c543f4485ba2a48856fc7ece9`,
+  );
+
+  if (!response.ok) {
+    throw new Error('Error en el fetch');
+  }
+
+  const data = await response.json();
+  const { matches } = data;
+
+  const normalizedMatches = normalizeTeamCrests(matches);
+
+  return normalizedMatches;
+};
+
 // export const filterEvents = (
 //   results: ParsedEvent[],
 //   selectedLeague: string | null,

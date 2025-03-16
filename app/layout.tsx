@@ -1,3 +1,4 @@
+import Footer from '@/components/layout/footer';
 import Header from '@/components/layout/header';
 import '@/styles/globals.css';
 import type { Metadata } from 'next';
@@ -24,13 +25,11 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${leagueSpartan.className} antialiased`}>
         <Providers>
-          <Header />
-          {children}
-          <footer className="bg-gray-800 text-white py-4">
-            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-              <p className="text-center">&copy; 2025 Helios project</p>
-            </div>
-          </footer>
+          <>
+            <Header />
+            {children}
+            <Footer />
+          </>
         </Providers>
       </body>
     </html>
