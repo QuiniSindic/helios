@@ -11,7 +11,7 @@ export async function handleGoogleSubmit() {
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
-      redirectTo: `https://${process.env.VERCEL_URL}/home`,
+      redirectTo: `https://hola.com`,
     },
   });
 
