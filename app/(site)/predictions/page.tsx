@@ -5,8 +5,6 @@ export default async function PredictionsPage() {
       headers: {
         accept: '*/*',
         'accept-language': 'es-ES,es;q=0.9',
-        baggage:
-          'sentry-environment=production,sentry-release=DNMBppMnuv4x_cnXcv9cL,sentry-public_key=d693747a6bb242d9bb9cf7069fb57988,sentry-trace_id=6c5c953c49cc474587e03d6879bae74d',
         'cache-control': 'max-age=0',
         priority: 'u=1, i',
         'sec-ch-ua':
@@ -16,8 +14,8 @@ export default async function PredictionsPage() {
         'sec-fetch-dest': 'empty',
         'sec-fetch-mode': 'cors',
         'sec-fetch-site': 'same-origin',
-        'sentry-trace': '6c5c953c49cc474587e03d6879bae74d-965a3ed5904af649',
-        'x-requested-with': '859655',
+        'User-Agent':
+          'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36',
       },
       referrer: 'https://www.sofascore.com/es-la/baloncesto',
       referrerPolicy: 'strict-origin-when-cross-origin',
