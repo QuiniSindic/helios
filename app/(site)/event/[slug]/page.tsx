@@ -15,9 +15,13 @@ export default async function EventDetailPage({
     error,
   } = await supabase.auth.getUser();
 
+  console.log('vercel url', process.env.VERCEL_URL);
+
   const res = await fetch(
     `https://${process.env.VERCEL_URL}/api/event/${slug}`,
   );
+
+  console.log('res =>', res);
   const data = await res.json();
   const { match } = data;
 
