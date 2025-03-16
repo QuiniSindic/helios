@@ -6,21 +6,22 @@ import { User } from '@supabase/supabase-js';
 import { redirect } from 'next/navigation';
 
 export async function handleGoogleSubmit() {
-  console.log('handleGoogleSubmit');
   const supabase = await createClient();
 
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
-      redirectTo: `${process.env.VERCEL_URL}/home`,
+      redirectTo: `https://${process.env.VERCEL_URL}/home`,
     },
   });
 
-  console.log('data', data);
-  console.log('error', error);
+  if (error) {
+    console.error('error', error);
+    return;
+  }
 
   if (data.url) {
-    redirect(data.url); // use the redirect API for your server framework
+    redirect(data.url);
   }
 }
 

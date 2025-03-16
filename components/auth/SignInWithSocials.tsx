@@ -17,7 +17,7 @@ const SignInWithSocials = ({ isLogin }: SignInWithSocialsProps) => {
         <span>Iniciar sesión con Google</span>
       </button>
       <button
-        // onClick={handleGoogleSubmit}
+        // onClick={handleAppleSubmit}
         className="flex items-center justify-center gap-4 px-6 py-3 border rounded-lg shadow-sm text-gray-700 bg-white hover:bg-gray-50"
       >
         <AppleIcon className="h-6 w-6 text-black" />
@@ -27,14 +27,14 @@ const SignInWithSocials = ({ isLogin }: SignInWithSocialsProps) => {
   ) : (
     <div className="flex flex-col space-y-4 justify-center">
       <button
-        // onClick={handleGoogleSubmit}
+        onClick={() => handleGoogleSubmit()}
         className="flex items-center justify-center gap-4 px-6 py-3 border rounded-lg shadow-sm text-gray-700 bg-white hover:bg-gray-50"
       >
         <GoogleIcon className="h-6 w-6" />
         <span>Registrarse con Google</span>
       </button>
       <button
-        // onClick={handleGoogleSubmit}
+        // onClick={handleAppleSubmit}
         className="flex items-center justify-center gap-4 px-6 py-3 border rounded-lg shadow-sm text-gray-700 bg-white hover:bg-gray-50"
       >
         <AppleIcon className="h-6 w-6 text-black" />
