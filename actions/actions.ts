@@ -3,6 +3,26 @@
 import { LaLigaPredictionPayload } from '@/types/prediction.types';
 import { createClient } from '@/utils/supabase/server';
 import { User } from '@supabase/supabase-js';
+import { redirect } from 'next/navigation';
+
+export async function handleGoogleSubmit() {
+  console.log('handleGoogleSubmit');
+  const supabase = await createClient();
+
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: 'google',
+    options: {
+      redirectTo: 'http://localhost:3000',
+    },
+  });
+
+  console.log('data', data);
+  console.log('error', error);
+
+  if (data.url) {
+    redirect(data.url); // use the redirect API for your server framework
+  }
+}
 
 export async function savePrediction(
   userLogged: User,
