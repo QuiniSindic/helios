@@ -20,10 +20,12 @@
   --focus: #03dac5;
 }
 
+html,
 body {
   /* color: var(--foreground);
   background: var(--background); */
   font-family: 'League Spartan Variable', sans-serif;
+  height: 100%;
 }
 
 /* @media (prefers-color-scheme: dark) {

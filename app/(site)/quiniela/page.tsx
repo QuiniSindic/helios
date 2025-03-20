@@ -44,7 +44,7 @@ export default function QuinielaPage() {
   }, []);
 
   return (
-    <div className="container mx-auto px-4 py-4">
+    <div className="container mx-auto px-4 py-4 min-h-screen">
       <h1 className="text-3xl font-bold text-center mb-2">Quiniela</h1>
       <h2 className="text-xl text-center mb-2">Jornada {jornada}</h2>
 

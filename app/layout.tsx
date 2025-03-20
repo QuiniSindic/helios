@@ -23,13 +23,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${leagueSpartan.className} antialiased`}>
+      <body className={`${leagueSpartan.className} flex flex-col min-h-screen`}>
         <Providers>
-          <>
-            <Header />
-            {children}
-            <Footer />
-          </>
+          <Header />
+          {children}
+          <Footer />
         </Providers>
       </body>
     </html>

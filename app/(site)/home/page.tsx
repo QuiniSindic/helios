@@ -51,7 +51,7 @@ export default function Home() {
   }, [events, setEvents]);
 
   return (
-    <div className="mb-4 mx-4 sm:mx-8 md:mx-8 lg:mx-12 xl:mx-12">
+    <div className="mb-4 mx-4 sm:mx-8 md:mx-8 lg:mx-12 xl:mx-12 min-h-screen">
       <Welcome />
       <>
         <div className="flex flex-col lg:flex-row lg:gap-4">

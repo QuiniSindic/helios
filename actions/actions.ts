@@ -54,8 +54,16 @@ export async function savePrediction(
     throw new Error('No autorizado');
   }
 
-  const { home_score, away_score, event_id, user_id, event_name } =
-    matchPayload;
+  const {
+    home_score,
+    away_score,
+    event_id,
+    user_id,
+    event_name,
+    competition_id,
+    home_team,
+    away_team,
+  } = matchPayload;
 
   // TODO: considerar upsert para poder updatear si el partido au nno ha empezado
   // verificar predicción ya existente
@@ -86,8 +94,11 @@ export async function savePrediction(
       prediction: {
         home_score,
         away_score,
+        home_team,
+        away_team,
       },
       event_name: event_name,
+      competition_id,
     },
   ]);
 

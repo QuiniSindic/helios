@@ -44,15 +44,20 @@ export default function ResultsList({
               //   );
 
               case 'FullTime':
+                const isFinished = true;
                 return (
-                  <Link href={`/event/${result.id}`} key={result.id}>
-                    <MatchWidget key={result.id} event={result} isFinished />
+                  <Link href={`/event/${result.slug}`} key={result.id}>
+                    <MatchWidget
+                      key={result.id}
+                      event={result}
+                      isFinished={isFinished}
+                    />
                   </Link>
                 );
 
               default:
                 return (
-                  <Link href={`/event/${result.id}`} key={result.id}>
+                  <Link href={`/event/${result.slug}`} key={result.id}>
                     <MatchWidget key={result.id} event={result} />
                   </Link>
                 );

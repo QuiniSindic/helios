@@ -37,14 +37,39 @@ export interface Match {
   home_score?: number;
   away_score?: number;
   status: MatchStatus;
-  home_team: Hometeam;
-  away_team: Hometeam;
+  home_team: Team;
+  away_team: Team;
   venue: Venue;
   persons_role: Personsrole[];
   subscription: Subscription;
   is_brand_day: boolean;
   temperature: Temperature;
   ball: Ball;
+
+  attempt_official?: boolean;
+  opta_id?: string;
+  season?: Season;
+  gameweek?: Gameweek;
+  competition?: Competition;
+}
+
+export interface Competition {
+  id: number;
+  name: string;
+  slug: string;
+  opta_id: string;
+}
+
+export interface Gameweek {
+  week: number;
+  name: string;
+  shortname: string;
+}
+
+export interface Season {
+  id: number;
+  name: string;
+  opta_id: string;
 }
 
 export interface Ball {
@@ -60,7 +85,7 @@ export interface Temperature {
 
 export interface Subscription {
   id: number;
-  name: string;
+  name?: string; // optional?
   slug: string;
   teams: any[];
   rounds: any[];
@@ -87,7 +112,7 @@ export interface Venue {
   name: string;
 }
 
-export interface Hometeam {
+export interface Team {
   id: number;
   slug: string;
   name: string;
@@ -97,6 +122,9 @@ export interface Hometeam {
   sprite_status: string;
   shield: Shield;
   competitions: any[];
+  opta_id?: string; // optional
+  color?: string; // optional
+  color_secondary?: string; // optional
 }
 
 export interface Shield {

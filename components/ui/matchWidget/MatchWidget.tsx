@@ -28,6 +28,7 @@ export default function MatchWidget({
       <div className="mt-4 ml-auto sm:ml-0 sm:mt-4">
         <MatchSchedule
           isLive={isLive}
+          isFinished={isFinished}
           event={event}
           // event.date en ISO8601
           date={new Date(event.date).toISOString()}

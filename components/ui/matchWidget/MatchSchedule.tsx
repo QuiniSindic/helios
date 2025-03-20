@@ -4,10 +4,16 @@ import { formattedDate, formattedTime } from '@/utils/date.utils';
 interface MatchScheduleProps {
   date: string;
   isLive?: boolean;
+  isFinished?: boolean;
   event: Match;
 }
 
-export const MatchSchedule = ({ date, isLive, event }: MatchScheduleProps) => {
+export const MatchSchedule = ({
+  date,
+  isLive,
+  isFinished,
+  event,
+}: MatchScheduleProps) => {
   const eventDate = new Date(date);
 
   const dateFormatted = formattedDate(eventDate);
@@ -61,7 +67,12 @@ export const MatchSchedule = ({ date, isLive, event }: MatchScheduleProps) => {
               );
           }
         })()}
-      {!isLive && (
+      {isFinished && (
+        <p className="text-gray-500 dark:text-white text-sm md:text-base text-center">
+          Finalizado
+        </p>
+      )}
+      {!isLive && !isFinished && (
         <p className="text-gray-500 dark:text-white text-sm md:text-base text-center">
           {dateFormatted}
           <br className="sm:hidden" />
