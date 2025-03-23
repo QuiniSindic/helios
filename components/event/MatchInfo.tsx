@@ -3,14 +3,17 @@
 import { savePrediction } from '@/actions/actions';
 import { useAuth } from '@/hooks/useAuth';
 import { getUserMatchPrediction } from '@/services/database.service';
+import { useLaLigaMatchesStore } from '@/store/laLigaMatchesStore';
 import { PredictionObject } from '@/types/database/table.types';
 import { Match } from '@/types/la_liga/la_liga.types';
 import { LaLigaPredictionPayload } from '@/types/prediction.types';
-import { Button, Divider } from '@heroui/react';
+import { Button, Divider, Spinner } from '@heroui/react';
 import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
+import toast, { Toaster } from 'react-hot-toast';
 import SaveButton from '../ui/SaveButton';
+import EventNavigation from './EventNavigation';
 import ScoreInput from './ScoreInput';
 import UsersPredictions from './UserPredictions';
 
@@ -21,10 +24,12 @@ interface MatchInfoProps {
 
 const MatchInfo: React.FC<MatchInfoProps> = ({ event, predictions }) => {
   const { user } = useAuth();
+  const { events } = useLaLigaMatchesStore();
 
   const [homeScore, setHomeScore] = useState('');
   const [awayScore, setAwayScore] = useState('');
   const [isSaving, setIsSaving] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   // Validamos que los inputs no estén vacíos
   const isValidPrediction = homeScore.trim() !== '' && awayScore.trim() !== '';
@@ -39,7 +44,7 @@ const MatchInfo: React.FC<MatchInfoProps> = ({ event, predictions }) => {
 
   const {
     data: prediction,
-    isLoading,
+    // isLoading,
     error,
   } = useQuery({
     queryKey: ['prediction', user?.id, event.id],
@@ -73,6 +78,7 @@ const MatchInfo: React.FC<MatchInfoProps> = ({ event, predictions }) => {
       setIsSaving(true);
       try {
         await savePrediction(user, isValidPrediction, payload);
+        toast.success('¡Predicción guardada con éxito!');
       } catch (err) {
         console.error(err);
       } finally {
@@ -81,10 +87,38 @@ const MatchInfo: React.FC<MatchInfoProps> = ({ event, predictions }) => {
     }
   };
 
+  useEffect(() => {
+    if (isLoading) {
+      const timer = setTimeout(() => {
+        setIsLoading(false);
+      }, 1000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [isLoading]);
+
+  if (isLoading) {
+    return (
+      <>
+        <EventNavigation currentSlug={event.slug} events={events} />
+        <div className="text-center mb-4">
+          <Spinner
+            classNames={{ label: 'text-foreground mt-4' }}
+            label="Cargando partido..."
+            variant="wave"
+            color="secondary"
+          />
+        </div>
+      </>
+    );
+  }
+
   return (
     <>
+      <Toaster />
+      <EventNavigation currentSlug={event.slug} events={events} />
       <div className="match-info-container flex flex-col min-h-screen">
-        {notStarted && (
+        {notStarted && !prediction && (
           <div className="text-center mb-4">
             <h1>Realiza la predicción para el siguiente partido</h1>
           </div>

@@ -14,11 +14,6 @@ export default function Home() {
   const { selectedSport, selectedLeague } = useFilterStore();
   const { setEvents } = useLaLigaMatchesStore();
 
-  // React.useEffect(() => {
-  //   setSelectedLeague(null);
-  //   setSelectedSport(null);
-  // }, [setSelectedLeague, setSelectedSport]);
-
   const {
     data: events = [],
     isLoading,
