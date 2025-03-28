@@ -2,7 +2,10 @@
 
 import { savePrediction } from '@/actions/actions';
 import { useAuth } from '@/hooks/useAuth';
-import { getUserMatchPrediction } from '@/services/database.service';
+import {
+  getEventPredictions,
+  getUserMatchPrediction,
+} from '@/services/database.service';
 import { useLaLigaMatchesStore } from '@/store/laLigaMatchesStore';
 import { PredictionObject } from '@/types/database/table.types';
 import { Match } from '@/types/la_liga/la_liga.types';
@@ -44,13 +47,24 @@ const MatchInfo: React.FC<MatchInfoProps> = ({ event, predictions }) => {
 
   const {
     data: prediction,
-    // isLoading,
     error,
+    refetch: refetchUserPrediction,
   } = useQuery({
     queryKey: ['prediction', user?.id, event.id],
     queryFn: () => getUserMatchPrediction(user?.id as string, event.id),
     enabled: !!user,
     refetchOnWindowFocus: false,
+  });
+
+  const {
+    data: predictionsData,
+    refetch: refetchPredictions,
+    isLoading: predictionsLoading,
+  } = useQuery<PredictionObject[]>({
+    queryKey: ['predictions', event.id],
+    queryFn: () => getEventPredictions(event.id),
+    refetchOnWindowFocus: false,
+    initialData: predictions,
   });
 
   // Si ya existe una predicción, precargamos los inputs
@@ -77,10 +91,18 @@ const MatchInfo: React.FC<MatchInfoProps> = ({ event, predictions }) => {
     if (user && isValidPrediction) {
       setIsSaving(true);
       try {
-        await savePrediction(user, isValidPrediction, payload);
-        toast.success('¡Predicción guardada con éxito!');
+        await savePrediction(user, payload);
+
+        if (prediction) {
+          toast.success('¡Predicción actualizada con éxito!');
+        } else {
+          toast.success('¡Predicción guardada con éxito!');
+        }
+        await refetchUserPrediction();
+        await refetchPredictions();
       } catch (err) {
         console.error(err);
+        toast.error('Ocurrió un error al guardar la predicción.');
       } finally {
         setIsSaving(false);
       }
@@ -101,7 +123,7 @@ const MatchInfo: React.FC<MatchInfoProps> = ({ event, predictions }) => {
     return (
       <>
         <EventNavigation currentSlug={event.slug} events={events} />
-        <div className="text-center mb-4">
+        <div className="flex justify-center text-center items-center min-h-screen">
           <Spinner
             classNames={{ label: 'text-foreground mt-4' }}
             label="Cargando partido..."
@@ -239,7 +261,27 @@ const MatchInfo: React.FC<MatchInfoProps> = ({ event, predictions }) => {
           </div>
         )}
         <Divider className="my-4" />
-        <UsersPredictions predictions={predictions} />
+
+        {predictionsLoading && (
+          <div className="flex justify-center text-center items-center min-h-screen">
+            <Spinner
+              classNames={{ label: 'text-foreground mt-4' }}
+              label="Cargando predicciones de usuarios..."
+              variant="wave"
+              color="secondary"
+            />
+          </div>
+        )}
+
+        {!predictionsLoading && predictionsData.length === 0 && (
+          <div className="text-center mb-2">
+            <p className="text-red-500">No hay predicciones de usuarios</p>
+          </div>
+        )}
+
+        {!predictionsLoading && predictionsData.length > 0 && (
+          <UsersPredictions predictions={predictionsData} />
+        )}
       </div>
     </>
   );

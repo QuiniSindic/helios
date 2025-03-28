@@ -27,32 +27,13 @@ export async function handleGoogleSubmit() {
 
 export async function savePrediction(
   userLogged: User,
-  isValidPrediction: boolean,
   matchPayload: LaLigaPredictionPayload,
 ) {
   if (!userLogged) {
-    alert('Debes iniciar sesión para guardar una predicción.');
-    return;
+    throw new Error('Debes iniciar sesión para guardar una predicción.');
   }
-
-  if (!isValidPrediction) {
-    alert('Debes ingresar un resultado válido.');
-    return;
-  }
-
+  
   const supabase = await createClient();
-
-  const { data: userData, error: userError } = await supabase.auth.getUser();
-
-  if (userError) {
-    throw new Error(userError.message);
-  }
-
-  const { user } = userData;
-
-  if (!user) {
-    throw new Error('No autorizado');
-  }
 
   const {
     home_score,
@@ -65,42 +46,29 @@ export async function savePrediction(
     away_team,
   } = matchPayload;
 
-  // TODO: considerar upsert para poder updatear si el partido au nno ha empezado
-  // verificar predicción ya existente
-  const { data: existingPrediction, error: existingPredictionError } =
-    await supabase
-      .from('predictions')
-      .select()
-      .eq('event_id', event_id)
-      .eq('profile_id', user_id);
-
-  console.log('existingPrediction', existingPrediction);
-  console.log('existingPredictionError', existingPredictionError);
-
-  if (existingPredictionError) {
-    throw new Error(existingPredictionError.message);
-  }
-
-  if (existingPrediction.length > 0) {
-    console.log('Ya existe una predicción para este evento');
-    return existingPrediction;
-  }
-
-  // insert en tabla
-  const { data, error } = await supabase.from('predictions').insert([
-    {
-      event_id,
-      profile_id: user_id,
-      prediction: {
-        home_score,
-        away_score,
-        home_team,
-        away_team,
+  const { data, error } = await supabase
+    .from('predictions')
+    .upsert(
+      {
+        event_id,
+        profile_id: user_id,
+        prediction: {
+          home_score,
+          away_score,
+          home_team,
+          away_team,
+        },
+        event_name,
+        competition_id,
+        updated_at: new Date(),
       },
-      event_name: event_name,
-      competition_id,
-    },
-  ]);
+      {
+        ignoreDuplicates: false,
+        onConflict: 'event_id, profile_id',
+      },
+    )
+    .select()
+    .single();
 
   if (error) {
     throw new Error(error.message);
