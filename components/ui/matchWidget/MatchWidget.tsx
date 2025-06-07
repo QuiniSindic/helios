@@ -1,9 +1,9 @@
 import EventTeamsData from '@/components/ui/matchWidget/EventTeamsData';
 import { MatchSchedule } from '@/components/ui/matchWidget/MatchSchedule';
-import { Match } from '@/types/la_liga/la_liga.types';
+import { MatchData } from '@/types/custom.types';
 
 interface MatchWidgetProps {
-  event: Match;
+  event: MatchData;
   isLive?: boolean;
   isFinished?: boolean;
 }
@@ -30,8 +30,8 @@ export default function MatchWidget({
           isLive={isLive}
           isFinished={isFinished}
           event={event}
-          // event.date en ISO8601
-          date={new Date(event.date).toISOString()}
+          // TODO: revisar el making del kickoff porque falla el UTC
+          date={new Date(event.kickoff).toISOString()}
         />
       </div>
     </div>

@@ -1,11 +1,11 @@
-import { Match } from '@/types/la_liga/la_liga.types';
-import { formattedDate, formattedTime } from '@/utils/date.utils';
+import { MatchData } from '@/types/custom.types';
+import { formatWithDayjs } from '@/utils/date.utils';
 
 interface MatchScheduleProps {
   date: string;
   isLive?: boolean;
   isFinished?: boolean;
-  event: Match;
+  event: MatchData;
 }
 
 export const MatchSchedule = ({
@@ -14,10 +14,7 @@ export const MatchSchedule = ({
   isFinished,
   event,
 }: MatchScheduleProps) => {
-  const eventDate = new Date(date);
-
-  const dateFormatted = formattedDate(eventDate);
-  const timeFormatted = formattedTime(eventDate);
+  const dateFormatted = formatWithDayjs(date);
 
   return (
     <>
@@ -42,12 +39,6 @@ export const MatchSchedule = ({
                   Descanso
                 </p>
               );
-            // case 60:
-            //   return (
-            //     <p className="text-gray-500 dark:text-white text-sm md:text-base text-center">
-            //       Pospuesto
-            //     </p>
-            //   );
             case 'Canceled':
               return (
                 <p className="text-gray-500 dark:text-white text-sm md:text-base text-center">
@@ -59,9 +50,6 @@ export const MatchSchedule = ({
                 <p className="text-gray-500 dark:text-white text-sm md:text-base text-center">
                   <p className="text-gray-500 dark:text-white text-sm md:text-base text-center">
                     {dateFormatted}
-                    <br className="sm:hidden" />
-                    <span className="hidden sm:inline"> - </span>
-                    {timeFormatted}h
                   </p>
                 </p>
               );
@@ -75,9 +63,6 @@ export const MatchSchedule = ({
       {!isLive && !isFinished && (
         <p className="text-gray-500 dark:text-white text-sm md:text-base text-center">
           {dateFormatted}
-          <br className="sm:hidden" />
-          <span className="hidden sm:inline"> - </span>
-          {timeFormatted}h
         </p>
       )}
     </>

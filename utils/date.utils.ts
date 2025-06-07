@@ -1,3 +1,6 @@
+import dayjs from "dayjs";
+import 'dayjs/locale/es';
+
 export function formattedDate(eventDate: Date): string {
   return eventDate
     .toLocaleDateString('es-ES', {
@@ -18,4 +21,16 @@ export function formattedTime(eventDate: Date): string {
       hour12: false,
     })
     .replace(/^(\d):/, '0$1:');
+}
+
+export function formatWithDayjs(date: string): string {
+  const formatted = dayjs(date).locale('es').format("dddd DD [de] MMMM [a las] HH:mm[h]");
+
+  //capitaliza dia y mes
+  return formatted
+    .replace(/^./, (c) => c.toUpperCase())
+    
+    .replace(/ de ([a-záéíóúñü]+)/, (_match, m) =>
+      " de " + m.charAt(0).toUpperCase() + m.slice(1)
+    );
 }

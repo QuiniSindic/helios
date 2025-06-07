@@ -6,7 +6,7 @@ import {
   getEventPredictions,
   getUserMatchPrediction,
 } from '@/services/database.service';
-import { useLaLigaMatchesStore } from '@/store/laLigaMatchesStore';
+import { useMatchesStore } from '@/store/matchesStore';
 import { PredictionObject } from '@/types/database/table.types';
 import { Match } from '@/types/la_liga/la_liga.types';
 import { LaLigaPredictionPayload } from '@/types/prediction.types';
@@ -27,7 +27,7 @@ interface MatchInfoProps {
 
 const MatchInfo: React.FC<MatchInfoProps> = ({ event, predictions }) => {
   const { user } = useAuth();
-  const { events } = useLaLigaMatchesStore();
+  const { events } = useMatchesStore();
 
   const [homeScore, setHomeScore] = useState('');
   const [awayScore, setAwayScore] = useState('');

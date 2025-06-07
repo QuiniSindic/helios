@@ -10,7 +10,7 @@ export enum MatchEventType {
   None,
 }
 
-export type MatchEvent = {
+export interface MatchEvent  {
   type: MatchEventType;
   minute?: number | string;
   extraMinute?: number;
@@ -20,17 +20,32 @@ export type MatchEvent = {
   extra?: string;
 };
 
-export type MatchData = {
+export interface MatchData {
   id: string;
   home: TeamInfo;
   away: TeamInfo;
-  status: string;
+  status: MatchStatus;
   result: string;
   kickoff: string; // 21:00 01/06/2025
   events: MatchEvent[];
 };
 
-export type CompetitionData = {
+export const MATCH_STATUSES = [
+  'NS',         // Not Started
+  // editar los siguientes en funcón de livescore, porque estos son de la liga
+  'PreMatch',
+  'FirstHalf',
+  'HalfTime',
+  'SecondHalf',
+  'FullTime',
+  "Canceled",
+
+] as const;
+
+export type MatchStatus = typeof MATCH_STATUSES[number];
+
+
+export interface CompetitionData {
   id: string;
   name: string;
   fullName: string;
@@ -38,7 +53,7 @@ export type CompetitionData = {
   matches: MatchData[];
 };
 
-export type TeamInfo = {
+export interface TeamInfo  {
   id: string;
   name: string;
   abbr: string;

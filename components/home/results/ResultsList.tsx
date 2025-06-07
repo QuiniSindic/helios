@@ -1,14 +1,14 @@
 'use client';
 
 import MatchWidget from '@/components/ui/matchWidget/MatchWidget';
-import { Match } from '@/types/la_liga/la_liga.types';
+import { MatchData } from '@/types/custom.types';
 import Link from 'next/link';
 
 interface ResultsListProps {
   full?: boolean;
-  results: Match[];
-  isLoading: boolean;
-  error: Error | null;
+  results: MatchData[];
+  isLoading?: boolean;
+  error?: Error | null;
 }
 
 export default function ResultsList({
@@ -18,7 +18,7 @@ export default function ResultsList({
   error,
 }: ResultsListProps) {
   const eventsPlayed = results.filter(
-    (event: Match) => event.status === 'FullTime',
+    (event: MatchData) => event.status === 'FullTime',
   );
 
   const displayedResults = full ? eventsPlayed : eventsPlayed.slice(0, 6);
@@ -35,18 +35,10 @@ export default function ResultsList({
         <>
           {displayedResults.map((result) => {
             switch (result.status) {
-              // TODO: marcar
-              // case 'Canceled':
-              //   return (
-              //     <Link href={`/event/${result.id}`} key={result.id}>
-              //       <MatchWidget key={result.id} event={result} isLive />
-              //     </Link>
-              //   );
-
               case 'FullTime':
                 const isFinished = true;
                 return (
-                  <Link href={`/event/${result.slug}`} key={result.id}>
+                  <Link href={`/event/${result.id}`} key={result.id}>
                     <MatchWidget
                       key={result.id}
                       event={result}
@@ -57,7 +49,7 @@ export default function ResultsList({
 
               default:
                 return (
-                  <Link href={`/event/${result.slug}`} key={result.id}>
+                  <Link href={`/event/${result.id}`} key={result.id}>
                     <MatchWidget key={result.id} event={result} />
                   </Link>
                 );

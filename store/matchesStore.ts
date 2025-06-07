@@ -1,13 +1,13 @@
-import { Match } from '@/types/la_liga/la_liga.types';
+import { MatchData } from '@/types/custom.types';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-interface LaLigaMatchesStore {
-  events: Match[];
-  setEvents: (events: Match[]) => void;
+interface MatchesStore {
+  events: MatchData[];
+  setEvents: (events: MatchData[]) => void;
 }
 
-export const useLaLigaMatchesStore = create<LaLigaMatchesStore>()(
+export const useMatchesStore = create<MatchesStore>()(
   persist(
     (set) => ({
       events: [],

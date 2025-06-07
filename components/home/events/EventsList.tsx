@@ -1,8 +1,8 @@
 'use client';
 
 import MatchWidget from '@/components/ui/matchWidget/MatchWidget';
-import { useLaLigaMatchesStore } from '@/store/laLigaMatchesStore';
-import { Match } from '@/types/la_liga/la_liga.types';
+import { useMatchesStore } from '@/store/matchesStore';
+import { MatchData } from '@/types/custom.types';
 import Link from 'next/link';
 
 interface EventsListProps {
@@ -10,16 +10,17 @@ interface EventsListProps {
 }
 
 export default function EventsList({ full = false }: EventsListProps) {
-  const { events } = useLaLigaMatchesStore();
+  const { events } = useMatchesStore();
   const eventsToPlay = events.filter(
-    (event: Match) =>
-      event.status === 'PreMatch' ||
+    (event: MatchData) =>
+      event.status === 'NS' ||
       event.status === 'FirstHalf' ||
       event.status === 'HalfTime' ||
       event.status === 'SecondHalf',
   );
 
   const displayedEvents = full ? eventsToPlay : eventsToPlay.slice(0, 6);
+  console.log('displayedEvents', displayedEvents);
 
   return (
     <div className="bg-white dark:bg-[#272727] rounded-lg mb-4 cursor-pointer">
@@ -30,11 +31,9 @@ export default function EventsList({ full = false }: EventsListProps) {
           {displayedEvents.map((event) => {
             const status = event.status;
             const isLive =
-              status !== 'PreMatch' &&
-              status !== 'FullTime' &&
-              status !== 'Canceled';
+              status !== 'NS' && status !== 'FullTime' && status !== 'Canceled';
             return (
-              <Link href={`/event/${event.slug}`} key={event.id}>
+              <Link href={`/event/${event.id}`} key={event.id}>
                 <MatchWidget event={event} isLive={isLive} />
               </Link>
             );
