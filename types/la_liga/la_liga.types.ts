@@ -51,6 +51,7 @@ export interface Match {
   season?: Season;
   gameweek?: Gameweek;
   competition?: Competition;
+  points_calculated?: boolean;
 }
 
 export interface Competition {

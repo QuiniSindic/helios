@@ -9,6 +9,6 @@ export const QUINIELA_DATA_URL =
 
 export const PROJECT_ID = process.env.NEXT_PUBLIC_SUPABASE_PROJECT_ID || '';
 
-export const THE_ODDS_API_KEY = process.env.THE_ODDS_API_KEY;
-export const THE_ODDS_API_URL =
-  process.env.THE_ODDS_API_URL || 'https://api.the-odds-api.com/v4';
+
+  export const BACKEND_URL = process.env.BACKEND_URL ||
+ 'http://localhost:3001';

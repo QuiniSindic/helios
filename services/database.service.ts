@@ -112,3 +112,20 @@ export async function updateUserPoints(
 
   return { predictionData, totalPointsData };
 }
+
+export async function getLeaderboard(
+  competitionId: number,
+): Promise<UserProfile[]> {
+  const supabase = createClient();
+  const { data, error } = await supabase
+    .from('user_competition_points')
+    .select('*, profiles (username)')
+    .eq('competition_id', competitionId)
+    .order('total_points', { ascending: false });
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data;
+}

@@ -18,31 +18,31 @@ Deno.serve(async (req) => {
     Deno.env.get('SUPABASE_ANON_KEY')!,
   );
 
+  const allMatches = await getLaLigaMatches();
+  const matches = allMatches.filter(match => match.status === "FullTime" && !match.points_calculated);
+  console.log('Matches:', matches);
 
-  // Get the session or user object
-  const authHeader = req.headers.get('Authorization')!;
-  const token = authHeader.replace('Bearer ', '');
-  const { data: userData } = await supabaseClient.auth.getUser(token);
-
-  const matches = await getLaLigaMatches();
   const competitionId = matches[0].subscription.id === 351 ? 1 : null;
 
   for (const match of matches) {
     const predictions = await getEventPredictions(supabaseClient, match.id);
 
-    predictions.forEach( async (pred) => {
-      const points = calculatePoints(match, pred);
-      console.log('User:', pred.profile_id, 'Prediction:', pred.event_name, 'Points:', points);
+    console.log('Predictions:', predictions.length);
 
-      await updateUserPoints(supabaseClient, pred.profile_id, competitionId, match.id, points);
-    })
+    for (const prediction of predictions) {
+      const points = calculatePoints(match, prediction);
+      console.log('User:', prediction.profile_id, 'Prediction:', prediction.event_name, 'Points:', points);
+      await updateUserPoints(supabaseClient, prediction.profile_id, competitionId, match.id, points);
+    
+    }
+    match.points_calculated = true;
   }
 
   let ranking = null;
   if (competitionId) {
     const { data: rankingData, error: rankingError } = await supabaseClient
       .from('user_competition_points')
-      .select('*')
+      .select('*, profiles (username)',)
       .eq('competition_id', competitionId)
       .order('total_points', { ascending: false });
 
@@ -56,7 +56,6 @@ Deno.serve(async (req) => {
   return new Response(
     JSON.stringify({ 
       message: "Puntos actualizados correctamente", 
-      user: userData, 
       ranking 
     }),
     { headers: { "Content-Type": "application/json" } },

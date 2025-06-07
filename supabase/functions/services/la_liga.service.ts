@@ -43,6 +43,7 @@ export const normalizeTeamCrests = (
             url: laLigaCrests[match.away_team.nickname],
           },
         },
+        points_calculated: false,
       };
     });
   }
@@ -158,27 +159,46 @@ export async function updateUserPoints(
   eventId: number,
   points: number,
 ) {
-  const { data: predictionData, error: predictionError } = await supabase
+  const { error: predictionError } = await supabase
     .from('predictions')
     .update({ points })
     .eq('profile_id', profileId)
     .eq('event_id', eventId)
-    .eq('competition_id', competitionId);
-
+    .eq('competition_id', competitionId)
+    .select('*, profiles (username)')
 
   if (predictionError) {
     throw new Error(predictionError.message);
   }
 
-  const { data: totalPointsData, error: totalPointsError } = await supabase
-  .from('user_competition_points')
-  .update({ total_points: points })
-  .eq('user_id', profileId)
-  .eq('competition_id', competitionId);
+  // Recupera los puntos actuales totales
+  const { data: existingTotalPointsData, error: existingTotalPointsError } = await supabase
+    .from('user_competition_points')
+    .select('total_points')
+    .eq('user_id', profileId)
+    .eq('competition_id', competitionId)
+    .maybeSingle();
 
-  if (totalPointsError) {
-    throw new Error(totalPointsError.message);
-  }
+  let totalPoints = points;
 
-  return { predictionData, totalPointsData };
+    if (existingTotalPointsData) {
+      console.log('dentro');
+      totalPoints += existingTotalPointsData.total_points;
+    }
+
+   // Inserta o actualiza puntos totales en user_competition_points
+   const { data: totalPointsData, error: totalPointsError } = await supabase
+   .from('user_competition_points')
+   .upsert({
+     user_id: profileId,
+     competition_id: competitionId,
+     total_points: totalPoints,
+   },{
+      ignoreDuplicates: false,
+      onConflict: 'user_id, competition_id',
+   })
+    .select()
+
+    console.log('totalPointsData', totalPointsData);
+    
 }

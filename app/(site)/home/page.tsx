@@ -1,12 +1,13 @@
 'use client';
 
 import EventsContainer from '@/components/home/events/EventsContainer';
-import ResultsContainer from '@/components/home/results/ResultsContainer';
 import SportsList from '@/components/home/SportsList';
 import Welcome from '@/components/home/Welcome';
+import { BACKEND_URL } from '@/core/config';
 import { useFilterStore } from '@/store/filterStore';
 import { useLaLigaMatchesStore } from '@/store/laLigaMatchesStore';
 import { Match } from '@/types/la_liga/la_liga.types';
+import { CompetitionData } from '@/types/livescore.types';
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 
@@ -21,13 +22,24 @@ export default function Home() {
   } = useQuery<Match[]>({
     queryKey: ['events', selectedSport, selectedLeague],
     queryFn: async () => {
-      const response = await fetch('/api/events');
+      // let endpoint = '';
+
+      // switch (selectedLeague) {
+      //   case 'La Liga':
+      //     endpoint = '/api/la-liga/events';
+      // }
+
+      const response = await fetch(`${BACKEND_URL}/football/matches`);
       if (!response.ok) {
         const { error } = await response.json();
         throw new Error(error);
       }
-      const data: { matches: Match[] } = await response.json();
-      const matches = data.matches;
+      const data = await response.json();
+      const matchesResponse: CompetitionData[] = data?.data;
+      const matches = matchesResponse.map((item) => {
+        return item.matches;
+      });
+      console.log('matches =>', matches);
 
       // const events = matches.filter(
       //   (event: Match) => event.status === 'FullTime',
@@ -57,11 +69,12 @@ export default function Home() {
             // loading={isLoading}
             // error={error}
             />
-            <ResultsContainer
+            {/* FIX types */}
+            {/* <ResultsContainer
               results={events}
               loading={isLoading}
               error={error}
-            />
+            /> */}
           </div>
         </div>
       </>
