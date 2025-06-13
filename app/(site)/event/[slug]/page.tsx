@@ -1,6 +1,6 @@
 import MatchInfo from '@/components/event/MatchInfo';
 import { getEventPredictions } from '@/services/database.service';
-import { getLaLigaMatch } from '@/services/la_liga.service';
+import { getMatchData } from '@/services/la_liga.service';
 import { createClient } from '@/utils/supabase/server';
 
 export default async function EventDetailPage({
@@ -11,11 +11,15 @@ export default async function EventDetailPage({
   const supabase = await createClient();
   const { slug } = await params;
 
+  console.log('slug', slug);
+
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const matchData = await getLaLigaMatch(slug);
+  // const matchData = await getLaLigaMatch(slug);
+  const matchData = await getMatchData(slug);
+  console.log('matchData', matchData);
   const match = Array.isArray(matchData) ? matchData[0] : matchData;
   const predictions = await getEventPredictions(match.id);
 

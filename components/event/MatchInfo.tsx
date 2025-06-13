@@ -7,8 +7,8 @@ import {
   getUserMatchPrediction,
 } from '@/services/database.service';
 import { useMatchesStore } from '@/store/matchesStore';
+import { MatchData } from '@/types/custom.types';
 import { PredictionObject } from '@/types/database/table.types';
-import { Match } from '@/types/la_liga/la_liga.types';
 import { LaLigaPredictionPayload } from '@/types/prediction.types';
 import { Button, Divider, Spinner } from '@heroui/react';
 import { useQuery } from '@tanstack/react-query';
@@ -21,7 +21,7 @@ import ScoreInput from './ScoreInput';
 import UsersPredictions from './UserPredictions';
 
 interface MatchInfoProps {
-  event: Match;
+  event: MatchData;
   predictions: PredictionObject[];
 }
 
@@ -76,15 +76,15 @@ const MatchInfo: React.FC<MatchInfoProps> = ({ event, predictions }) => {
   }, [prediction]);
 
   const payload: LaLigaPredictionPayload = {
-    home_team: event.home_team.nickname,
-    away_team: event.away_team.nickname,
+    home_team: event.home.abbr,
+    away_team: event.away.abbr,
     home_score: parseInt(homeScore, 10),
     away_score: parseInt(awayScore, 10),
     event_id: event.id,
-    competition_id: event?.competition?.id as number,
-    competition_name: event?.competition?.name as string,
+    competition_id: 12134, //event?.competition?.id as number,
+    competition_name: 'mundialito', //event?.competition?.name as string,
     user_id: user ? user.id : '',
-    event_name: `${event.home_team.nickname} vs ${event.away_team.nickname}`,
+    event_name: 'partido a vs b', //`${event.home_team.nickname} vs ${event.away_team.nickname}`,
   };
 
   const handleSavePrediction = async () => {
@@ -122,7 +122,7 @@ const MatchInfo: React.FC<MatchInfoProps> = ({ event, predictions }) => {
   if (isLoading) {
     return (
       <>
-        <EventNavigation currentSlug={event.slug} events={events} />
+        <EventNavigation currentId={event.id} events={events} />
         <div className="flex justify-center text-center items-center min-h-screen">
           <Spinner
             classNames={{ label: 'text-foreground mt-4' }}
@@ -138,7 +138,7 @@ const MatchInfo: React.FC<MatchInfoProps> = ({ event, predictions }) => {
   return (
     <>
       <Toaster />
-      <EventNavigation currentSlug={event.slug} events={events} />
+      <EventNavigation currentId={event.id} events={events} />
       <div className="match-info-container flex flex-col min-h-screen">
         {notStarted && !prediction && (
           <div className="text-center mb-4">
@@ -157,30 +157,30 @@ const MatchInfo: React.FC<MatchInfoProps> = ({ event, predictions }) => {
         <div className="flex justify-around mb-2">
           <div className="flex flex-col items-center">
             <Image
-              src={event.home_team.shield.url}
-              alt={event.home_team.nickname}
+              src="/globe.svg" //src={event.home.img as string}
+              alt={event.home.name}
               width={64}
               height={64}
             />
             <h2
               className="text-center max-w-[100px] break-words mt-4"
-              title={event.home_team.name}
+              title={event.home.name}
             >
-              {event.home_team.name}
+              {event.home.name}
             </h2>
           </div>
           <div className="flex flex-col items-center">
             <Image
-              src={event.away_team.shield.url}
-              alt={event.away_team.nickname}
+              src="/globe.svg" // src={event.away.img as string}
+              alt={event.away.name}
               width={64}
               height={64}
             />
             <h2
               className="text-center max-w-[100px] break-words mt-4"
-              title={event.away_team.name}
+              title={event.away.name}
             >
-              {event.away_team.name}
+              {event.away.name}
             </h2>
           </div>
         </div>

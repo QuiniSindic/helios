@@ -8,6 +8,7 @@ import { BACKEND_URL } from '@/core/config';
 import { useFilterStore } from '@/store/filterStore';
 import { useMatchesStore } from '@/store/matchesStore';
 import { CompetitionData, MatchData } from '@/types/custom.types';
+import { parseKickoff } from '@/utils/date.utils';
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 
@@ -30,17 +31,18 @@ export default function Home() {
 
       const data = await response.json();
       const matchesResponse: CompetitionData[] = data?.data; // array de una competicion con su id, name y partidos
-      const matches = matchesResponse.map((item) => {
-        return item.matches;
-      }); // array de partidos
-
-      const events = matches
-        .flat()
+      const allMatches = matchesResponse.flatMap((group) => group.matches);
+      const events = allMatches
+        .sort(
+          (a, b) =>
+            parseKickoff(a.kickoff).getTime() -
+            parseKickoff(b.kickoff).getTime(),
+        )
         .filter((match: MatchData) => match.status === 'NS'); // filtrar partidos por status NS (Not Started)
 
       // TODO: filterEvents (en funcion del deporte etc)
 
-      console.log('events', events);
+      // console.log('events', events);
       return events;
     },
     // TODO: ajustar staleTime o refetchInterval

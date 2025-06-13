@@ -1,4 +1,6 @@
 import { laLigaCrests } from '@/constants/normalizeLaLiga';
+import { BACKEND_URL } from '@/core/config';
+import { MatchData } from '@/types/custom.types';
 import { Gameweek, Match } from '@/types/la_liga/la_liga.types';
 
 export const getCurrentGameweek = async () => {
@@ -99,6 +101,14 @@ export const getLaLigaMatch = async (slug: string) => {
 
   return normalizedMatch;
 };
+
+export const getMatchData = async (id: string): Promise<MatchData> => {
+  const response = await fetch(`${BACKEND_URL}/football/match/${id}`)
+
+  console.log({ response });
+
+  return response.json();
+}
 
 // export const filterEvents = (
 //   results: ParsedEvent[],

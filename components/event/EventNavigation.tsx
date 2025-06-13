@@ -1,18 +1,18 @@
 import ArrowLeft from '@/icons/ArrowLeft';
 import ArrowRight from '@/icons/ArrowRight';
-import { Match } from '@/types/la_liga/la_liga.types';
+import { MatchData } from '@/types/custom.types';
 import Link from 'next/link';
 
 interface EventNavigationProps {
-  currentSlug: string;
-  events: Match[];
+  currentId: string;
+  events: MatchData[];
 }
 
 export default function EventNavigation({
-  currentSlug,
+  currentId,
   events,
 }: EventNavigationProps) {
-  const currentIndex = events.findIndex((event) => event.slug === currentSlug);
+  const currentIndex = events.findIndex((event) => event.id === currentId);
 
   const previousEvent =
     currentIndex > 0 ? events[currentIndex - 1] : events[events.length - 1];
@@ -22,12 +22,12 @@ export default function EventNavigation({
 
   return (
     <div className="flex justify-between mb-4">
-      <Link href={`/event/${previousEvent.slug}`}>
+      <Link href={`/event/${previousEvent.id}`}>
         <p className="bg-secondary text-white py-2 px-4 rounded">
           <ArrowLeft />
         </p>
       </Link>
-      <Link href={`/event/${nextEvent.slug}`}>
+      <Link href={`/event/${nextEvent.id}`}>
         <p className="bg-secondary text-white py-2 px-4 rounded">
           <ArrowRight />
         </p>

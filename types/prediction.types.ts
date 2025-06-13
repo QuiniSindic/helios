@@ -1,5 +1,5 @@
 export interface LaLigaPredictionPayload {
-  event_id: number;
+  event_id: number | string;
   home_team: string;
   away_team: string;
   home_score: number;

@@ -3,7 +3,7 @@ import { createClient } from '@/utils/supabase/client';
 
 export async function getUserMatchPrediction(
   profileId: string,
-  eventId: number,
+  eventId: number | string,
 ) {
   const supabase = createClient();
   const { data, error } = await supabase
@@ -51,7 +51,7 @@ export async function getAllPredictions() {
 }
 
 export async function getEventPredictions(
-  eventId: number,
+  eventId: number | string,
 ): Promise<PredictionObject[]> {
   const supabase = createClient();
   const { data, error } = await supabase

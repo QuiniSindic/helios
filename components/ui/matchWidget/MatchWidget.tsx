@@ -30,8 +30,7 @@ export default function MatchWidget({
           isLive={isLive}
           isFinished={isFinished}
           event={event}
-          // TODO: revisar el making del kickoff porque falla el UTC
-          date={new Date(event.kickoff).toISOString()}
+          date={event.kickoff}
         />
       </div>
     </div>

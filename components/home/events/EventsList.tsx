@@ -20,7 +20,7 @@ export default function EventsList({ full = false }: EventsListProps) {
   );
 
   const displayedEvents = full ? eventsToPlay : eventsToPlay.slice(0, 6);
-  console.log('displayedEvents', displayedEvents);
+  // console.log('displayedEvents', displayedEvents);
 
   return (
     <div className="bg-white dark:bg-[#272727] rounded-lg mb-4 cursor-pointer">
