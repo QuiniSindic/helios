@@ -20,7 +20,7 @@ export default function EventTeamsData({
         </span>
         <Image
           // TODO: fix la url del escudo
-          src="/globe.svg" //{event.home.img as string}
+          src={(event.home.img as string) || '/globe.svg'}
           alt={event.home.abbr}
           width={28}
           height={28}
@@ -32,7 +32,7 @@ export default function EventTeamsData({
           {showScore ? `${event.result}` : 'vs'}
         </div>
         <Image
-          src="/globe.svg" // {event.away.img as string}
+          src={(event.away.img as string) || '/globe.svg'}
           alt={event.away.abbr}
           width={28}
           height={28}
@@ -47,7 +47,7 @@ export default function EventTeamsData({
       <div className="sm:hidden w-2/3 grid grid-cols-[auto_1fr_auto] gap-x-2 gap-y-4 items-center mr-1 mt-4">
         {/* Fila del equipo local */}
         <Image
-          src="/globe.svg" //src={event.home.img as string}
+          src={(event.home.img as string) || '/globe.svg'}
           alt={event.home.abbr}
           width={20}
           height={20}
@@ -61,7 +61,7 @@ export default function EventTeamsData({
 
         {/* Fila del equipo visitante */}
         <Image
-          src="/globe.svg" //src={event.away.img as string}
+          src={(event.away.img as string) || '/globe.svg'}
           alt={event.away.name}
           width={20}
           height={20}

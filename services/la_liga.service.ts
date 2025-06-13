@@ -1,4 +1,4 @@
-import { laLigaCrests } from '@/constants/normalizeLaLiga';
+import { laLigaCrests, livescoreLaLigaTeamsNormalized } from '@/constants/normalizeLaLiga';
 import { BACKEND_URL } from '@/core/config';
 import { MatchData } from '@/types/custom.types';
 import { Gameweek, Match } from '@/types/la_liga/la_liga.types';
@@ -103,11 +103,43 @@ export const getLaLigaMatch = async (slug: string) => {
 };
 
 export const getMatchData = async (id: string): Promise<MatchData> => {
-  const response = await fetch(`${BACKEND_URL}/football/match/${id}`)
+  const response = await fetch(`${BACKEND_URL}/football/match/${id}`);
+  
+  const data = response.json()
+  console.log(data);
 
-  console.log({ response });
+  return data;
+}
 
-  return response.json();
+export const normalizeTeamCrestsV2 = (matches: MatchData[] | MatchData): MatchData[] | MatchData => {
+  if (Array.isArray(matches)) {
+    return matches.map((match) => {
+      return {
+        ...match,
+        away: {
+          ...match.away,
+          img: laLigaCrests[livescoreLaLigaTeamsNormalized[match.away.name]]
+        },
+        home: {
+          ...match.home,
+          img: laLigaCrests[livescoreLaLigaTeamsNormalized[match.home.name]]
+        }
+      }
+    })
+  }
+
+  return {
+    ...matches,
+     away: {
+      ...matches.away,
+      img: laLigaCrests[livescoreLaLigaTeamsNormalized[matches.away.name]]
+    },
+    home: {
+      ...matches.home,
+      img: laLigaCrests[livescoreLaLigaTeamsNormalized[matches.home.name]]
+    }
+  }
+  
 }
 
 // export const filterEvents = (

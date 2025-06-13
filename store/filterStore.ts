@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { sports } from '../types/sports.types';
+import { sportsList } from '../types/sports.types';
 
 interface FilterStore {
   selectedSport: string | null;
@@ -27,7 +27,7 @@ export const useFilterStore = create<FilterStore>((set) => ({
         return { selectedLeague: null, selectedSport: null };
       }
       // Si se selecciona una liga diferente, se busca el deporte correspondiente
-      const foundSport = sports.find(
+      const foundSport = sportsList.find(
         (sport) => league !== null && sport.leagues.includes(league),
       )?.name;
       return {

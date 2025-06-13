@@ -5,6 +5,7 @@ import ResultsContainer from '@/components/home/results/ResultsContainer';
 import SportsList from '@/components/home/SportsList';
 import Welcome from '@/components/home/Welcome';
 import { BACKEND_URL } from '@/core/config';
+import { normalizeTeamCrestsV2 } from '@/services/la_liga.service';
 import { useFilterStore } from '@/store/filterStore';
 import { useMatchesStore } from '@/store/matchesStore';
 import { CompetitionData, MatchData } from '@/types/custom.types';
@@ -32,7 +33,7 @@ export default function Home() {
       const data = await response.json();
       const matchesResponse: CompetitionData[] = data?.data; // array de una competicion con su id, name y partidos
       const allMatches = matchesResponse.flatMap((group) => group.matches);
-      const events = allMatches
+      let events = allMatches
         .sort(
           (a, b) =>
             parseKickoff(a.kickoff).getTime() -
@@ -40,9 +41,11 @@ export default function Home() {
         )
         .filter((match: MatchData) => match.status === 'NS'); // filtrar partidos por status NS (Not Started)
 
+      const normalizedMatches = normalizeTeamCrestsV2(events);
+      events = normalizedMatches as MatchData[];
       // TODO: filterEvents (en funcion del deporte etc)
 
-      // console.log('events', events);
+      console.log('events', events);
       return events;
     },
     // TODO: ajustar staleTime o refetchInterval

@@ -1,7 +1,7 @@
 'use client';
 
 import { useFilterStore } from '@/store/filterStore';
-import { sports } from '@/types/sports.types';
+import { sportsList } from '@/types/sports.types';
 
 export default function FilterBar() {
   const { selectedSport, setSelectedSport, selectedLeague, setSelectedLeague } =
@@ -19,7 +19,7 @@ export default function FilterBar() {
 
   // Obtener las ligas del deporte seleccionado (si existe)
   const leagues =
-    sports.find((sport) => sport.name === selectedSport)?.leagues || [];
+    sportsList.find((sport) => sport.name === selectedSport)?.leagues || [];
 
   return (
     <div className="flex flex-col sm:flex-row gap-4 p-4 bg-secondary text-white rounded-lg mb-4">
@@ -29,7 +29,7 @@ export default function FilterBar() {
         className="bg-secondary text-white border border-white rounded p-2"
       >
         <option value="">Todos los deportes</option>
-        {sports.map((sport) => (
+        {sportsList.map((sport) => (
           <option key={sport.name} value={sport.name}>
             {sport.name}
           </option>

@@ -1,6 +1,6 @@
 'use client';
 import { useFilterStore } from '@/store/filterStore';
-import { sports } from '@/types/sports.types';
+import { sportsList } from '@/types/sports.types';
 
 export default function SportsList() {
   const { selectedSport, setSelectedSport, selectedLeague, setSelectedLeague } =
@@ -19,7 +19,7 @@ export default function SportsList() {
       {/* Versión para pantallas pequeñas (mobile) */}
       <div className="block lg:hidden">
         <div className="overflow-x-auto flex space-x-4 scrollbar-hide sm:mb-2">
-          {sports.map((sport) => (
+          {sportsList.map((sport) => (
             <button
               key={sport.name}
               onClick={() => toggleSport(sport.name)}
@@ -36,7 +36,7 @@ export default function SportsList() {
 
         {selectedSport && (
           <div className="my-2 text-center bg-secondary text-white rounded-lg overflow-x-auto flex space-x-4 scrollbar-hide">
-            {sports
+            {sportsList
               .find((sport) => sport.name === selectedSport)
               ?.leagues.map((league) => (
                 <button
@@ -59,7 +59,7 @@ export default function SportsList() {
           <h1 className="text-2xl font-bold text-center border-b-2 border-white mb-2">
             Deportes
           </h1>
-          {sports.map((sport) => (
+          {sportsList.map((sport) => (
             <div key={sport.name}>
               <h3 className="text-lg font-semibold">{sport.name}</h3>
               <ul>
