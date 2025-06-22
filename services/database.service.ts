@@ -1,9 +1,10 @@
 import { PredictionObject, UserProfile } from '@/types/database/table.types';
 import { createClient } from '@/utils/supabase/client';
 
+// FIX return types
 export async function getUserMatchPrediction(
   profileId: string,
-  eventId: number | string,
+  eventId: number,
 ) {
   const supabase = createClient();
   const { data, error } = await supabase
@@ -51,7 +52,7 @@ export async function getAllPredictions() {
 }
 
 export async function getEventPredictions(
-  eventId: number | string,
+  eventId: number,
 ): Promise<PredictionObject[]> {
   const supabase = createClient();
   const { data, error } = await supabase
@@ -101,10 +102,10 @@ export async function updateUserPoints(
   }
 
   const { data: totalPointsData, error: totalPointsError } = await supabase
-  .from('user_competition_points')
-  .update({ total_points: points })
-  .eq('user_id', profileId)
-  .eq('competition_id', competitionId);
+    .from('user_competition_points')
+    .update({ total_points: points })
+    .eq('user_id', profileId)
+    .eq('competition_id', competitionId);
 
   if (totalPointsError) {
     throw new Error(totalPointsError.message);

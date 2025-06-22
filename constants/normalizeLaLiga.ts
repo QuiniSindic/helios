@@ -1,7 +1,3 @@
-export const laLigaNormalized: Record<string, string> = {
-  soccer_spain_la_liga: 'La Liga EA Sports',
-};
-
 export const laLigaCrests: Record<string, string> = {
   // propiedad nickname
   'Atlético de Madrid':
@@ -52,7 +48,7 @@ export const livescoreLaLigaTeamsNormalized: Record<string, string> = {
   'Real Sociedad': 'Real Sociedad',
   'Rayo Vallecano': 'Rayo Vallecano',
   Getafe: 'Getafe CF',
-  'Osasuna': 'CA Osasuna',
+  Osasuna: 'CA Osasuna',
   'Athletic Club': 'Athletic Bilbao',
   Sevilla: 'Sevilla FC',
   'Real Betis': 'Real Betis Balompié',
@@ -67,4 +63,39 @@ export const livescoreLaLigaTeamsNormalized: Record<string, string> = {
   'Real Valladolid': 'Real Valladolid CF',
   'Deportivo Alaves': 'Deportivo Alavés',
   'Las Palmas': 'UD Las Palmas',
-}
+};
+
+export const livescoreMundialitoTeamsNormalized: Record<string, string> = {
+  'FC Porto': 'FC Porto',
+  // 'Al Ahly':
+  // 'Inter Miami CF':
+  // 'Palmeiras':
+  'Atletico Madrid': 'Atlético de Madrid',
+  // 'Botafogo FR':
+  // 'Seattle Sounders FC':
+  'Paris Saint-Germain': 'Paris Saint-Germain',
+  // 'Auckland City FC':
+  // 'Boca Juniors':
+  Benfica: 'SL Benfica',
+  'Bayern Munich': 'Bayern Munich',
+  // 'Esperance':
+  // 'Chelsea': 'Chelsea FC',
+  // 'Los Angeles FC':
+  // 'Flamengo':
+  // 'Inter': 'Inter Milan',
+  // 'Urawa Red Diamonds':
+  // 'Monterrey':
+  // 'River Plate':
+  // 'Mamelodi Sundowns FC':
+  'Borussia Dortmund': 'Borussia Dortmund',
+  // 'Fluminense':
+  // 'Ulsan Hyundai':
+  // 'Juventus': 'Juventus FC',
+  'Manchester City': 'Manchester City',
+  // 'Wydad Casablanca':
+  // 'Al-Ain':
+  'FC Salzburg': 'Red Bull Salzburg',
+  'Real Madrid': 'Real Madrid',
+  // 'Al Hilal':
+  // 'Pachuca':
+};

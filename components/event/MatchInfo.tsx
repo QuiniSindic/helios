@@ -2,31 +2,31 @@
 
 import { savePrediction } from '@/actions/actions';
 import { useAuth } from '@/hooks/useAuth';
-import {
-  getEventPredictions,
-  getUserMatchPrediction,
-} from '@/services/database.service';
+import { usePredictions, useUserPrediction } from '@/hooks/useUserPrediction';
 import { useMatchesStore } from '@/store/matchesStore';
 import { MatchData } from '@/types/custom.types';
 import { PredictionObject } from '@/types/database/table.types';
-import { LaLigaPredictionPayload } from '@/types/prediction.types';
+import { PredictionPayload } from '@/types/prediction.types';
 import { Button, Divider, Spinner } from '@heroui/react';
-import { useQuery } from '@tanstack/react-query';
-import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import SaveButton from '../ui/SaveButton';
 import EventNavigation from './EventNavigation';
-import ScoreInput from './ScoreInput';
-import UsersPredictions from './UserPredictions';
+import { MatchInfoTabs } from './MatchInfoTabs';
+import { NoPredictionWarn } from './NoPredictionWarn';
+import { TeamPrediction } from './TeamPrediction';
 
 interface MatchInfoProps {
   event: MatchData;
   predictions: PredictionObject[];
 }
 
-const MatchInfo: React.FC<MatchInfoProps> = ({ event, predictions }) => {
+const MatchInfo: React.FC<MatchInfoProps> = ({
+  event,
+  predictions: initialPreds,
+}) => {
   const { user } = useAuth();
+  const userId = user?.id ?? '';
   const { events } = useMatchesStore();
 
   const [homeScore, setHomeScore] = useState('');
@@ -38,68 +38,58 @@ const MatchInfo: React.FC<MatchInfoProps> = ({ event, predictions }) => {
   const isValidPrediction = homeScore.trim() !== '' && awayScore.trim() !== '';
 
   // El partido se considera en juego si su status es alguno de estos (PreMatch = no iniciado)
-  const isInProgress = ['FirstHalf', 'HalfTime', 'SecondHalf'].includes(
-    event.status,
-  );
+  const isInProgress = ['FirstHalf', 'HT', 'SecondHalf'].includes(event.status);
 
-  const notStarted = event.status === 'PreMatch';
-  const isFinished = event.status === 'FullTime';
+  const notStarted = event.status === 'NS';
+  const isFinished = event.status === 'FT';
 
   const {
-    data: prediction,
-    error,
-    refetch: refetchUserPrediction,
-  } = useQuery({
-    queryKey: ['prediction', user?.id, event.id],
-    queryFn: () => getUserMatchPrediction(user?.id as string, event.id),
-    enabled: !!user,
-    refetchOnWindowFocus: false,
-  });
+    data: userPred,
+    refetch: refetchUserPred,
+    // isLoading: loadingUserPred,
+    error: userPredError,
+  } = useUserPrediction(userId, Number(event.match_id));
 
   const {
-    data: predictionsData,
-    refetch: refetchPredictions,
-    isLoading: predictionsLoading,
-  } = useQuery<PredictionObject[]>({
-    queryKey: ['predictions', event.id],
-    queryFn: () => getEventPredictions(event.id),
-    refetchOnWindowFocus: false,
-    initialData: predictions,
-  });
+    data: allPreds = [],
+    refetch: refetchAllPreds,
+    isLoading: loadingAllPreds,
+  } = usePredictions(Number(event.match_id), initialPreds);
 
   // Si ya existe una predicción, precargamos los inputs
   useEffect(() => {
-    if (prediction) {
-      setHomeScore(prediction.home_score.toString());
-      setAwayScore(prediction.away_score.toString());
+    if (userPred) {
+      setHomeScore(userPred.home_score.toString());
+      setAwayScore(userPred.away_score.toString());
     }
-  }, [prediction]);
+  }, [userPred]);
 
-  const payload: LaLigaPredictionPayload = {
-    home_team: event.home.abbr,
-    away_team: event.away.abbr,
+  const payload: PredictionPayload = {
+    event_id: parseInt(event.match_id),
+    event_name: `${event.home.name} vs ${event.away.name}`,
+    home_team: event.home.name,
+    away_team: event.away.name,
     home_score: parseInt(homeScore, 10),
     away_score: parseInt(awayScore, 10),
-    event_id: event.id,
-    competition_id: 12134, //event?.competition?.id as number,
-    competition_name: 'mundialito', //event?.competition?.name as string,
+    competition_id: Number(event.competition_id),
+    competition_name: event.competition_full_name,
     user_id: user ? user.id : '',
-    event_name: 'partido a vs b', //`${event.home_team.nickname} vs ${event.away_team.nickname}`,
   };
 
   const handleSavePrediction = async () => {
     if (user && isValidPrediction) {
       setIsSaving(true);
       try {
+        console.log('payload', payload);
         await savePrediction(user, payload);
 
-        if (prediction) {
+        if (userPred) {
           toast.success('¡Predicción actualizada con éxito!');
         } else {
           toast.success('¡Predicción guardada con éxito!');
         }
-        await refetchUserPrediction();
-        await refetchPredictions();
+        await refetchUserPred();
+        await refetchAllPreds();
       } catch (err) {
         console.error(err);
         toast.error('Ocurrió un error al guardar la predicción.');
@@ -122,7 +112,7 @@ const MatchInfo: React.FC<MatchInfoProps> = ({ event, predictions }) => {
   if (isLoading) {
     return (
       <>
-        <EventNavigation currentId={event.id} events={events} />
+        <EventNavigation currentId={event.match_id} events={events} />
         <div className="flex justify-center text-center items-center min-h-screen">
           <Spinner
             classNames={{ label: 'text-foreground mt-4' }}
@@ -138,150 +128,97 @@ const MatchInfo: React.FC<MatchInfoProps> = ({ event, predictions }) => {
   return (
     <>
       <Toaster />
-      <EventNavigation currentId={event.id} events={events} />
+      <EventNavigation currentId={event.match_id} events={events} />
       <div className="match-info-container flex flex-col min-h-screen">
-        {notStarted && !prediction && (
-          <div className="text-center mb-4">
-            <h1>Realiza la predicción para el siguiente partido</h1>
-          </div>
-        )}
+        <NoPredictionWarn status={event.status} prediction={userPred} />
 
         {/* Mensaje de error */}
-        {error && (
+        {userPredError && (
           <div className="text-center text-red-500 mb-4">
-            <p>Error: {(error as Error).message}</p>
+            <p>Error: {(userPredError as Error).message}</p>
           </div>
         )}
 
         {/* Logos y nombres de los equipos */}
-        <div className="flex justify-around mb-2">
-          <div className="flex flex-col items-center">
-            <Image
-              src="/globe.svg" //src={event.home.img as string}
-              alt={event.home.name}
-              width={64}
-              height={64}
-            />
-            <h2
-              className="text-center max-w-[100px] break-words mt-4"
-              title={event.home.name}
-            >
-              {event.home.name}
-            </h2>
-          </div>
-          <div className="flex flex-col items-center">
-            <Image
-              src="/globe.svg" // src={event.away.img as string}
-              alt={event.away.name}
-              width={64}
-              height={64}
-            />
-            <h2
-              className="text-center max-w-[100px] break-words mt-4"
-              title={event.away.name}
-            >
-              {event.away.name}
-            </h2>
-          </div>
+        <div className="flex justify-around mb-4">
+          <TeamPrediction
+            name={event.home.name}
+            imgSrc={'/globe.svg'} //src={event.home.img as string}
+            score={homeScore}
+            onChange={setHomeScore}
+          />
+          <TeamPrediction
+            name={event.away.name}
+            imgSrc={'/globe.svg'} //src={event.away.img as string}
+            score={awayScore}
+            onChange={setAwayScore}
+          />
         </div>
 
-        {/* Indicador de carga */}
+        {/* Mensajes de estado del partido */}
+        {notStarted && (
+          <div className="text-center">
+            {userPred && (
+              <p className="mb-2">
+                Tu predicción (editable): {homeScore} - {awayScore}
+              </p>
+            )}
+            <div className="flex justify-center mt-6 w-full">
+              {user ? (
+                <Button
+                  type="button"
+                  isLoading={isSaving}
+                  disabled={!isValidPrediction}
+                  onPress={handleSavePrediction}
+                  className={`group relative text-white flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md transition-colors duration-200 ${
+                    !isValidPrediction
+                      ? 'bg-gray-400 cursor-not-allowed'
+                      : 'bg-secondary hover:bg-secondary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary'
+                  }`}
+                >
+                  {userPred ? 'Actualizar predicción' : 'Guardar predicción'}
+                </Button>
+              ) : (
+                <SaveButton
+                  label="Compartir predicción"
+                  onClick={() => {
+                    console.log('Compartir predicción');
+                  }}
+                />
+              )}
+            </div>
+          </div>
+        )}
+
+        {isInProgress && (
+          <p className="text-center text-primary">
+            El partido está en juego. Tu predicción final: {homeScore} -{' '}
+            {awayScore}
+          </p>
+        )}
+
+        {isFinished && (
+          <p className="text-red-500 text-center">El partido ha finalizado</p>
+        )}
+
+        {/* Indicador de carga de predicción*/}
         {isLoading && (
           <div className="text-center mb-4">
             <p>Cargando predicción...</p>
           </div>
         )}
 
-        {/* Sección de inputs */}
-        {!isInProgress && !isFinished ? (
-          <>
-            {prediction && (
-              <p className="text-center mb-2">
-                {`Tu predicción actual (editable): ${homeScore} - ${awayScore}`}
-              </p>
-            )}
-            <div className="flex justify-around mb-2">
-              <ScoreInput
-                value={homeScore}
-                onChange={(val) => setHomeScore(val)}
-              />
-              <ScoreInput
-                value={awayScore}
-                onChange={(val) => setAwayScore(val)}
-              />
-            </div>
-          </>
-        ) : !isInProgress && isFinished ? (
-          <div className="text-center mb-2">
-            <p className="text-red-500">El partido ha finalizado</p>
-          </div>
-        ) : (
-          <>
-            {prediction ? (
-              <>
-                <p className="text-center mb-2">Esta es tu predicción</p>
-                <div className="flex justify-around mb-2">
-                  <ScoreInput value={homeScore} onChange={() => {}} disabled />
-                  <ScoreInput value={awayScore} onChange={() => {}} disabled />
-                </div>
-              </>
-            ) : (
-              <div className="text-center mb-2">
-                <p className="text-red-500">El partido está en juego</p>
-              </div>
-            )}
-          </>
-        )}
-
-        {/* Botón para guardar o actualizar la predicción */}
-        {notStarted && (
-          <div className="flex justify-center mt-6 w-full">
-            {user ? (
-              <Button
-                type="button"
-                isLoading={isSaving}
-                disabled={!isValidPrediction}
-                onPress={handleSavePrediction}
-                className={`group relative text-white flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md transition-colors duration-200 ${
-                  !isValidPrediction
-                    ? 'bg-gray-400 cursor-not-allowed'
-                    : 'bg-secondary hover:bg-secondary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary'
-                }`}
-              >
-                {prediction ? 'Actualizar predicción' : 'Guardar predicción'}
-              </Button>
-            ) : (
-              <SaveButton
-                label="Compartir predicción"
-                onClick={() => {
-                  console.log('Compartir predicción');
-                }}
-              />
-            )}
-          </div>
-        )}
         <Divider className="my-4" />
 
-        {predictionsLoading && (
-          <div className="flex justify-center text-center items-center min-h-screen">
-            <Spinner
-              classNames={{ label: 'text-foreground mt-4' }}
-              label="Cargando predicciones de usuarios..."
-              variant="wave"
-              color="secondary"
-            />
-          </div>
-        )}
-
-        {!predictionsLoading && predictionsData.length === 0 && (
-          <div className="text-center mb-2">
-            <p className="text-red-500">No hay predicciones de usuarios</p>
-          </div>
-        )}
-
-        {!predictionsLoading && predictionsData.length > 0 && (
-          <UsersPredictions predictions={predictionsData} />
-        )}
+        <MatchInfoTabs
+          event={event}
+          predictions={allPreds}
+          isFinished={isFinished}
+          isInProgress={isInProgress}
+          notStarted={notStarted}
+          refetchAllPreds={refetchAllPreds}
+          loadingAllPreds={loadingAllPreds}
+        />
       </div>
     </>
   );

@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { sportsList } from '../types/sports.types';
+import { sportsList } from '../constants/mappers';
 
 interface FilterStore {
   selectedSport: string | null;

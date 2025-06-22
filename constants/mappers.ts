@@ -7,9 +7,11 @@ export const sportsList = [
       'Bundesliga',
       'Serie A',
       'Ligue 1',
+      'La Liga Hypermotion',
       'Champions League',
       'Europa League',
       'Copa del Rey',
+      'Mundial de Clubes',
     ],
   },
   {
@@ -44,6 +46,9 @@ export const sportsMap: { [key: string]: string } = {
 };
 
 export const leaguesMap: { [key: string]: string } = {
+  'Mundial de Clubes': 'club-worldcup',
+  'La Liga Hypermotion': 'la-liga-hypermotion',
+  // FIX SLUGS
   'La Liga': 'LaLiga',
   'Premier League': 'Premier League',
   Bundesliga: 'Bundesliga',

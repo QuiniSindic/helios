@@ -1,6 +1,6 @@
 import MatchInfo from '@/components/event/MatchInfo';
 import { getEventPredictions } from '@/services/database.service';
-import { getMatchData } from '@/services/la_liga.service';
+import { getMatchData } from '@/services/matches.service';
 import { createClient } from '@/utils/supabase/server';
 
 export default async function EventDetailPage({
@@ -16,8 +16,8 @@ export default async function EventDetailPage({
   } = await supabase.auth.getUser();
 
   const matchData = await getMatchData(slug);
-  const match = Array.isArray(matchData) ? matchData[0] : matchData;
-  const predictions = await getEventPredictions(match.id);
+  const match = Array.isArray(matchData) ? matchData[0] : matchData; // Check si se puede quitar
+  const predictions = await getEventPredictions(match.match_id);
 
   return (
     <div className="flex flex-col flex-grow">

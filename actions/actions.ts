@@ -1,6 +1,6 @@
 'use server';
 
-import { LaLigaPredictionPayload } from '@/types/prediction.types';
+import { PredictionPayload } from '@/types/prediction.types';
 import { createClient } from '@/utils/supabase/server';
 import { User } from '@supabase/supabase-js';
 import { redirect } from 'next/navigation';
@@ -27,12 +27,12 @@ export async function handleGoogleSubmit() {
 
 export async function savePrediction(
   userLogged: User,
-  matchPayload: LaLigaPredictionPayload,
+  matchPayload: PredictionPayload,
 ) {
   if (!userLogged) {
     throw new Error('Debes iniciar sesión para guardar una predicción.');
   }
-  
+
   const supabase = await createClient();
 
   const {
@@ -71,6 +71,7 @@ export async function savePrediction(
     .single();
 
   if (error) {
+    console.error('Error al guardar la predicción:', error);
     throw new Error(error.message);
   }
 

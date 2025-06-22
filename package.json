@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "check:ts": "npx tsc --project tsconfig.json --noEmit --alwaysStrict --forceConsistentCasingInFileNames",
     "format": "prettier --write \"{app,components,core,lib,services,utils}/**/*.{ts,tsx,js,jsx}\""
   },
   "dependencies": {

@@ -10,7 +10,7 @@ export enum MatchEventType {
   None,
 }
 
-export interface MatchEvent  {
+export interface MatchEvent {
   type: MatchEventType;
   minute?: number | string;
   extraMinute?: number;
@@ -18,32 +18,35 @@ export interface MatchEvent  {
   playerName?: string;
   score?: string;
   extra?: string;
-};
+}
 
 export interface MatchData {
-  id: string;
+  match_id: string;
   home: TeamInfo;
   away: TeamInfo;
   status: MatchStatus;
   result: string;
   kickoff: string; // 21:00 01/06/2025
   events: MatchEvent[];
-};
+  competition_id: string;
+  competition_full_name: string;
+}
 
 export const MATCH_STATUSES = [
-  'NS',         // Not Started
+  'NS', // Not Started
+  'HT', // Half Time
+  'FT', // Full Time
+  'OT', // Overtime no se si existe
+  'AET', // After Extra Time
+  'Canc.', // Cancelled
   // editar los siguientes en funcón de livescore, porque estos son de la liga
   'PreMatch',
   'FirstHalf',
   'HalfTime',
   'SecondHalf',
-  'FullTime',
-  "Canceled",
-
 ] as const;
 
-export type MatchStatus = typeof MATCH_STATUSES[number];
-
+export type MatchStatus = (typeof MATCH_STATUSES)[number];
 
 export interface CompetitionData {
   id: string;
@@ -51,12 +54,12 @@ export interface CompetitionData {
   fullName: string;
   badge: string;
   matches: MatchData[];
-};
+}
 
-export interface TeamInfo  {
+export interface TeamInfo {
   id: string;
   name: string;
   abbr: string;
   img: string | null;
   country: string;
-};
+}

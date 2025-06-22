@@ -38,7 +38,7 @@ const UsersPredictions = ({ predictions }: UsersPredictionsProps) => {
 
   return (
     <div>
-      <h1 className="text-xl font-bold mb-4">Predicciones de tus amigos</h1>
+      <h1 className="text-xl font-bold mb-4">Predicciones para este evento</h1>
 
       {predictions.length === 0 ? (
         <p>No hay predicciones disponibles.</p>

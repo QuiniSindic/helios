@@ -14,7 +14,7 @@ export const useMatchesStore = create<MatchesStore>()(
       setEvents: (events) => set({ events }),
     }),
     {
-      name: 'matches',
+      name: 'next-matches',
     },
   ),
 );

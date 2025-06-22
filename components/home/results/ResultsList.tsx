@@ -18,7 +18,7 @@ export default function ResultsList({
   error,
 }: ResultsListProps) {
   const eventsPlayed = results.filter(
-    (event: MatchData) => event.status === 'FullTime',
+    (event: MatchData) => event.status === 'FT',
   );
 
   const displayedResults = full ? eventsPlayed : eventsPlayed.slice(0, 6);
@@ -35,12 +35,15 @@ export default function ResultsList({
         <>
           {displayedResults.map((result) => {
             switch (result.status) {
-              case 'FullTime':
+              case 'FT':
                 const isFinished = true;
                 return (
-                  <Link href={`/event/${result.id}`} key={result.id}>
+                  <Link
+                    href={`/event/${result.match_id}`}
+                    key={result.match_id}
+                  >
                     <MatchWidget
-                      key={result.id}
+                      key={result.match_id}
                       event={result}
                       isFinished={isFinished}
                     />
@@ -49,8 +52,11 @@ export default function ResultsList({
 
               default:
                 return (
-                  <Link href={`/event/${result.id}`} key={result.id}>
-                    <MatchWidget key={result.id} event={result} />
+                  <Link
+                    href={`/event/${result.match_id}`}
+                    key={result.match_id}
+                  >
+                    <MatchWidget key={result.match_id} event={result} />
                   </Link>
                 );
             }

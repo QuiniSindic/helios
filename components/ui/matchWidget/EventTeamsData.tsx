@@ -10,6 +10,12 @@ export default function EventTeamsData({
   event,
   showScore = false,
 }: EventTeamsProps) {
+  const resultParts = event.result.split(' - ');
+  const hasResult = resultParts.length === 2;
+
+  const homeScore = hasResult ? parseInt(resultParts[0], 10) : null;
+  const awayScore = hasResult ? parseInt(resultParts[1], 10) : null;
+
   return (
     <>
       {/* Vista para PC (pantallas grandes) */}
@@ -56,7 +62,7 @@ export default function EventTeamsData({
         <span className="text-sm font-medium">{event.home.name}</span>
         <span className="text-sm font-medium text-right">
           {/* TODO: fix la manera en que el back deveuelve el resultado */}
-          {showScore ? event.result : ''}
+          {showScore ? homeScore : ''}
         </span>
 
         {/* Fila del equipo visitante */}
@@ -70,7 +76,7 @@ export default function EventTeamsData({
         <span className="text-sm font-medium">{event.away.name}</span>
         <span className="text-sm font-medium text-right">
           {/* TODO: fix la manera en que el back deveuelve el resultado */}
-          {showScore ? event.result : ''}
+          {showScore ? awayScore : ''}
         </span>
       </div>
     </>
