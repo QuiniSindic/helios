@@ -1,6 +1,7 @@
 import { PredictionObject, UserProfile } from '@/types/database/table.types';
 import { createClient } from '@/utils/supabase/client';
 
+// FIX return types
 export async function getUserMatchPrediction(
   profileId: string,
   eventId: number,
@@ -101,14 +102,31 @@ export async function updateUserPoints(
   }
 
   const { data: totalPointsData, error: totalPointsError } = await supabase
-  .from('user_competition_points')
-  .update({ total_points: points })
-  .eq('user_id', profileId)
-  .eq('competition_id', competitionId);
+    .from('user_competition_points')
+    .update({ total_points: points })
+    .eq('user_id', profileId)
+    .eq('competition_id', competitionId);
 
   if (totalPointsError) {
     throw new Error(totalPointsError.message);
   }
 
   return { predictionData, totalPointsData };
+}
+
+export async function getLeaderboard(
+  competitionId: number,
+): Promise<UserProfile[]> {
+  const supabase = createClient();
+  const { data, error } = await supabase
+    .from('user_competition_points')
+    .select('*, profiles (username)')
+    .eq('competition_id', competitionId)
+    .order('total_points', { ascending: false });
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data;
 }

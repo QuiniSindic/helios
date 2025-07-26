@@ -1,12 +1,12 @@
 import MatchInfo from '@/components/event/MatchInfo';
 import { getEventPredictions } from '@/services/database.service';
-import { getLaLigaMatch } from '@/services/la_liga.service';
+import { getMatchData } from '@/services/matches.service';
 import { createClient } from '@/utils/supabase/server';
 
 export default async function EventDetailPage({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ slug: number }>;
 }) {
   const supabase = await createClient();
   const { slug } = await params;
@@ -15,8 +15,8 @@ export default async function EventDetailPage({
     data: { user },
   } = await supabase.auth.getUser();
 
-  const matchData = await getLaLigaMatch(slug);
-  const match = Array.isArray(matchData) ? matchData[0] : matchData;
+  const matchData = await getMatchData(slug);
+  const match = Array.isArray(matchData) ? matchData[0] : matchData; // TODO: Check si se puede quitar
   const predictions = await getEventPredictions(match.id);
 
   return (

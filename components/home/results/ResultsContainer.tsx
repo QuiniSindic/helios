@@ -1,11 +1,11 @@
-import { Match } from '@/types/la_liga/la_liga.types';
+import { MatchData } from '@/types/custom.types';
 import ResultsList from './ResultsList';
 
 interface ResultsContainerProps {
   full?: boolean;
-  results: Match[];
-  loading: boolean;
-  error: Error | null;
+  results: MatchData[];
+  loading?: boolean;
+  error?: Error | null;
 }
 
 export default function ResultsContainer({
