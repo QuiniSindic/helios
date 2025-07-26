@@ -6,6 +6,6 @@ export interface PredictionPayload {
   home_score: number;
   away_score: number;
   competition_id: number;
-  competition_name: string;
+  competition_name?: string;
   user_id: string;
 }

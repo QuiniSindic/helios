@@ -1,6 +1,7 @@
 'use client';
 
 import { savePrediction } from '@/actions/actions';
+import { API_LOGO_COMPETITION_URL } from '@/core/config';
 import { useAuth } from '@/hooks/useAuth';
 import { usePredictions, useUserPrediction } from '@/hooks/useUserPrediction';
 import { useMatchesStore } from '@/store/matchesStore';
@@ -48,13 +49,13 @@ const MatchInfo: React.FC<MatchInfoProps> = ({
     refetch: refetchUserPred,
     // isLoading: loadingUserPred,
     error: userPredError,
-  } = useUserPrediction(userId, Number(event.match_id));
+  } = useUserPrediction(userId, Number(event.id));
 
   const {
     data: allPreds = [],
     refetch: refetchAllPreds,
     isLoading: loadingAllPreds,
-  } = usePredictions(Number(event.match_id), initialPreds);
+  } = usePredictions(Number(event.id), initialPreds);
 
   // Si ya existe una predicción, precargamos los inputs
   useEffect(() => {
@@ -65,14 +66,14 @@ const MatchInfo: React.FC<MatchInfoProps> = ({
   }, [userPred]);
 
   const payload: PredictionPayload = {
-    event_id: parseInt(event.match_id),
-    event_name: `${event.home.name} vs ${event.away.name}`,
-    home_team: event.home.name,
-    away_team: event.away.name,
+    event_id: event.id,
+    event_name: `${event.homeTeam.name} vs ${event.awayTeam.name}`,
+    home_team: event.homeTeam.name,
+    away_team: event.awayTeam.name,
     home_score: parseInt(homeScore, 10),
     away_score: parseInt(awayScore, 10),
-    competition_id: Number(event.competition_id),
-    competition_name: event.competition_full_name,
+    competition_id: Number(event.competitionid),
+    // competition_name: event.competition_full_name,
     user_id: user ? user.id : '',
   };
 
@@ -103,7 +104,7 @@ const MatchInfo: React.FC<MatchInfoProps> = ({
     if (isLoading) {
       const timer = setTimeout(() => {
         setIsLoading(false);
-      }, 1000);
+      }, 500);
 
       return () => clearTimeout(timer);
     }
@@ -112,7 +113,7 @@ const MatchInfo: React.FC<MatchInfoProps> = ({
   if (isLoading) {
     return (
       <>
-        <EventNavigation currentId={event.match_id} events={events} />
+        <EventNavigation currentId={event.id} events={events} />
         <div className="flex justify-center text-center items-center min-h-screen">
           <Spinner
             classNames={{ label: 'text-foreground mt-4' }}
@@ -128,7 +129,7 @@ const MatchInfo: React.FC<MatchInfoProps> = ({
   return (
     <>
       <Toaster />
-      <EventNavigation currentId={event.match_id} events={events} />
+      <EventNavigation currentId={event.id} events={events} />
       <div className="match-info-container flex flex-col min-h-screen">
         <NoPredictionWarn status={event.status} prediction={userPred} />
 
@@ -142,14 +143,20 @@ const MatchInfo: React.FC<MatchInfoProps> = ({
         {/* Logos y nombres de los equipos */}
         <div className="flex justify-around mb-4">
           <TeamPrediction
-            name={event.home.name}
-            imgSrc={'/globe.svg'} //src={event.home.img as string}
+            name={event.homeTeam.name}
+            imgSrc={
+              `${API_LOGO_COMPETITION_URL}${event.homeTeam.img as string}` ||
+              '/globe.svg'
+            } //src={event.home.img as string}
             score={homeScore}
             onChange={setHomeScore}
           />
           <TeamPrediction
-            name={event.away.name}
-            imgSrc={'/globe.svg'} //src={event.away.img as string}
+            name={event.awayTeam.name}
+            imgSrc={
+              `${API_LOGO_COMPETITION_URL}${event.awayTeam.img as string}` ||
+              '/globe.svg'
+            } //src={event.away.img as string}
             score={awayScore}
             onChange={setAwayScore}
           />

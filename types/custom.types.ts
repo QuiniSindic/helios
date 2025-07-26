@@ -21,15 +21,31 @@ export interface MatchEvent {
 }
 
 export interface MatchData {
-  match_id: string;
-  home: TeamInfo;
-  away: TeamInfo;
+  id: number;
+  // home: TeamInfo;
+  // away: TeamInfo;
   status: MatchStatus;
   result: string;
   kickoff: string; // 21:00 01/06/2025
-  events: MatchEvent[];
-  competition_id: string;
-  competition_full_name: string;
+  events?: MatchEvent[];
+  homeId: number;
+  awayId: number;
+  competitionid: number;
+  homeTeam: {
+    id: number;
+    name: string;
+    abbr: string;
+    img: string;
+    country: string;
+  };
+  awayTeam: {
+    id: number;
+    name: string;
+    abbr: string;
+    img: string;
+    country: string;
+  };
+  // competition_full_name: string;
 }
 
 export const MATCH_STATUSES = [

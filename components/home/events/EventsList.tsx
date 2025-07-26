@@ -12,7 +12,7 @@ interface EventsListProps {
 export default function EventsList({ full = false }: EventsListProps) {
   const { events } = useMatchesStore();
   const eventsToPlay = events.filter(
-    (e: MatchData) => !['FT', 'Canceled'].includes(e.status),
+    (e: MatchData) => !['FT', 'Canc.'].includes(e.status),
   );
 
   const displayedEvents = full ? eventsToPlay : eventsToPlay.slice(0, 6);
@@ -29,7 +29,7 @@ export default function EventsList({ full = false }: EventsListProps) {
             const isLive =
               status !== 'NS' && status !== 'FT' && status !== 'Canc.';
             return (
-              <Link href={`/event/${event.match_id}`} key={event.match_id}>
+              <Link href={`/event/${event.id}`} key={event.id}>
                 <MatchWidget event={event} isLive={isLive} />
               </Link>
             );

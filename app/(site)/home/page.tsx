@@ -1,10 +1,9 @@
 'use client';
 
 import EventsContainer from '@/components/home/events/EventsContainer';
-import ResultsContainer from '@/components/home/results/ResultsContainer';
 import SportsList from '@/components/home/SportsList';
 import Welcome from '@/components/home/Welcome';
-import { getMatches } from '@/services/matches.service';
+import { getUpcoming } from '@/services/matches.service';
 import { useFilterStore } from '@/store/filterStore';
 import { useMatchesStore } from '@/store/matchesStore';
 import { MatchData } from '@/types/custom.types';
@@ -21,7 +20,7 @@ export default function Home() {
     // error,
   } = useQuery<MatchData[]>({
     queryKey: ['events', selectedSport, selectedLeague],
-    queryFn: () => getMatches(),
+    queryFn: () => getUpcoming(),
     // FIX para que por defecto coja los matches de todas las comeptis
     // enabled: !!selectedSport && !!selectedLeague,
     refetchOnMount: false,
@@ -41,17 +40,13 @@ export default function Home() {
         <div className="flex flex-col lg:flex-row lg:gap-4">
           <SportsList />
           <div className="flex flex-col lg:flex-row lg:gap-4 flex-1">
-            <EventsContainer
-            // events={events}
-            // loading={isLoading}
-            // error={error}
-            />
-            {/* FIX types - 07/06/2025 */}
-            <ResultsContainer
+            <EventsContainer />
+            {/* FIX Añadir un contianer con otro tipo de data */}
+            {/* <ResultsContainer
               results={events}
               // loading={isLoading}
               // error={error}
-            />
+            /> */}
           </div>
         </div>
       </>

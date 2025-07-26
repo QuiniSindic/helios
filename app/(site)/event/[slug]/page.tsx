@@ -6,7 +6,7 @@ import { createClient } from '@/utils/supabase/server';
 export default async function EventDetailPage({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ slug: number }>;
 }) {
   const supabase = await createClient();
   const { slug } = await params;
@@ -16,8 +16,8 @@ export default async function EventDetailPage({
   } = await supabase.auth.getUser();
 
   const matchData = await getMatchData(slug);
-  const match = Array.isArray(matchData) ? matchData[0] : matchData; // Check si se puede quitar
-  const predictions = await getEventPredictions(match.match_id);
+  const match = Array.isArray(matchData) ? matchData[0] : matchData; // TODO: Check si se puede quitar
+  const predictions = await getEventPredictions(match.id);
 
   return (
     <div className="flex flex-col flex-grow">

@@ -17,6 +17,7 @@ export const MatchInfoPredictionsTab: React.FC<
     <>
       {loadingAllPreds && (
         <div className="flex justify-center text-center items-center min-h-screen">
+          {/* TODO: Refactor spinner en un componente */}
           <Spinner
             classNames={{ label: 'text-foreground mt-4' }}
             label="Cargando predicciones de usuarios..."

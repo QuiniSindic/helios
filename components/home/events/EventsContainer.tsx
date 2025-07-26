@@ -1,12 +1,5 @@
 import EventsList from './EventsList';
 
-// interface EventsContainerProps {
-//   full?: boolean;
-//   events: Match[];
-//   loading: boolean;
-//   error: Error | null;
-// }
-
 export default function EventsContainer() {
   return (
     <div className="container sm:max-w-none sm:p-0 sm:flex sm:gap-4 sm:w-full">

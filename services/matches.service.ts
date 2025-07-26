@@ -1,36 +1,37 @@
-import {
-  laLigaCrests,
-  livescoreLaLigaTeamsNormalized,
-} from '@/constants/normalizeLaLiga';
+import { leaguesMap, sportsMap } from '@/constants/mappers';
 import { BACKEND_URL } from '@/core/config';
 import { CompetitionData, MatchData } from '@/types/custom.types';
 import { parseKickoff } from '@/utils/date.utils';
 
-export const getMatches = async (): Promise<MatchData[]> => {
+export const getMatches = async ({
+  selectedSport,
+  selectedLeague,
+}: {
+  selectedSport: string;
+  selectedLeague: string;
+}): Promise<MatchData[]> => {
   // FIX Porque hace 4 requests
-  // FIX filtrado de eventos por comeptición
-  // if (!selectedSport || !selectedLeague) {
-  //   return [];
-  // }
 
-  // const sportSlug = sportsMap[selectedSport as keyof typeof sportsMap];
-  // const leagueSlug = leaguesMap[selectedLeague as keyof typeof leaguesMap];
+  const sportSlug = sportsMap[selectedSport as keyof typeof sportsMap];
+  const leagueSlug = leaguesMap[selectedLeague as keyof typeof leaguesMap];
 
-  // const matchesResponse: CompetitionData[] = await filterMatches(
-  //   sportSlug,
-  //   leagueSlug,
-  // );
+  const url =
+    !sportSlug && !leagueSlug
+      ? `${BACKEND_URL}/events/upcoming`
+      : // aqui se debe filtar por deporte y liga para escoger bien la url de la request
+        // por el momento se hace request a football
+        `${BACKEND_URL}/football/matches`;
+  // : `${BACKEND_URL}/football/matches?sport=${sportSlug}&league=${leagueSlug}`;
 
-  // console.log('matchesResponse', matchesResponse);
-
-  const response = await fetch(`${BACKEND_URL}/football/matches`);
+  const response = await fetch(url);
   if (!response.ok) {
     const { error } = await response.json();
     throw new Error(error);
   }
 
   const data = await response.json();
-  const competitions: CompetitionData[] = data?.data;
+  console.log('data', data);
+  const competitions: CompetitionData[] = data; //data?.data;
   const allMatches = competitions.flatMap((competition) =>
     competition.matches.map((match) => ({
       ...match,
@@ -48,15 +49,14 @@ export const getMatches = async (): Promise<MatchData[]> => {
       return match.status === 'NS' || match.status !== 'FT';
     });
 
-  // escudos OK
-  const normalizedMatches = normalizeTeamCrestsV2(events);
-
-  return normalizedMatches as MatchData[];
+  return events;
 };
 
-export const getMatchData = async (id: string): Promise<MatchData> => {
+export const getMatchData = async (id: number): Promise<MatchData> => {
   const response = await fetch(`${BACKEND_URL}/football/match/${id}`);
   const data = await response.json();
+
+  console.log('getMatchData response', data);
 
   if (!data.ok) {
     throw new Error(data.error || 'Error fetching match data');
@@ -65,38 +65,6 @@ export const getMatchData = async (id: string): Promise<MatchData> => {
   const matchData: MatchData = data.data;
 
   return matchData;
-};
-
-export const normalizeTeamCrestsV2 = (
-  matches: MatchData[] | MatchData,
-): MatchData[] | MatchData => {
-  if (Array.isArray(matches)) {
-    return matches.map((match) => {
-      return {
-        ...match,
-        away: {
-          ...match.away,
-          img: laLigaCrests[livescoreLaLigaTeamsNormalized[match.away.name]],
-        },
-        home: {
-          ...match.home,
-          img: laLigaCrests[livescoreLaLigaTeamsNormalized[match.home.name]],
-        },
-      };
-    });
-  }
-
-  return {
-    ...matches,
-    away: {
-      ...matches.away,
-      img: laLigaCrests[livescoreLaLigaTeamsNormalized[matches.away.name]],
-    },
-    home: {
-      ...matches.home,
-      img: laLigaCrests[livescoreLaLigaTeamsNormalized[matches.home.name]],
-    },
-  };
 };
 
 export const filterMatches = async (sportSlug: string, leagueSlug: string) => {
@@ -157,3 +125,16 @@ export const filterMatches = async (sportSlug: string, leagueSlug: string) => {
 
 //   return filteredResults;
 // };
+
+export const getUpcoming = async () => {
+  const url = `${BACKEND_URL}/football/upcoming`;
+
+  const response = await fetch(url);
+  if (!response.ok) {
+    const { error } = await response.json();
+    throw new Error(error);
+  }
+
+  const data = await response.json();
+  return data;
+};

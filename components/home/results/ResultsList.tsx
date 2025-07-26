@@ -38,12 +38,9 @@ export default function ResultsList({
               case 'FT':
                 const isFinished = true;
                 return (
-                  <Link
-                    href={`/event/${result.match_id}`}
-                    key={result.match_id}
-                  >
+                  <Link href={`/event/${result.id}`} key={result.id}>
                     <MatchWidget
-                      key={result.match_id}
+                      key={result.id}
                       event={result}
                       isFinished={isFinished}
                     />
@@ -52,11 +49,8 @@ export default function ResultsList({
 
               default:
                 return (
-                  <Link
-                    href={`/event/${result.match_id}`}
-                    key={result.match_id}
-                  >
-                    <MatchWidget key={result.match_id} event={result} />
+                  <Link href={`/event/${result.id}`} key={result.id}>
+                    <MatchWidget key={result.id} event={result} />
                   </Link>
                 );
             }

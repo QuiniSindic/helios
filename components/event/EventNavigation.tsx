@@ -4,7 +4,7 @@ import { MatchData } from '@/types/custom.types';
 import Link from 'next/link';
 
 interface EventNavigationProps {
-  currentId: string;
+  currentId: number;
   events: MatchData[];
 }
 
@@ -12,9 +12,7 @@ export default function EventNavigation({
   currentId,
   events,
 }: EventNavigationProps) {
-  const currentIndex = events.findIndex(
-    (event) => event.match_id === currentId,
-  );
+  const currentIndex = events.findIndex((event) => event.id === currentId);
 
   const previousEvent =
     currentIndex > 0 ? events[currentIndex - 1] : events[events.length - 1];
@@ -24,12 +22,12 @@ export default function EventNavigation({
 
   return (
     <div className="flex justify-between mb-4">
-      <Link href={`/event/${previousEvent.match_id}`}>
+      <Link href={`/event/${previousEvent.id}`}>
         <p className="bg-secondary text-white py-2 px-4 rounded">
           <ArrowLeft />
         </p>
       </Link>
-      <Link href={`/event/${nextEvent.match_id}`}>
+      <Link href={`/event/${nextEvent.id}`}>
         <p className="bg-secondary text-white py-2 px-4 rounded">
           <ArrowRight />
         </p>

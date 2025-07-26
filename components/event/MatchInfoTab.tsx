@@ -28,15 +28,18 @@ export const MatchInfoTab: React.FC<MatchInfoProps> = ({
   // notStarted,
   // isFinished,
 }) => {
-  const actions = event.events;
+  const actions = event?.events;
+  const hasNoActions =
+    actions?.length === 0 || actions === undefined || actions === null;
 
+  console.log('hasNoActionsactions', hasNoActions);
   return (
     <div className="match-info-container px-4 py-6">
       <h1 className="text-2xl font-bold text-center mb-6">
         Acciones del Partido
       </h1>
 
-      {actions.length === 0 ? (
+      {hasNoActions ? (
         <p className="text-center text-gray-500">
           No hay acciones registradas.
         </p>
