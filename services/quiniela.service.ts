@@ -1,6 +1,6 @@
 import { QUINIELA_DATA_URL } from '@/core/config';
+import { QuinielaData, QuinielaResponse } from '@/types/quiniela.types';
 import { createClient } from '@/utils/supabase/server';
-import { QuinielaData, QuinielaResponse } from '@/utils/types/quiniela.types';
 import axios from 'axios';
 
 export const getQuinielaData = async (): Promise<QuinielaResponse | []> => {

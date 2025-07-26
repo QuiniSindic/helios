@@ -1,94 +1,49 @@
 'use client';
 
 import MatchWidget from '@/components/ui/matchWidget/MatchWidget';
-import { filterEvents } from '@/services/events.service';
-import { useFilterStore } from '@/store/filterStore';
-import { ParsedEvent } from '@/utils/sofascore/types/parsedEvents.types';
+import { MatchData } from '@/types/custom.types';
 import Link from 'next/link';
-import React from 'react';
 
 interface ResultsListProps {
   full?: boolean;
+  results: MatchData[];
+  isLoading?: boolean;
+  error?: Error | null;
 }
 
-export default function ResultsList({ full = false }: ResultsListProps) {
-  const { selectedSport, selectedLeague } = useFilterStore();
-  const [results, setResults] = React.useState<ParsedEvent[]>([]);
-  const [loading, setLoading] = React.useState(true);
-  const [error, setError] = React.useState('');
-  const [message, setMessage] = React.useState('');
+export default function ResultsList({
+  full = false,
+  results,
+  isLoading,
+  error,
+}: ResultsListProps) {
+  const eventsPlayed = results.filter(
+    (event: MatchData) => event.status === 'FT',
+  );
 
-  React.useEffect(() => {
-    const fetchEvents = async () => {
-      setLoading(true);
-      const response = await fetch('/api/results');
-
-      if (!response.ok) {
-        setLoading(false);
-        const { error } = await response.json();
-        setError(error);
-      }
-
-      const data: { sortedResults: ParsedEvent[] } = await response.json();
-      const { sortedResults } = data;
-
-      if (sortedResults.length === 0) {
-        setLoading(false);
-        setMessage('No hay resultados disponibles.');
-      }
-      const filteredEvents = filterEvents(
-        sortedResults,
-        selectedLeague,
-        selectedSport,
-      );
-
-      if (filteredEvents.length === 0) {
-        setMessage(
-          `No hay resultados disponibles para ${
-            selectedLeague ? selectedLeague : 'este deporte'
-          }`,
-        );
-      }
-
-      setResults(filteredEvents);
-      setLoading(false);
-    };
-
-    fetchEvents();
-  }, [selectedSport, selectedLeague]);
-
-  const displayedResults = full ? results : results.slice(0, 6);
+  const displayedResults = full ? eventsPlayed : eventsPlayed.slice(0, 6);
 
   return (
     <div className="bg-white dark:bg-[#272727] rounded-lg mb-4 cursor-pointer">
-      {loading && !error ? (
+      {isLoading ? (
         <p className="text-center text-gray-500">Cargando eventos...</p>
-      ) : results.length === 0 && !error ? (
-        <p className="text-center text-gray-500">{message}</p>
       ) : error ? (
-        <p className="text-center text-gray-500">{error}</p>
+        <p className="text-center text-gray-500">{(error as Error).message}</p>
+      ) : results.length === 0 ? (
+        <p className="text-center text-gray-500">No hay eventos para hoy.</p>
       ) : (
         <>
           {displayedResults.map((result) => {
-            switch (result.status.type) {
-              case 'notstarted':
+            switch (result.status) {
+              case 'FT':
+                const isFinished = true;
                 return (
                   <Link href={`/event/${result.id}`} key={result.id}>
-                    <MatchWidget event={result} />
-                  </Link>
-                );
-
-              case 'inprogress':
-                return (
-                  <Link href={`/event/${result.id}`} key={result.id}>
-                    <MatchWidget key={result.id} event={result} isLive />
-                  </Link>
-                );
-
-              case 'finished':
-                return (
-                  <Link href={`/event/${result.id}`} key={result.id}>
-                    <MatchWidget key={result.id} event={result} isFinished />
+                    <MatchWidget
+                      key={result.id}
+                      event={result}
+                      isFinished={isFinished}
+                    />
                   </Link>
                 );
 

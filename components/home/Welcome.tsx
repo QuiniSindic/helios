@@ -1,15 +1,16 @@
 'use client';
-import { useAuth } from '@/utils/hooks/useAuth';
+import { useAuth } from '@/hooks/useAuth';
 
 export default function Welcome() {
   const { user, loading } = useAuth();
 
   if (loading) {
-    return (
-      <div className="bg-secondary text-white p-4 rounded-lg shadow-md">
-        <h2 className="text-2xl font-bold mb-4">Cargando</h2>
-      </div>
-    );
+    return <></>;
+    // return (
+    //   <div className="bg-secondary text-white p-4 rounded-lg shadow-md">
+    //     <h2 className="text-2xl font-bold mb-4">Cargando</h2>
+    //   </div>
+    // );
   }
 
   if (!user) {
@@ -17,7 +18,7 @@ export default function Welcome() {
       <div className="bg-secondary text-white p-4 rounded-lg shadow-md mb-4">
         <h2 className="text-2xl font-bold mb-4">Bienvenido</h2>
         <h2 className="text-lg font-semibold mb-4">
-          Por favor inicia sesión si quieres realizar alguna predicción.
+          Por favor inicia sesión para guardar tus predicciones.
         </h2>
       </div>
     );

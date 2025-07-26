@@ -1,5 +1,5 @@
 // import { Partido } from "@/utils/types/quiniela.types";
-import { Partido } from '@/utils/types/quiniela.types';
+import { Partido } from '@/types/quiniela.types';
 import ResultPredictionButtons from './ResultPredictionButtons';
 
 interface ResultPredictionWidgetProps {
