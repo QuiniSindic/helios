@@ -131,15 +131,13 @@ const MatchInfo: React.FC<MatchInfoProps> = ({
       <Toaster />
       <EventNavigation currentId={event.id} events={events} />
       <div className="match-info-container flex flex-col min-h-screen">
-        <NoPredictionWarn status={event.status} prediction={userPred} />
-
+        <NoPredictionWarn status={event.status} /> {/* prediction={userPred} */}
         {/* Mensaje de error */}
         {userPredError && (
           <div className="text-center text-red-500 mb-4">
             <p>Error: {(userPredError as Error).message}</p>
           </div>
         )}
-
         {/* Logos y nombres de los equipos */}
         <div className="flex justify-around mb-4">
           <TeamPrediction
@@ -161,7 +159,6 @@ const MatchInfo: React.FC<MatchInfoProps> = ({
             onChange={setAwayScore}
           />
         </div>
-
         {/* Mensajes de estado del partido */}
         {notStarted && (
           <div className="text-center">
@@ -196,27 +193,22 @@ const MatchInfo: React.FC<MatchInfoProps> = ({
             </div>
           </div>
         )}
-
         {isInProgress && (
           <p className="text-center text-primary">
             El partido está en juego. Tu predicción final: {homeScore} -{' '}
             {awayScore}
           </p>
         )}
-
         {isFinished && (
           <p className="text-red-500 text-center">El partido ha finalizado</p>
         )}
-
         {/* Indicador de carga de predicción*/}
         {isLoading && (
           <div className="text-center mb-4">
             <p>Cargando predicción...</p>
           </div>
         )}
-
         <Divider className="my-4" />
-
         <MatchInfoTabs
           event={event}
           predictions={allPreds}
