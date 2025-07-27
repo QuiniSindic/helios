@@ -8,7 +8,7 @@ import { useMatchesStore } from '@/store/matchesStore';
 import { MatchData } from '@/types/custom.types';
 import { PredictionObject } from '@/types/database/table.types';
 import { PredictionPayload } from '@/types/prediction.types';
-import { Button, Divider, Spinner } from '@heroui/react';
+import { Button, Divider } from '@heroui/react';
 import React, { useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import SaveButton from '../ui/SaveButton';
@@ -26,14 +26,14 @@ const MatchInfo: React.FC<MatchInfoProps> = ({
   event,
   predictions: initialPreds,
 }) => {
-  const { user } = useAuth();
+  const { user, loading: userLoading } = useAuth();
   const userId = user?.id ?? '';
   const { events } = useMatchesStore();
 
   const [homeScore, setHomeScore] = useState('');
   const [awayScore, setAwayScore] = useState('');
   const [isSaving, setIsSaving] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  // const [isLoading, setIsLoading] = useState(true);
 
   // Validamos que los inputs no estén vacíos
   const isValidPrediction = homeScore.trim() !== '' && awayScore.trim() !== '';
@@ -100,32 +100,6 @@ const MatchInfo: React.FC<MatchInfoProps> = ({
     }
   };
 
-  useEffect(() => {
-    if (isLoading) {
-      const timer = setTimeout(() => {
-        setIsLoading(false);
-      }, 500);
-
-      return () => clearTimeout(timer);
-    }
-  }, [isLoading]);
-
-  if (isLoading) {
-    return (
-      <>
-        <EventNavigation currentId={event.id} events={events} />
-        <div className="flex justify-center text-center items-center min-h-screen">
-          <Spinner
-            classNames={{ label: 'text-foreground mt-4' }}
-            label="Cargando partido..."
-            variant="wave"
-            color="secondary"
-          />
-        </div>
-      </>
-    );
-  }
-
   return (
     <>
       <Toaster />
@@ -168,7 +142,7 @@ const MatchInfo: React.FC<MatchInfoProps> = ({
               </p>
             )}
             <div className="flex justify-center mt-6 w-full">
-              {user ? (
+              {userLoading ? null : user ? (
                 <Button
                   type="button"
                   isLoading={isSaving}
@@ -203,11 +177,11 @@ const MatchInfo: React.FC<MatchInfoProps> = ({
           <p className="text-red-500 text-center">El partido ha finalizado</p>
         )}
         {/* Indicador de carga de predicción*/}
-        {isLoading && (
+        {/* {isLoading && (
           <div className="text-center mb-4">
             <p>Cargando predicción...</p>
           </div>
-        )}
+        )} */}
         <Divider className="my-4" />
         <MatchInfoTabs
           event={event}
