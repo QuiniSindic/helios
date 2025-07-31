@@ -9,7 +9,7 @@ export const QUINIELA_DATA_URL =
 
 export const PROJECT_ID = process.env.NEXT_PUBLIC_SUPABASE_PROJECT_ID || '';
 
-export const BACKEND_URL = 'http://localhost:3001'; //|| process.env.BACKEND_URL ||;
+export const BACKEND_URL = process.env.BACKEND_URL || 'http://localhost:3001';
 
 export const API_LOGO_COMPETITION_URL =
   'https://lsm-static-prod.livescore.com/high/';

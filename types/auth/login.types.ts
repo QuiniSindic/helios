@@ -9,6 +9,7 @@ export const loginDTOSchema = z.object({
 export interface loginDTO extends z.infer<typeof loginDTOSchema> {}
 
 export interface FormData {
+  username?: string
   email: string;
   password: string;
 }
