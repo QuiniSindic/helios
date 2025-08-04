@@ -1,14 +1,14 @@
 import { create } from 'zustand';
 import { sportsList } from '../constants/mappers';
 
-interface FilterStore {
+interface SportsFilter {
   selectedSport: string | null;
   selectedLeague: string | null;
   setSelectedSport: (sport: string | null) => void;
   setSelectedLeague: (league: string | null) => void;
 }
 
-export const useFilterStore = create<FilterStore>((set) => ({
+export const useSportsFilter = create<SportsFilter>((set) => ({
   selectedSport: null,
   selectedLeague: null,
   setSelectedSport: (sport) =>

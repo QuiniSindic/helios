@@ -2,16 +2,17 @@
 
 import EventsContainer from '@/components/home/events/EventsContainer';
 import SportsList from '@/components/home/SportsList';
+import StandingsContainer from '@/components/home/standings/StandingsContainer';
 import Welcome from '@/components/home/Welcome';
 import { getUpcoming } from '@/services/matches.service';
-import { useFilterStore } from '@/store/filterStore';
 import { useMatchesStore } from '@/store/matchesStore';
+import { useSportsFilter } from '@/store/sportsLeagueFilterStore';
 import { MatchData } from '@/types/custom.types';
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 
 export default function Home() {
-  const { selectedSport, selectedLeague } = useFilterStore();
+  const { selectedSport, selectedLeague } = useSportsFilter();
   const { setEvents } = useMatchesStore();
 
   const {
@@ -41,12 +42,7 @@ export default function Home() {
           <SportsList />
           <div className="flex flex-col lg:flex-row lg:gap-4 flex-1">
             <EventsContainer />
-            {/* FIX Añadir un contianer con otro tipo de data */}
-            {/* <ResultsContainer
-              results={events}
-              // loading={isLoading}
-              // error={error}
-            /> */}
+            <StandingsContainer />
           </div>
         </div>
       </>

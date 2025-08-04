@@ -1,10 +1,10 @@
 'use client';
 import { sportsList } from '@/constants/mappers';
-import { useFilterStore } from '@/store/filterStore';
+import { useSportsFilter } from '@/store/sportsLeagueFilterStore';
 
 export default function SportsList() {
   const { selectedSport, setSelectedSport, selectedLeague, setSelectedLeague } =
-    useFilterStore();
+    useSportsFilter();
 
   const handleLeagueSelect = (league: string) => {
     setSelectedLeague(league);

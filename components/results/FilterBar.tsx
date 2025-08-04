@@ -1,11 +1,11 @@
 'use client';
 
 import { sportsList } from '@/constants/mappers';
-import { useFilterStore } from '@/store/filterStore';
+import { useSportsFilter } from '@/store/sportsLeagueFilterStore';
 
 export default function FilterBar() {
   const { selectedSport, setSelectedSport, selectedLeague, setSelectedLeague } =
-    useFilterStore();
+    useSportsFilter();
 
   const handleSportChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedSport(e.target.value);
