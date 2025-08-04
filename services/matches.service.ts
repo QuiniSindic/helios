@@ -127,7 +127,8 @@ export const filterMatches = async (sportSlug: string, leagueSlug: string) => {
 // };
 
 export const getUpcoming = async () => {
-  const url = `${BACKEND_URL}/football/upcoming`;
+  // const url = `${BACKEND_URL}/football/upcoming`;
+  const url = `${BACKEND_URL}/events/upcoming`;
 
   const response = await fetch(url);
   if (!response.ok) {
