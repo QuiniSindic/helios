@@ -13,3 +13,6 @@ export const BACKEND_URL = process.env.BACKEND_URL || 'http://localhost:3001';
 
 export const API_LOGO_COMPETITION_URL =
   'https://lsm-static-prod.livescore.com/high/';
+
+export const API_LOGO_COMPETITION_URL_LOW =
+  'https://lsm-static-prod.livescore.com/medium/';
