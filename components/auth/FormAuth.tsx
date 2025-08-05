@@ -1,9 +1,9 @@
+import { BACKEND_URL } from '@/core/config';
 import { FormData } from '@/types/auth/login.types';
 import { Button } from '@heroui/react';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { BACKEND_URL } from '@/core/config';
 import HasAccount from './HasAccount';
 import PasswordInput from './PasswordInput';
 
@@ -17,6 +17,7 @@ const FormAuth = ({ isLogin }: FormAuthProps) => {
   const [loading, setLoading] = React.useState(false);
   const { register, watch, handleSubmit } = useForm<FormData>();
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const userNameValue = watch('username');
   const emailValue = watch('email');
   const passwordValue = watch('password');
@@ -55,7 +56,7 @@ const FormAuth = ({ isLogin }: FormAuthProps) => {
 
   return (
     <form className="mt-8 space-y-4" onSubmit={handleSubmit(onSubmit)}>
-      {!isLogin &&
+      {!isLogin && (
         <div className="rounded-md shadow-sm space-y-4">
           <input
             {...register('username')}
@@ -65,7 +66,7 @@ const FormAuth = ({ isLogin }: FormAuthProps) => {
             placeholder="Nombre de usuario"
           />
         </div>
-      }
+      )}
       <div className="rounded-md shadow-sm space-y-4">
         <div>
           <input
@@ -91,10 +92,11 @@ const FormAuth = ({ isLogin }: FormAuthProps) => {
         type="submit"
         isLoading={loading}
         className={`group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white transition-colors duration-200 
-              ${!emailValue || !passwordValue
-            ? 'bg-gray-400 cursor-not-allowed'
-            : 'bg-secondary hover:bg-secondary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary'
-          }
+              ${
+                !emailValue || !passwordValue
+                  ? 'bg-gray-400 cursor-not-allowed'
+                  : 'bg-secondary hover:bg-secondary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary'
+              }
               `}
       >
         {isLogin ? 'Inicia sesión' : 'Registrarse'}

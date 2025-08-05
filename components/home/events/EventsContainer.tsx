@@ -2,7 +2,11 @@
 import { useSportsFilter } from '@/store/sportsLeagueFilterStore';
 import EventsList from './EventsList';
 
-export default function EventsContainer() {
+interface EventsContainerProps {
+  isLoading?: boolean;
+}
+
+export default function EventsContainer({ isLoading }: EventsContainerProps) {
   const { selectedLeague } = useSportsFilter();
 
   return (
@@ -15,7 +19,7 @@ export default function EventsContainer() {
         <h1 className="text-2xl font-bold text-center bg-secondary text-white rounded-lg p-2 mb-4">
           Eventos
         </h1>
-        <EventsList />
+        <EventsList isLoading={isLoading} />
       </main>
     </div>
   );

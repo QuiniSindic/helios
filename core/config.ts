@@ -16,3 +16,4 @@ export const API_LOGO_COMPETITION_URL =
 
 export const API_LOGO_COMPETITION_URL_LOW =
   'https://lsm-static-prod.livescore.com/medium/';
+

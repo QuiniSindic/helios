@@ -2,6 +2,7 @@ import { MatchData } from '@/types/custom.types';
 
 interface NoPredictionWarnProps {
   status: MatchData['status'];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   prediction: any; // FIX tipado
 }
 

@@ -96,38 +96,12 @@ export const filterMatches = async (sportSlug: string, leagueSlug: string) => {
   }
 };
 
-// export const filterEvents = (
-//   results: ParsedEvent[],
-//   selectedLeague: string | null,
-//   selectedSport: string | null,
-// ) => {
-//   const filteredResults = results.filter((result) => {
-//     const translatedSport = selectedSport ? sportsMap[selectedSport] : null;
-//     const translatedLeague = selectedLeague ? leaguesMap[selectedLeague] : null;
+export const getUpcoming = async (sport?: string, competitionId?: number) => {
+  const params = new URLSearchParams();
+  if (sport) params.append('sport', sport);
+  if (competitionId) params.append('competition', String(competitionId));
 
-//     if (!selectedSport && !selectedLeague) return true; // si no hay deporte ni liga seleccionados, mostramos todos los eventos
-
-//     if (!selectedSport && selectedLeague) {
-//       // si no hay deporte seleccionado pero sí liga, mostramos todos los eventos de esa liga
-//       return result.tournament.name === translatedLeague;
-//     }
-
-//     if (selectedSport && !selectedLeague) {
-//       // si hay deporte seleccionado pero no liga, mostramos todos los eventos de ese deporte
-//       return result.tournament.category.sport.slug === translatedSport;
-//     }
-
-//     return (
-//       result.tournament.category.sport.slug === translatedSport &&
-//       result.tournament.uniqueTournament.name === translatedLeague
-//     );
-//   });
-
-//   return filteredResults;
-// };
-
-export const getUpcoming = async () => {
-  const url = `${BACKEND_URL}/football/upcoming`;
+  const url = `${BACKEND_URL}/events/upcoming?${params.toString()}`;
 
   const response = await fetch(url);
   if (!response.ok) {
@@ -136,5 +110,25 @@ export const getUpcoming = async () => {
   }
 
   const data = await response.json();
-  return data;
+  console.log('getUpcoming response', data);
+
+  //FIX tipado
+  const sportsData = data.data;
+
+  let matches: MatchData[] = [];
+
+  if (sport && sportsData[sport]) {
+    // si se seleccionó un deporte, solo devolvemos ese
+    matches = sportsData[sport].matches;
+  } else {
+    // si no se seleccionó deporte, combinamos todos
+    matches = Object.values(sportsData).flatMap(
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (sportEntry: any) => sportEntry.matches || [],
+    );
+  }
+
+  console.log('matches', matches);
+
+  return matches;
 };

@@ -2,25 +2,30 @@
 
 import MatchWidget from '@/components/ui/matchWidget/MatchWidget';
 import { useMatchesStore } from '@/store/matchesStore';
-import { MatchData } from '@/types/custom.types';
 import Link from 'next/link';
 
 interface EventsListProps {
   full?: boolean;
+  isLoading?: boolean;
 }
 
-export default function EventsList({ full = false }: EventsListProps) {
+export default function EventsList({
+  full = false,
+  isLoading = false,
+}: EventsListProps) {
   const { events } = useMatchesStore();
-  const eventsToPlay = events.filter(
-    (e: MatchData) => !['FT', 'Canc.'].includes(e.status),
-  );
+  const eventsToPlay = Array.isArray(events)
+    ? events.filter((e) => e && !['FT', 'Canc.'].includes(e.status))
+    : [];
 
   const displayedEvents = full ? eventsToPlay : eventsToPlay.slice(0, 6);
   // console.log('displayedEvents', displayedEvents);
 
   return (
     <div className="bg-white dark:bg-[#272727] rounded-lg mb-4 cursor-pointer">
-      {events.length === 0 ? (
+      {isLoading ? (
+        <p className="text-center text-gray-500">Cargando eventos...</p>
+      ) : events.length === 0 ? (
         <p className="text-center text-gray-500">No hay eventos para hoy.</p>
       ) : (
         <>
