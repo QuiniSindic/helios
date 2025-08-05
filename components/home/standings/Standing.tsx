@@ -14,6 +14,10 @@ export default function StandingsTable({ competition }: StandingsTableProps) {
     error,
   } = useStandingsQuery(competition);
 
+  const addTotalGames = (team: any) => {
+    return team.wins + team.draws + team.losses
+  }
+
   if (!standing) {
     return (
       <p className="text-center text-gray-500">
@@ -68,7 +72,7 @@ export default function StandingsTable({ competition }: StandingsTableProps) {
           >
             <td className="px-2 py-2 text-center font-bold">{team.position}</td>
             <td className="px-2 py-2">{team.name}</td>
-            <td className="px-2 py-2 text-center">{team.played}</td>
+            <td className="px-2 py-2 text-center">{addTotalGames(team)}</td>
             <td className="px-2 py-2 text-center">{team.wins}</td>
             <td className="px-2 py-2 text-center">{team.draws}</td>
             <td className="px-2 py-2 text-center">{team.losses}</td>
