@@ -1,5 +1,6 @@
 'use client';
 
+import { API_LOGO_COMPETITION_URL_LOW } from '@/core/config';
 import { useStandingsQuery } from '@/hooks/useStandingLeague';
 
 interface StandingsTableProps {
@@ -71,7 +72,10 @@ export default function StandingsTable({ competition }: StandingsTableProps) {
             className="border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-[#333]"
           >
             <td className="px-2 py-2 text-center font-bold">{team.position}</td>
-            <td className="px-2 py-2">{team.name}</td>
+            <td className="px-2 py-2 flex">
+              <img className="size-7 mr-2" src={API_LOGO_COMPETITION_URL_LOW + team.badge}/>
+              {team.name}
+            </td>
             <td className="px-2 py-2 text-center">{addTotalGames(team)}</td>
             <td className="px-2 py-2 text-center">{team.wins}</td>
             <td className="px-2 py-2 text-center">{team.draws}</td>
