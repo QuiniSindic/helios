@@ -1,6 +1,7 @@
 'use client';
 
 import { useStandingsQuery } from '@/hooks/useStandingLeague';
+import { TeamStandingData } from '@/types/standings/standings.types';
 
 interface StandingsTableProps {
   competition?: string;
@@ -61,7 +62,7 @@ export default function StandingsTable({ competition }: StandingsTableProps) {
       </thead>
       <tbody>
         {/* TODO:tipar team */}
-        {standing.map((team) => (
+        {standing.map((team: TeamStandingData) => (
           <tr
             key={team.position}
             className="border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-[#333]"

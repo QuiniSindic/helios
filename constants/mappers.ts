@@ -68,3 +68,12 @@ export const leaguesMap: { [key: string]: string } = {
   // 'Tour de Francia': 'tour-de-francia',
   // 'Vuelta a España': 'vuelta-a-espana',
 };
+
+export const leaguesIdMap: { [key: string]: number } = {
+  'Premier League': 65,
+  Bundesliga: 67,
+  'Ligue 1': 68,
+  'La Liga': 75,
+  'Serie A': 77,
+  'UEFA Champions League': 19232, // TODO new id cuando empiece
+};
