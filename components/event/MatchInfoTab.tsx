@@ -32,7 +32,6 @@ export const MatchInfoTab: React.FC<MatchInfoProps> = ({
   const hasNoActions =
     actions?.length === 0 || actions === undefined || actions === null;
 
-  console.log('hasNoActionsactions', hasNoActions);
   return (
     <div className="match-info-container px-4 py-6">
       <h1 className="text-2xl font-bold text-center mb-6">

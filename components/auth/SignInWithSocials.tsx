@@ -1,6 +1,6 @@
 import { handleGoogleSubmit } from '@/actions/actions';
-import AppleIcon from '@/icons/AppleIcon';
-import GoogleIcon from '@/icons/GoogleIcon';
+import AppleIcon from '@/components/ui/icons/AppleIcon';
+import GoogleIcon from '@/components/ui/icons/GoogleIcon';
 
 interface SignInWithSocialsProps {
   isLogin?: boolean;

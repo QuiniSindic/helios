@@ -22,7 +22,7 @@ export default function EventsList({
   // console.log('displayedEvents', displayedEvents);
 
   return (
-    <div className="bg-white dark:bg-[#272727] rounded-lg mb-4 cursor-pointer">
+    <div className=" rounded-lg mb-4 cursor-pointer">
       {isLoading ? (
         <p className="text-center text-gray-500">Cargando eventos...</p>
       ) : events.length === 0 ? (

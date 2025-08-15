@@ -10,18 +10,21 @@ export default function ScoreInput({
   disabled,
 }: ScoreInputProps) {
   const initialStyle =
-    'no-arrows mt-2 bg-white w-16 h-16 rounded-xl text-black text-2xl text-center border border-secondary';
+    'no-arrows mt-2 bg-white dark:bg-gray-800 w-16 h-16 rounded-xl text-black dark:text-white text-2xl text-center border border-secondary';
   const filledStyle =
     'no-arrows mt-2 bg-secondary w-16 h-16 rounded-xl text-white text-2xl text-center';
 
-  // Consideramos vacío si es undefined o una cadena vacía
-  const isEmpty = value === undefined || value === '';
+  const strValue = value === undefined || value === null ? '' : String(value);
+  const isEmpty = strValue === '';
 
   return (
     <input
       disabled={disabled}
       type="number"
-      value={value}
+      inputMode="numeric"
+      min={0}
+      step={1}
+      value={strValue}
       onChange={(e) => onChange(e.target.value)}
       className={isEmpty ? initialStyle : filledStyle}
     />

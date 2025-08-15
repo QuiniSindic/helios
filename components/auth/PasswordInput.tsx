@@ -1,5 +1,5 @@
-import EyeIcon from '@/icons/EyeIcon';
-import EyeShowIcon from '@/icons/EyeShowIcon';
+import EyeIcon from '@/components/ui/icons/EyeIcon';
+import EyeShowIcon from '@/components/ui/icons/EyeShowIcon';
 import React from 'react';
 import { UseFormRegister } from 'react-hook-form';
 

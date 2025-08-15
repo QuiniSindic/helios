@@ -1,24 +1,14 @@
-import { fetchUsers } from '@/services/predictions.service';
-import { PredictionObject, UserProfile } from '@/types/database/table.types';
+import { useGetUsersUsernames } from '@/hooks/useUsers';
+import { Prediction } from '@/types/database/table.types';
 import { Avatar, Spinner } from '@heroui/react';
-import { useQuery } from '@tanstack/react-query';
 
 interface UsersPredictionsProps {
-  predictions: PredictionObject[];
+  predictions: Prediction[];
 }
 
 const UsersPredictions = ({ predictions }: UsersPredictionsProps) => {
-  const userIds = predictions.map((p) => p.profile_id as string);
-
-  const {
-    data: users,
-    isLoading,
-    error,
-  } = useQuery<Record<string, UserProfile>>({
-    queryKey: ['users', predictions],
-    queryFn: async () => fetchUsers(userIds),
-    enabled: predictions.length > 0,
-  });
+  const userIds = predictions.map((p) => p.userId);
+  const { data: users = {}, isLoading, error } = useGetUsersUsernames(userIds);
 
   if (isLoading) {
     return (
@@ -44,7 +34,7 @@ const UsersPredictions = ({ predictions }: UsersPredictionsProps) => {
         <p>No hay predicciones disponibles.</p>
       ) : (
         predictions.map((prediction) => {
-          const user = users?.[prediction.profile_id as string];
+          const user = users[prediction.userId];
 
           return (
             <div
@@ -52,20 +42,19 @@ const UsersPredictions = ({ predictions }: UsersPredictionsProps) => {
               className="border border-secondary rounded p-4 mb-2 flex flex-col items-center"
             >
               <Avatar
-                src={user?.avatar_url || undefined}
-                alt={user?.username || 'Usuario desconocido'}
+                src={undefined} // TODO hacer algo con una foto de perfil
+                className="bg-secondary flex items-center justify-center"
+                showFallback
+                alt={user?.username}
                 size="lg"
                 radius="full"
               />
 
-              <h2 className="text-xl font-semibold mt-2">
-                {user?.username || 'Usuario desconocido'}
-              </h2>
+              <h2 className="text-xl font-semibold mt-2">{user?.username}</h2>
 
               <p className="mt-1">
                 <span className="font-semibold">Predicción:</span>{' '}
-                {prediction.prediction.home_score} -{' '}
-                {prediction.prediction.away_score}
+                {prediction.homeScore} - {prediction.awayScore}
               </p>
             </div>
           );

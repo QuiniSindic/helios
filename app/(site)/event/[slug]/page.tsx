@@ -1,19 +1,28 @@
 import MatchInfo from '@/components/event/MatchInfo';
-import { getEventPredictions } from '@/services/database.service';
+import { BACKEND_URL } from '@/core/config';
 import { getMatchData } from '@/services/matches.service';
-import { createClient } from '@/utils/supabase/server';
+import { getEventPredictions } from '@/services/predictions.service';
+import { headers } from 'next/headers';
+
+async function getServerUser() {
+  const header = await headers();
+  const res = await fetch(`${BACKEND_URL}/auth/me`, {
+    headers: { cookie: header.get('cookie') ?? '' },
+    cache: 'no-store',
+  });
+  if (res.status === 204) return null;
+  const json = await res.json().catch(() => null);
+  return json?.ok ? json.data : null;
+}
 
 export default async function EventDetailPage({
   params,
 }: {
   params: Promise<{ slug: number }>;
 }) {
-  const supabase = await createClient();
   const { slug } = await params;
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getServerUser();
 
   const matchData = await getMatchData(slug);
   const match = Array.isArray(matchData) ? matchData[0] : matchData; // TODO: Check si se puede quitar

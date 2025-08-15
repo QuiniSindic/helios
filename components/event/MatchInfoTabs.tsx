@@ -1,5 +1,5 @@
 import { MatchData } from '@/types/custom.types';
-import { PredictionObject } from '@/types/database/table.types';
+import { Prediction } from '@/types/database/table.types';
 import { useState } from 'react';
 import { MatchInfoPredictionsTab } from './MatchInfoPredictionsTab';
 import { MatchInfoTab } from './MatchInfoTab';
@@ -8,7 +8,7 @@ type TabKey = 'match' | 'predictions';
 
 interface MatchInfoTabsProps {
   event: MatchData;
-  predictions: PredictionObject[];
+  predictions: Prediction[]; // TODO tipar predictions
   isFinished?: boolean;
   isInProgress?: boolean; // Indica si el partido está en curso
   notStarted?: boolean; // Indica si el partido no ha iniciado
