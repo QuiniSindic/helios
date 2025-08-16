@@ -1,5 +1,5 @@
-import ArrowLeft from '@/icons/ArrowLeft';
-import ArrowRight from '@/icons/ArrowRight';
+import ArrowLeft from '@/components/ui/icons/ArrowLeft';
+import ArrowRight from '@/components/ui/icons/ArrowRight';
 import { MatchData } from '@/types/custom.types';
 import Link from 'next/link';
 
@@ -12,6 +12,11 @@ export default function EventNavigation({
   currentId,
   events,
 }: EventNavigationProps) {
+  if (!events || events.length === 0) {
+    // Nada que navegar todavía (evita el crash)
+    return null;
+  }
+
   const currentIndex = events.findIndex((event) => event.id === currentId);
 
   const previousEvent =

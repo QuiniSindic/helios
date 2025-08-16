@@ -1,106 +1,104 @@
-import { BACKEND_URL } from '@/core/config';
-import { FormData } from '@/types/auth/login.types';
-import { Button } from '@heroui/react';
+'use client';
+
+import { login, signup } from '@/services/auth.service';
+import { FormData } from '@/types/auth/auth.types';
+import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import React from 'react';
-import { useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import SubmitButton from '../ui/buttons/AuthSubmitButton';
+import AuthErrorText from '../ui/errors/AuthErrorText';
+import AuthInput from '../ui/inputs/AuthInput';
+import { Credentials } from './Credentials';
 import HasAccount from './HasAccount';
-import PasswordInput from './PasswordInput';
 
 interface FormAuthProps {
   isLogin?: boolean;
 }
 
-const FormAuth = ({ isLogin }: FormAuthProps) => {
+const FormAuth = ({ isLogin = false }: FormAuthProps) => {
   const router = useRouter();
-  const [error, setError] = React.useState<Error | null>(null);
+  const [error, setError] = React.useState<string | undefined>();
   const [loading, setLoading] = React.useState(false);
-  const { register, watch, handleSubmit } = useForm<FormData>();
+  const queryClient = useQueryClient();
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const userNameValue = watch('username');
-  const emailValue = watch('email');
-  const passwordValue = watch('password');
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+  } = useForm<FormData>({
+    mode: 'onChange',
+    defaultValues: { email: '', password: '', username: '' },
+  });
 
-  const onSubmit = async (data: FormData) => {
-    setError(null);
+  const onSubmit: SubmitHandler<FormData> = async (data) => {
+    setError(undefined);
     setLoading(true);
+
     const { email, password, username } = data;
 
-    const url = isLogin ? '/auth/login' : '/auth/signup';
-
     try {
-      const res = await fetch(`${BACKEND_URL}${url}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password, username }),
-      });
+      if (isLogin) {
+        const res = await login({ email, password });
 
-      const response = await res.json();
-      const { error } = response;
+        if (!res.ok) {
+          setError(res.error);
+          return;
+        }
 
-      if (error) {
-        setError(new Error(error));
-        return;
+        const user = res.data;
+
+        queryClient.setQueryData(['user'], user ?? null);
+      } else {
+        const res = await signup({ email, password, username: username ?? '' });
+        if (!res.ok) {
+          setError(res.error);
+          return;
+        }
+        const user = res.data;
+
+        queryClient.setQueryData(['user'], user ?? null);
       }
-
       router.push('/');
-    } catch (error) {
-      console.error('Error =>', error);
+    } catch (err) {
+      setError('Error de red. Por favor, inténtalo de nuevo.');
+      console.error(err);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <form className="mt-8 space-y-4" onSubmit={handleSubmit(onSubmit)}>
+    <form
+      className="mt-8 space-y-4"
+      onSubmit={handleSubmit(onSubmit)}
+      noValidate
+    >
       {!isLogin && (
-        <div className="rounded-md shadow-sm space-y-4">
-          <input
-            {...register('username')}
-            type="text"
-            required
-            className="appearance-none rounded-lg relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 dark:text-white dark:bg-[#272727] dark:border-gray-600 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary transition-colors duration-200"
-            placeholder="Nombre de usuario"
-          />
-        </div>
-      )}
-      <div className="rounded-md shadow-sm space-y-4">
-        <div>
-          <input
-            {...register('email')}
-            type="email"
-            required
-            className="appearance-none rounded-lg relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 dark:text-white dark:bg-[#272727] dark:border-gray-600 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary transition-colors duration-200"
-            placeholder="Correo electrónico"
-          />
-        </div>
-        <div>
-          <PasswordInput register={register} />
-        </div>
-      </div>
-
-      {error && (
-        <div className="text-red-500 text-sm text-center">
-          Credenciales incorrectas. Por favor, inténtalo de nuevo.
-        </div>
+        <AuthInput
+          name="username"
+          label="Nombre de usuario"
+          placeholder="Nombre de usuario"
+          register={register}
+          rules={
+            isLogin
+              ? {}
+              : {
+                  required: 'El nombre de usuario es obligatorio',
+                  minLength: { value: 3, message: 'Mínimo 3 caracteres' },
+                }
+          }
+          error={errors.username}
+        />
       )}
 
-      <Button
-        type="submit"
-        isLoading={loading}
-        className={`group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white transition-colors duration-200 
-              ${
-                !emailValue || !passwordValue
-                  ? 'bg-gray-400 cursor-not-allowed'
-                  : 'bg-secondary hover:bg-secondary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary'
-              }
-              `}
-      >
+      <Credentials register={register} errors={errors} />
+
+      <AuthErrorText message={error} />
+
+      <SubmitButton isLoading={loading} disabled={!isValid || loading}>
         {isLogin ? 'Inicia sesión' : 'Registrarse'}
-      </Button>
+      </SubmitButton>
 
       <HasAccount isLogin={isLogin} />
     </form>

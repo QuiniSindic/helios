@@ -1,33 +1,28 @@
-import { createClient } from '@/utils/supabase/client';
-import { User } from '@supabase/supabase-js';
-import { useEffect, useState } from 'react';
+import { getMe } from '@/services/auth.service';
+import { useQuery } from '@tanstack/react-query';
 
 export const useAuth = () => {
-  const supabase = createClient();
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
+  return useQuery({
+    queryKey: ['user'],
+    queryFn: async () => {
+      const response = await getMe();
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      const { data, error } = await supabase.auth.getUser();
-      if (error) {
-        setUser(null);
-      } else {
-        setUser(data.user);
+      if (!response.ok) {
+        console.error('Error al obtener el usuario:', response.error);
+        return null;
       }
-      setLoading(false);
-    };
 
-    fetchUser();
+      const data = response.data;
 
-    const { data: listener } = supabase.auth.onAuthStateChange(() => {
-      fetchUser();
-    });
+      if (data === null) {
+        console.warn('No user data found');
+        return null;
+      }
 
-    return () => {
-      listener.subscription.unsubscribe();
-    };
-  }, []);
-
-  return { user, loading };
+      return data;
+    },
+    retry: false,
+    refetchOnWindowFocus: false,
+    staleTime: 1000 * 60 * 5, // 5 minutos
+  });
 };

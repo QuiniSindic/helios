@@ -1,5 +1,5 @@
 import { Partido } from '@/types/quiniela.types';
-import SaveButton from '../ui/SaveButton';
+import SaveButton from '../ui/buttons/SaveButton';
 import QuinielaWidget from './QuinielaWidget';
 
 interface PredictionsProps {

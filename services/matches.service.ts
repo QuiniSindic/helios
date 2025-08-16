@@ -56,8 +56,6 @@ export const getMatchData = async (id: number): Promise<MatchData> => {
   const response = await fetch(`${BACKEND_URL}/football/match/${id}`);
   const data = await response.json();
 
-  console.log('getMatchData response', data);
-
   if (!data.ok) {
     throw new Error(data.error || 'Error fetching match data');
   }
@@ -110,7 +108,6 @@ export const getUpcoming = async (sport?: string, competitionId?: number) => {
   }
 
   const data = await response.json();
-  console.log('getUpcoming response', data);
 
   //FIX tipado
   const sportsData = data.data;
@@ -127,8 +124,6 @@ export const getUpcoming = async (sport?: string, competitionId?: number) => {
       (sportEntry: any) => sportEntry.matches || [],
     );
   }
-
-  console.log('matches', matches);
 
   return matches;
 };

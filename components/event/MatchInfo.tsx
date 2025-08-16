@@ -1,94 +1,91 @@
 'use client';
 
-import { savePrediction } from '@/actions/actions';
-import { API_LOGO_COMPETITION_URL } from '@/core/config';
 import { useAuth } from '@/hooks/useAuth';
-import { usePredictions, useUserPrediction } from '@/hooks/useUserPrediction';
+import {
+  useGetEventPredictions,
+  useMyPrediction,
+} from '@/hooks/useUserPrediction';
+
+import { saveEventPrediction } from '@/services/predictions.service';
 import { useMatchesStore } from '@/store/matchesStore';
 import { MatchData } from '@/types/custom.types';
-import { PredictionObject } from '@/types/database/table.types';
+import { Prediction } from '@/types/database/table.types';
 import { PredictionPayload } from '@/types/prediction.types';
-import { Button, Divider, Spinner } from '@heroui/react';
+import { Button, Spinner } from '@heroui/react';
 import React, { useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
-import SaveButton from '../ui/SaveButton';
+import SaveButton from '../ui/buttons/SaveButton';
 import EventNavigation from './EventNavigation';
 import { MatchInfoTabs } from './MatchInfoTabs';
 import { NoPredictionWarn } from './NoPredictionWarn';
-import { TeamPrediction } from './TeamPrediction';
+import StatusBanner from './StatusBanner';
+import { TeamPredictionContainer } from './TeamPredictionContainer';
 
 interface MatchInfoProps {
   event: MatchData;
-  predictions: PredictionObject[];
+  predictions?: Prediction[];
 }
 
 const MatchInfo: React.FC<MatchInfoProps> = ({
   event,
   predictions: initialPreds,
 }) => {
-  const { user } = useAuth();
+  const { data: user, isLoading: authLoading } = useAuth();
   const userId = user?.id ?? '';
   const { events } = useMatchesStore();
 
   const [homeScore, setHomeScore] = useState('');
   const [awayScore, setAwayScore] = useState('');
   const [isSaving, setIsSaving] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
 
-  // Validamos que los inputs no estén vacíos
   const isValidPrediction = homeScore.trim() !== '' && awayScore.trim() !== '';
 
-  // El partido se considera en juego si su status es alguno de estos (PreMatch = no iniciado)
   const isInProgress = ['FirstHalf', 'HT', 'SecondHalf'].includes(event.status);
-
   const notStarted = event.status === 'NS';
   const isFinished = event.status === 'FT';
 
   const {
     data: userPred,
     refetch: refetchUserPred,
-    // isLoading: loadingUserPred,
     error: userPredError,
-  } = useUserPrediction(userId, Number(event.id));
+  } = useMyPrediction(userId, event.id);
 
   const {
-    data: allPreds = [],
+    data: allPredictions,
     refetch: refetchAllPreds,
     isLoading: loadingAllPreds,
-  } = usePredictions(Number(event.id), initialPreds);
+  } = useGetEventPredictions(event.id, initialPreds);
 
   // Si ya existe una predicción, precargamos los inputs
   useEffect(() => {
-    if (userPred) {
-      setHomeScore(userPred.home_score.toString());
-      setAwayScore(userPred.away_score.toString());
-    }
+    if (!userPred) return;
+    setHomeScore(String(userPred.home_score ?? ''));
+    setAwayScore(String(userPred.away_score ?? ''));
   }, [userPred]);
 
   const payload: PredictionPayload = {
     event_id: event.id,
-    event_name: `${event.homeTeam.name} vs ${event.awayTeam.name}`,
-    home_team: event.homeTeam.name,
-    away_team: event.awayTeam.name,
     home_score: parseInt(homeScore, 10),
     away_score: parseInt(awayScore, 10),
-    competition_id: Number(event.competitionid),
-    // competition_name: event.competition_full_name,
-    user_id: user ? user.id : '',
+    competition_id: event.competitionid,
   };
 
   const handleSavePrediction = async () => {
     if (user && isValidPrediction) {
       setIsSaving(true);
       try {
-        console.log('payload', payload);
-        await savePrediction(user, payload);
+        const res = await saveEventPrediction(payload);
 
-        if (userPred) {
-          toast.success('¡Predicción actualizada con éxito!');
-        } else {
-          toast.success('¡Predicción guardada con éxito!');
+        if (!res.ok) {
+          throw new Error(res.error || 'Error al guardar la predicción');
         }
+
+        toast.success(
+          userPred
+            ? '¡Predicción actualizada con éxito!'
+            : '¡Predicción guardada con éxito!',
+        );
+
         await refetchUserPred();
         await refetchAllPreds();
       } catch (err) {
@@ -100,17 +97,7 @@ const MatchInfo: React.FC<MatchInfoProps> = ({
     }
   };
 
-  useEffect(() => {
-    if (isLoading) {
-      const timer = setTimeout(() => {
-        setIsLoading(false);
-      }, 500);
-
-      return () => clearTimeout(timer);
-    }
-  }, [isLoading]);
-
-  if (isLoading) {
+  if (authLoading) {
     return (
       <>
         <EventNavigation currentId={event.id} events={events} />
@@ -129,7 +116,9 @@ const MatchInfo: React.FC<MatchInfoProps> = ({
   return (
     <>
       <Toaster />
-      <EventNavigation currentId={event.id} events={events} />
+      {events?.length > 0 && (
+        <EventNavigation currentId={event.id} events={events} />
+      )}
       <div className="match-info-container flex flex-col min-h-screen">
         <NoPredictionWarn status={event.status} prediction={userPred} />
 
@@ -140,36 +129,18 @@ const MatchInfo: React.FC<MatchInfoProps> = ({
           </div>
         )}
 
-        {/* Logos y nombres de los equipos */}
-        <div className="flex justify-around mb-4">
-          <TeamPrediction
-            name={event.homeTeam.name}
-            imgSrc={
-              `${API_LOGO_COMPETITION_URL}${event.homeTeam.img as string}` ||
-              '/globe.svg'
-            } //src={event.home.img as string}
-            score={homeScore}
-            onChange={setHomeScore}
-          />
-          <TeamPrediction
-            name={event.awayTeam.name}
-            imgSrc={
-              `${API_LOGO_COMPETITION_URL}${event.awayTeam.img as string}` ||
-              '/globe.svg'
-            } //src={event.away.img as string}
-            score={awayScore}
-            onChange={setAwayScore}
-          />
-        </div>
+        <TeamPredictionContainer
+          event={event}
+          homeScore={homeScore}
+          awayScore={awayScore}
+          setHomeScore={setHomeScore}
+          setAwayScore={setAwayScore}
+        />
 
         {/* Mensajes de estado del partido */}
         {notStarted && (
           <div className="text-center">
-            {userPred && (
-              <p className="mb-2">
-                Tu predicción (editable): {homeScore} - {awayScore}
-              </p>
-            )}
+            <StatusBanner status={event.status} myPrediction={userPred} />
             <div className="flex justify-center mt-6 w-full">
               {user ? (
                 <Button
@@ -209,17 +180,15 @@ const MatchInfo: React.FC<MatchInfoProps> = ({
         )}
 
         {/* Indicador de carga de predicción*/}
-        {isLoading && (
+        {loadingAllPreds && (
           <div className="text-center mb-4">
             <p>Cargando predicción...</p>
           </div>
         )}
 
-        <Divider className="my-4" />
-
         <MatchInfoTabs
           event={event}
-          predictions={allPreds}
+          predictions={allPredictions ?? []} // FIX this
           isFinished={isFinished}
           isInProgress={isInProgress}
           notStarted={notStarted}

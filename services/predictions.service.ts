@@ -1,26 +1,70 @@
-import { UserProfile } from "@/types/database/table.types";
-import { getUserByProfileId } from "./database.service";
+import { BACKEND_URL } from '@/core/config';
+import { Prediction } from '@/types/database/table.types';
+import { PredictionPayload } from '@/types/prediction.types';
+import { IResponse } from '@/types/response.types';
 
-export const fetchUsers = async (
-    profileIds: string[],
-  ): Promise<Record<string, UserProfile>> => {
-    const usersData: Record<string, UserProfile> = {};
+export async function getEventPredictions(
+  eventId: number,
+): Promise<Prediction[]> {
+  const response = await fetch(
+    `${BACKEND_URL}/predictions?eventId=${eventId}`,
+    {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+    },
+  );
 
-    const usersFetched = await Promise.all(
-      profileIds.map(async (id) => {
-        try {
-          const userData = await getUserByProfileId(id);
-          return { id, data: userData[0] };
-        } catch (error) {
-          console.error(`Error fetching user with profile_id ${id}`, error);
-          return null;
-        }
-      }),
-    );
+  if (!response.ok) {
+    throw new Error('Failed to fetch event predictions');
+  }
+  const result = await response.json();
 
-    usersFetched.forEach((user) => {
-      if (user) usersData[user.id] = user.data;
-    });
+  if (!result.ok) {
+    throw new Error(result.error || 'Failed to fetch event predictions');
+  }
 
-    return usersData;
-  };
+  return result.data;
+}
+
+export async function saveEventPrediction(matchPayload: PredictionPayload) {
+  const response = await fetch(`${BACKEND_URL}/predictions`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+    body: JSON.stringify({
+      ...matchPayload,
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to post event prediction');
+  }
+
+  const data = (await response.json()) as IResponse<Prediction>;
+
+  return data;
+}
+
+export async function getUserMatchPrediction(eventId: number) {
+  const response = await fetch(
+    `${BACKEND_URL}/predictions/my-prediction?eventId=${eventId}`,
+    {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+    },
+  );
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch user match prediction');
+  }
+
+  const result = await response.json();
+
+  if (!result.ok) {
+    throw new Error(result.error || 'Failed to fetch user match prediction');
+  }
+
+  return result.data;
+}

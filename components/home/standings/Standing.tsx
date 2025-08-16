@@ -78,7 +78,7 @@ export default function StandingsTable({ competition }: StandingsTableProps) {
                 width={24}
                 height={24}
               />
-              {team.name}
+              <p className="flex justify-center items-center">{team.name}</p>
             </td>
             <td className="px-2 py-2 text-center">{team.played}</td>
 

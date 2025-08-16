@@ -1,3 +1,4 @@
+//FIX
 export interface PredictionObject {
   competition_id: number | null;
   created_at: string | null;
@@ -10,12 +11,18 @@ export interface PredictionObject {
 }
 
 export interface Prediction {
-  away_score: string;
-  away_team: string;
-  home_score: string;
-  home_team: string;
+  id: string;
+  userId: string;
+  matchId: number;
+  competitionId: number;
+  homeScore: number;
+  awayScore: number;
+  points: null;
+  createdAt: string;
+  updatedAt: string;
 }
 
+// FIX
 export interface UserProfile {
   user_id: string;
   username: string;

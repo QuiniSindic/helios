@@ -1,12 +1,12 @@
 'use client';
 
-import { PredictionObject } from '@/types/database/table.types';
+import { Prediction } from '@/types/database/table.types';
 import { Spinner } from '@heroui/react';
 import React from 'react';
 import UsersPredictions from './UserPredictions';
 
 interface MatchInfoPredictionsTabProps {
-  predictions: PredictionObject[];
+  predictions: Prediction[];
   loadingAllPreds?: boolean; // Indica si las predicciones están cargando
 }
 
