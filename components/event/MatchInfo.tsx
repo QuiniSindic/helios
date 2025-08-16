@@ -5,21 +5,23 @@ import {
   useGetEventPredictions,
   useMyPrediction,
 } from '@/hooks/useUserPrediction';
-
-import { saveEventPrediction } from '@/services/predictions.service';
+import {
+  saveEventPrediction,
+  updateEventPrediction,
+} from '@/services/predictions.service';
 import { useMatchesStore } from '@/store/matchesStore';
 import { MatchData } from '@/types/custom.types';
 import { Prediction } from '@/types/database/table.types';
-import { PredictionPayload } from '@/types/prediction.types';
-import { Button, Spinner } from '@heroui/react';
-import React, { useEffect, useState } from 'react';
+import {
+  PredictionPayload,
+  PredictionUpdatePayload,
+} from '@/types/prediction.types';
+import { Divider, Spinner } from '@heroui/react';
 import toast, { Toaster } from 'react-hot-toast';
-import SaveButton from '../ui/buttons/SaveButton';
 import EventNavigation from './EventNavigation';
 import { MatchInfoTabs } from './MatchInfoTabs';
 import { NoPredictionWarn } from './NoPredictionWarn';
-import StatusBanner from './StatusBanner';
-import { TeamPredictionContainer } from './TeamPredictionContainer';
+import PredictionForm from './form/PredictionForm';
 
 interface MatchInfoProps {
   event: MatchData;
@@ -34,15 +36,9 @@ const MatchInfo: React.FC<MatchInfoProps> = ({
   const userId = user?.id ?? '';
   const { events } = useMatchesStore();
 
-  const [homeScore, setHomeScore] = useState('');
-  const [awayScore, setAwayScore] = useState('');
-  const [isSaving, setIsSaving] = useState(false);
-
-  const isValidPrediction = homeScore.trim() !== '' && awayScore.trim() !== '';
-
-  const isInProgress = ['FirstHalf', 'HT', 'SecondHalf'].includes(event.status);
   const notStarted = event.status === 'NS';
   const isFinished = event.status === 'FT';
+  const isInProgress = ['FirstHalf', 'HT', 'SecondHalf'].includes(event.status);
 
   const {
     data: userPred,
@@ -50,51 +46,43 @@ const MatchInfo: React.FC<MatchInfoProps> = ({
     error: userPredError,
   } = useMyPrediction(userId, event.id);
 
+  console.log(userPred);
+
   const {
     data: allPredictions,
     refetch: refetchAllPreds,
     isLoading: loadingAllPreds,
   } = useGetEventPredictions(event.id, initialPreds);
 
-  // Si ya existe una predicción, precargamos los inputs
-  useEffect(() => {
-    if (!userPred) return;
-    setHomeScore(String(userPred.home_score ?? ''));
-    setAwayScore(String(userPred.away_score ?? ''));
-  }, [userPred]);
+  const handleSave = async (values: { home: string; away: string }) => {
+    const payload: PredictionPayload = {
+      event_id: event.id,
+      competition_id: event.competitionid,
+      home_score: parseInt(values.home, 10),
+      away_score: parseInt(values.away, 10),
+    };
 
-  const payload: PredictionPayload = {
-    event_id: event.id,
-    home_score: parseInt(homeScore, 10),
-    away_score: parseInt(awayScore, 10),
-    competition_id: event.competitionid,
+    const res = await saveEventPrediction(payload);
+    if (!res.ok) throw new Error(res.error || 'Error al guardar la predicción');
+
+    toast.success('¡Predicción guardada con éxito!');
+    await refetchUserPred();
+    await refetchAllPreds();
   };
 
-  const handleSavePrediction = async () => {
-    if (user && isValidPrediction) {
-      setIsSaving(true);
-      try {
-        const res = await saveEventPrediction(payload);
+  const handleUpdate = async (values: { home: string; away: string }) => {
+    const payload: PredictionUpdatePayload = {
+      home_score: parseInt(values.home, 10),
+      away_score: parseInt(values.away, 10),
+    };
 
-        if (!res.ok) {
-          throw new Error(res.error || 'Error al guardar la predicción');
-        }
+    const res = await updateEventPrediction(event.id, payload);
+    if (!res.ok)
+      throw new Error(res.error || 'Error al actualizar la predicción');
 
-        toast.success(
-          userPred
-            ? '¡Predicción actualizada con éxito!'
-            : '¡Predicción guardada con éxito!',
-        );
-
-        await refetchUserPred();
-        await refetchAllPreds();
-      } catch (err) {
-        console.error(err);
-        toast.error('Ocurrió un error al guardar la predicción.');
-      } finally {
-        setIsSaving(false);
-      }
-    }
+    toast.success('¡Predicción actualizada con éxito!');
+    await refetchUserPred();
+    await refetchAllPreds();
   };
 
   if (authLoading) {
@@ -103,7 +91,6 @@ const MatchInfo: React.FC<MatchInfoProps> = ({
         <EventNavigation currentId={event.id} events={events} />
         <div className="flex justify-center text-center items-center min-h-screen">
           <Spinner
-            classNames={{ label: 'text-foreground mt-4' }}
             label="Cargando partido..."
             variant="wave"
             color="secondary"
@@ -119,76 +106,51 @@ const MatchInfo: React.FC<MatchInfoProps> = ({
       {events?.length > 0 && (
         <EventNavigation currentId={event.id} events={events} />
       )}
+
       <div className="match-info-container flex flex-col min-h-screen">
         <NoPredictionWarn status={event.status} prediction={userPred} />
 
-        {/* Mensaje de error */}
         {userPredError && (
           <div className="text-center text-red-500 mb-4">
             <p>Error: {(userPredError as Error).message}</p>
           </div>
         )}
 
-        <TeamPredictionContainer
+        <PredictionForm
+          key={event.id}
           event={event}
-          homeScore={homeScore}
-          awayScore={awayScore}
-          setHomeScore={setHomeScore}
-          setAwayScore={setAwayScore}
+          initialPrediction={{
+            home: userPred?.homeScore ?? '',
+            away: userPred?.awayScore ?? '',
+          }}
+          disabled={!notStarted}
+          isLoggedIn={!!user}
+          onSubmit={userPred ? handleUpdate : handleSave}
         />
 
-        {/* Mensajes de estado del partido */}
-        {notStarted && (
-          <div className="text-center">
-            <StatusBanner status={event.status} myPrediction={userPred} />
-            <div className="flex justify-center mt-6 w-full">
-              {user ? (
-                <Button
-                  type="button"
-                  isLoading={isSaving}
-                  disabled={!isValidPrediction}
-                  onPress={handleSavePrediction}
-                  className={`group relative text-white flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md transition-colors duration-200 ${
-                    !isValidPrediction
-                      ? 'bg-gray-400 cursor-not-allowed'
-                      : 'bg-secondary hover:bg-secondary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary'
-                  }`}
-                >
-                  {userPred ? 'Actualizar predicción' : 'Guardar predicción'}
-                </Button>
-              ) : (
-                <SaveButton
-                  label="Compartir predicción"
-                  onClick={() => {
-                    console.log('Compartir predicción');
-                  }}
-                />
-              )}
-            </div>
-          </div>
-        )}
-
+        {/* mensajes de estado */}
         {isInProgress && (
-          <p className="text-center text-primary">
-            El partido está en juego. Tu predicción final: {homeScore} -{' '}
-            {awayScore}
+          <p className="text-center text-primary mt-4">
+            El partido está en juego.
+          </p>
+        )}
+        {isFinished && (
+          <p className="text-red-500 text-center mt-2">
+            El partido ha finalizado
           </p>
         )}
 
-        {isFinished && (
-          <p className="text-red-500 text-center">El partido ha finalizado</p>
-        )}
-
-        {/* Indicador de carga de predicción*/}
         {loadingAllPreds && (
           <div className="text-center mb-4">
-            <p>Cargando predicción...</p>
+            <p>Cargando predicciones...</p>
           </div>
         )}
 
+        <Divider className="my-4" />
+
         <MatchInfoTabs
           event={event}
-          predictions={allPredictions ?? []} // FIX this
+          predictions={allPredictions ?? []}
           isFinished={isFinished}
           isInProgress={isInProgress}
           notStarted={notStarted}

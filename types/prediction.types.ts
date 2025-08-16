@@ -4,3 +4,8 @@ export interface PredictionPayload {
   home_score: number;
   away_score: number;
 }
+
+export interface PredictionUpdatePayload {
+  home_score: number;
+  away_score: number;
+}

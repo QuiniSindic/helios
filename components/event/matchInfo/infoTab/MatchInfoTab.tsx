@@ -22,6 +22,7 @@ const eventTypeLabels: Record<MatchEventType, string> = {
   [MatchEventType.None]: '',
 };
 
+// TODO: implementar backend con los incidentes de partido porque ahora no hay nada
 export const MatchInfoTab: React.FC<MatchInfoProps> = ({
   event,
   // isInProgress,

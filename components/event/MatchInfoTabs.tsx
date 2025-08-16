@@ -1,8 +1,8 @@
 import { MatchData } from '@/types/custom.types';
 import { Prediction } from '@/types/database/table.types';
 import { useState } from 'react';
-import { MatchInfoPredictionsTab } from './MatchInfoPredictionsTab';
-import { MatchInfoTab } from './MatchInfoTab';
+import { MatchInfoTab } from './matchInfo/infoTab/MatchInfoTab';
+import { MatchInfoPredictionsTab } from './matchInfo/predictionsTab/MatchInfoPredictionsTab';
 
 type TabKey = 'match' | 'predictions';
 

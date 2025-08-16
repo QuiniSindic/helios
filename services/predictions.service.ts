@@ -1,6 +1,9 @@
 import { BACKEND_URL } from '@/core/config';
 import { Prediction } from '@/types/database/table.types';
-import { PredictionPayload } from '@/types/prediction.types';
+import {
+  PredictionPayload,
+  PredictionUpdatePayload,
+} from '@/types/prediction.types';
 import { IResponse } from '@/types/response.types';
 
 export async function getEventPredictions(
@@ -39,6 +42,28 @@ export async function saveEventPrediction(matchPayload: PredictionPayload) {
 
   if (!response.ok) {
     throw new Error('Failed to post event prediction');
+  }
+
+  const data = (await response.json()) as IResponse<Prediction>;
+
+  return data;
+}
+
+export async function updateEventPrediction(
+  eventId: number,
+  updatePayload: PredictionUpdatePayload,
+) {
+  const response = await fetch(`${BACKEND_URL}/predictions/${eventId}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+    body: JSON.stringify({
+      ...updatePayload,
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to update event prediction');
   }
 
   const data = (await response.json()) as IResponse<Prediction>;
