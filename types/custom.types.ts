@@ -45,7 +45,15 @@ export interface MatchData {
     img: string;
     country: string;
   };
-  // competition_full_name: string;
+  Odds: Odds;
+}
+
+export interface Odds {
+  id: string;
+  matchId: number;
+  homeOdd: number;
+  awayOdd: number;
+  drawOdd: number;
 }
 
 export const MATCH_STATUSES = [
