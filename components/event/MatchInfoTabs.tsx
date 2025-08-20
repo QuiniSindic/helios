@@ -1,19 +1,21 @@
 import { MatchData } from '@/types/custom.types';
 import { Prediction } from '@/types/database/table.types';
 import { useState } from 'react';
-import { MatchInfoTab } from './matchInfo/infoTab/MatchInfoTab';
-import { MatchInfoPredictionsTab } from './matchInfo/predictionsTab/MatchInfoPredictionsTab';
+import { MatchInfoTab } from './matchInfo/tabs/infoTab/MatchInfoTab';
+import MatchInfoOddsTab from './matchInfo/tabs/oddsTab/MatchInfoOddsTab';
+import { MatchInfoPredictionsTab } from './matchInfo/tabs/predictionsTab/MatchInfoPredictionsTab';
+import { Tab } from './matchInfo/tabs/Tab';
 
-type TabKey = 'match' | 'predictions';
+type TabKey = 'match' | 'predictions' | 'odds';
 
 interface MatchInfoTabsProps {
   event: MatchData;
   predictions: Prediction[]; // TODO tipar predictions
   isFinished?: boolean;
-  isInProgress?: boolean; // Indica si el partido está en curso
-  notStarted?: boolean; // Indica si el partido no ha iniciado
-  refetchAllPreds?: () => void; // Función para recargar las predicciones
-  loadingAllPreds?: boolean; // Indica si las predicciones están cargando
+  isInProgress?: boolean;
+  notStarted?: boolean;
+  refetchAllPreds?: () => void;
+  loadingAllPreds?: boolean;
 }
 
 export const MatchInfoTabs: React.FC<MatchInfoTabsProps> = ({
@@ -26,29 +28,25 @@ export const MatchInfoTabs: React.FC<MatchInfoTabsProps> = ({
   return (
     <>
       <div className="flex border-b mb-4">
-        <button
+        <Tab
+          isActive={activeTab === 'match'}
           onClick={() => setActiveTab('match')}
-          className={`flex-1 py-2 text-center ${
-            activeTab === 'match'
-              ? 'border-b-2 border-secondary font-semibold'
-              : 'text-gray-500'
-          }`}
-        >
-          Partido
-        </button>
-        <button
+          tittle="Partido"
+        />
+
+        <Tab
+          isActive={activeTab === 'predictions'}
           onClick={() => setActiveTab('predictions')}
-          className={`flex-1 py-2 text-center ${
-            activeTab === 'predictions'
-              ? 'border-b-2 border-secondary font-semibold'
-              : 'text-gray-500'
-          }`}
-        >
-          Predicciones
-        </button>
+          tittle="Predicciones"
+        />
+
+        <Tab
+          isActive={activeTab === 'odds'}
+          onClick={() => setActiveTab('odds')}
+          tittle="Cuotas"
+        />
       </div>
 
-      {/* Contenido de la pestaña Partido */}
       {activeTab === 'match' && (
         <MatchInfoTab event={event} isFinished isInProgress notStarted />
       )}
@@ -59,6 +57,8 @@ export const MatchInfoTabs: React.FC<MatchInfoTabsProps> = ({
           loadingAllPreds={loadingAllPreds}
         />
       )}
+
+      {activeTab === 'odds' && <MatchInfoOddsTab event={event} />}
     </>
   );
 };
