@@ -127,3 +127,40 @@ export const getUpcoming = async (sport?: string, competitionId?: number) => {
 
   return matches;
 };
+
+export const getLive = async (sport?: string, competitionId?: number) => {
+  const params = new URLSearchParams();
+  if (sport) params.append('sport', sport);
+  if (competitionId) params.append('competition', String(competitionId));
+
+  const url = `${BACKEND_URL}/events/live?${params.toString()}`;
+
+  const response = await fetch(url);
+  console.log(response);
+
+  if (!response.ok) {
+    const { error } = await response.json();
+    throw new Error(error);
+  }
+
+  const data = await response.json();
+  console.log('dat =>', data);
+
+  //FIX tipado
+  const sportsData = data.data;
+
+  let matches: MatchData[] = [];
+
+  if (sport && sportsData[sport]) {
+    // si se seleccionó un deporte, solo devolvemos ese
+    matches = sportsData[sport].matches;
+  } else {
+    // si no se seleccionó deporte, combinamos todos
+    matches = Object.values(sportsData).flatMap(
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (sportEntry: any) => sportEntry.matches || [],
+    );
+  }
+
+  return matches;
+};

@@ -34,7 +34,7 @@ export default function EventsList({
             const isLive =
               status !== 'NS' && status !== 'FT' && status !== 'Canc.';
             return (
-              <Link href={`/event/${event.id}`} key={event.id}>
+              <Link prefetch={true} href={`/event/${event.id}`} key={event.id}>
                 <MatchWidget event={event} isLive={isLive} />
               </Link>
             );
