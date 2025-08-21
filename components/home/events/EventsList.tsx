@@ -1,7 +1,10 @@
 'use client';
 
 import MatchWidget from '@/components/ui/matchWidget/MatchWidget';
+import { leaguesIdMap } from '@/constants/mappers';
 import { useMatchesStore } from '@/store/matchesStore';
+import { useSportsFilter } from '@/store/sportsLeagueFilterStore';
+import { competitionIdsForSport } from '@/utils/events.utils';
 import Link from 'next/link';
 
 interface EventsListProps {
@@ -14,12 +17,24 @@ export default function EventsList({
   isLoading = false,
 }: EventsListProps) {
   const { events } = useMatchesStore();
-  const eventsToPlay = Array.isArray(events)
+  const { selectedSport, selectedLeague } = useSportsFilter();
+
+  const base = Array.isArray(events)
     ? events.filter((e) => e && !['FT', 'Canc.'].includes(e.status))
     : [];
 
-  const displayedEvents = full ? eventsToPlay : eventsToPlay.slice(0, 6);
-  // console.log('displayedEvents', displayedEvents);
+  const leagueId = selectedLeague ? leaguesIdMap[selectedLeague] : undefined;
+
+  let filtered = base;
+
+  if (leagueId) {
+    filtered = base.filter((event) => event.competitionid === leagueId);
+  } else if (selectedSport) {
+    const sportIds = competitionIdsForSport(selectedSport);
+    filtered = base.filter((event) => sportIds.has(event.competitionid));
+  }
+
+  const displayedEvents = full ? filtered : filtered.slice(0, 6);
 
   return (
     <div className=" rounded-lg mb-4 cursor-pointer">

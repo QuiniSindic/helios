@@ -1,3 +1,4 @@
+import { leaguesIdMap, sportsList } from '@/constants/mappers';
 import { MatchData, MatchStatus } from '@/types/custom.types';
 import dayjs from 'dayjs';
 
@@ -27,4 +28,17 @@ export const concatenateAndSortEvents = ({
     const bk = dayjs(b.kickoff, 'HH:mm DD/MM/YYYY').valueOf();
     return ak - bk;
   });
+};
+
+export const competitionIdsForSport = (sportName?: string): Set<number> => {
+  if (!sportName) return new Set<number>();
+
+  const sport = sportsList.find((s) => s.name === sportName);
+  if (!sport) return new Set<number>();
+
+  const ids = sport.leagues
+    .map((lg) => leaguesIdMap[lg])
+    .filter((id): id is number => typeof id === 'number');
+
+  return new Set(ids);
 };

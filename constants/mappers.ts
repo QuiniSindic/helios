@@ -7,7 +7,7 @@ export const sportsList = [
       'Bundesliga',
       'Serie A',
       'Ligue 1',
-      'Conference League',
+      'UEFA Conference League',
       // 'La Liga Hypermotion',
       // 'Champions League',
       // 'Europa League',
@@ -46,7 +46,7 @@ export const sportsMap: { [key: string]: string } = {
   Ciclismo: 'cycling',
 };
 
-export const leaguesMap: { [key: string]: string } = {
+export const leaguesMap: Record<string, string> = {
   'Mundial de Clubes': 'club-worldcup',
   'La Liga Hypermotion': 'la-liga-hypermotion',
   'La Liga': 'la-liga',
@@ -57,13 +57,13 @@ export const leaguesMap: { [key: string]: string } = {
   'UEFA Champions League': 'uefa-champions-league',
   'UEFA Conference League': 'uefa-conference-league',
   // FIX SLUGS
-  'Europa League': 'UEFA Europa League',
-  NBA: 'NBA',
-  Euroliga: 'Euroleague',
-  'Abierto de Australia': 'Australian Open',
-  'Roland Garros': 'Roland Garros',
-  Wimbledon: 'Wimbledon',
-  'Abierto de Estados Unidos': 'US Open',
+  // 'Europa League': 'UEFA Europa League',
+  // NBA: 'NBA',
+  // Euroliga: 'Euroleague',
+  // 'Abierto de Australia': 'Australian Open',
+  // 'Roland Garros': 'Roland Garros',
+  // Wimbledon: 'Wimbledon',
+  // 'Abierto de Estados Unidos': 'US Open',
   // 'Fórmula 1': 'formula-1',
   // MotoGP: 'motogp',
   // 'Giro de Italia': 'giro-de-italia',
@@ -71,7 +71,7 @@ export const leaguesMap: { [key: string]: string } = {
   // 'Vuelta a España': 'vuelta-a-espana',
 };
 
-export const leaguesIdMap: { [key: string]: number } = {
+export const leaguesIdMap: Record<string, number> = {
   'Premier League': 65,
   Bundesliga: 67,
   'Ligue 1': 68,
