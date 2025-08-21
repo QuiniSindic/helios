@@ -7,6 +7,7 @@ export const sportsList = [
       'Bundesliga',
       'Serie A',
       'Ligue 1',
+      'Conference League',
       // 'La Liga Hypermotion',
       // 'Champions League',
       // 'Europa League',
@@ -54,6 +55,7 @@ export const leaguesMap: { [key: string]: string } = {
   'Serie A': 'serie-a',
   'Ligue 1': 'ligue-1',
   'UEFA Champions League': 'uefa-champions-league',
+  'UEFA Conference League': 'uefa-conference-league',
   // FIX SLUGS
   'Europa League': 'UEFA Europa League',
   NBA: 'NBA',
@@ -76,4 +78,5 @@ export const leaguesIdMap: { [key: string]: number } = {
   'La Liga': 75,
   'Serie A': 77,
   'UEFA Champions League': 19232, // TODO new id cuando empiece
+  'UEFA Conference League': 62, // TODO new id cuando empiece
 };

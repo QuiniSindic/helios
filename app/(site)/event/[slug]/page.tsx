@@ -31,7 +31,7 @@ export default async function EventDetailPage({
   return (
     <div className="flex flex-col flex-grow">
       {user === null && (
-        <div className="text-center bg-yellow-200 py-1">
+        <div className="text-center bg-yellow-200 py-1 dark:text-black">
           <h1>Debes iniciar sesión para poder guardar tus predicciones</h1>
         </div>
       )}
