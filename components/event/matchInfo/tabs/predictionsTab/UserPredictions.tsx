@@ -43,7 +43,10 @@ const UsersPredictions = ({ predictions }: UsersPredictionsProps) => {
             >
               <Avatar
                 src={undefined} // TODO hacer algo con una foto de perfil
-                className="bg-secondary flex items-center justify-center"
+                classNames={{
+                  base: 'bg-secondary flex items-center justify-center',
+                  icon: 'text-white',
+                }}
                 showFallback
                 alt={user?.username}
                 size="lg"
