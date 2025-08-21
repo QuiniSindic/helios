@@ -46,8 +46,6 @@ const MatchInfo: React.FC<MatchInfoProps> = ({
     error: userPredError,
   } = useMyPrediction(userId, event.id);
 
-  console.log(userPred);
-
   const {
     data: allPredictions,
     refetch: refetchAllPreds,

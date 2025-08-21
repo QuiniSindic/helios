@@ -1,15 +1,12 @@
 import { API_LOGO_COMPETITION_URL } from '@/core/config';
+import { MatchData } from '@/types/custom.types';
 import Image from 'next/image';
 
-export default function TeamHeader({
-  event,
-}: {
-  event: {
-    homeTeam: { name: string; img: string };
-    awayTeam: { name: string; img: string };
-    id: number;
-  };
-}) {
+interface TeamHeaderProps {
+  event: MatchData;
+}
+
+export default function TeamHeader({ event }: TeamHeaderProps) {
   return (
     <div className="flex justify-around items-center w-full">
       <div className="flex flex-col items-center space-y-2">
@@ -29,7 +26,13 @@ export default function TeamHeader({
         </h2>
       </div>
 
-      <div className="text-lg opacity-70">vs</div>
+      {/* CHECK Fer un pensament sobre esto */}
+      <div className="flex flex-col items-center">
+        <span className="text-sm text-gray-400">Marcador</span>
+        <div className="text-2xl sm:text-3xl md:text-4xl font-bold opacity-90">
+          {event.result ? event.result : 'vs'}
+        </div>
+      </div>
 
       <div className="flex flex-col items-center space-y-2">
         <Image

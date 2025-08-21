@@ -1,5 +1,6 @@
 'use client';
 
+import { MatchData } from '@/types/custom.types';
 import { Button } from '@heroui/react';
 import { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -9,13 +10,7 @@ import TeamHeader from './TeamHeader';
 type FormValues = { home: string; away: string };
 
 interface Props {
-  event: {
-    id: number;
-    competitionid: number;
-    status: string;
-    homeTeam: { name: string; img: string };
-    awayTeam: { name: string; img: string };
-  };
+  event: MatchData;
   initialPrediction: { home: number | string; away: number | string };
   disabled?: boolean; // deshabilita inputs si no es NS
   isLoggedIn: boolean;
@@ -46,8 +41,6 @@ export default function PredictionForm({
   const { handleSubmit, reset, watch, setValue } = useForm<FormValues>({
     defaultValues: defaults,
   });
-
-  console.log(defaults);
 
   const [saving, setSaving] = useState(false);
   const home = watch('home');
