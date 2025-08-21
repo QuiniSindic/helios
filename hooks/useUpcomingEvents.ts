@@ -18,8 +18,11 @@ export const useLiveEventsQuery = (sport?: string, competitionId?: number) => {
   return useQuery({
     queryKey: ['live_events', sport, competitionId],
     queryFn: () => getLive(sport, competitionId),
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
+    refetchInterval: 1000 * 30, // 30 segundos
+    refetchIntervalInBackground: true, // tab no active
+    refetchOnReconnect: true, // al reconectar
+    refetchOnMount: false, // al montar
+    refetchOnWindowFocus: false, // al enfocar ventana
     staleTime: 1000 * 60 * 5, // 5 minutos
   });
 };

@@ -135,7 +135,9 @@ export const getLive = async (sport?: string, competitionId?: number) => {
 
   const url = `${BACKEND_URL}/events/live?${params.toString()}`;
 
-  const response = await fetch(url);
+  const response = await fetch(url, {
+    cache: 'no-store',
+  });
   console.log(response);
 
   if (!response.ok) {
