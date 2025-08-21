@@ -1,6 +1,5 @@
-import { ThemeSwitcher } from '@/components/ui/ThemeSwitcher';
 import { menuItems } from '@/constants/menuLinks';
-import { Divider, NavbarMenu, NavbarMenuItem } from '@heroui/react';
+import { NavbarMenu, NavbarMenuItem } from '@heroui/react';
 import Link from 'next/link';
 
 interface MobileNavbarMenuProps {
@@ -22,12 +21,12 @@ export const MobileNavbarMenu = ({ onNavigate }: MobileNavbarMenuProps) => {
         </NavbarMenuItem>
       ))}
 
-      <Divider className="my-2 w-full" />
+      {/* <Divider className="my-2 w-full" />
 
       <NavbarMenuItem className="w-full flex items-center justify-between">
         <span className="text-sm text-foreground/70">Tema</span>
         <ThemeSwitcher />
-      </NavbarMenuItem>
+      </NavbarMenuItem> */}
     </NavbarMenu>
   );
 };

@@ -31,6 +31,10 @@ export const AvatarActions = () => {
         <Link href="/login" aria-label="Ir a login" className="text-nowrap">
           Inicia sesión
         </Link>
+        {/* CHECK fer un pensament sobre esto */}
+        <span className="hidden sm:inline-flex">
+          <ThemeSwitcher />
+        </span>
       </div>
     );
   }
