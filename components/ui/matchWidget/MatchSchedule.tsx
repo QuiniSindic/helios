@@ -57,24 +57,24 @@ export const MatchSchedule = ({
       );
     }
     switch (event.status) {
-      case 'FirstHalf':
-        return (
-          <p className="text-gray-500 dark:text-white text-sm md:text-base text-center">
-            Primera parte
-          </p>
-        );
+      // case 'FirstHalf':
+      //   return (
+      //     <p className="text-gray-500 dark:text-white text-sm md:text-base text-center">
+      //       Primera parte
+      //     </p>
+      //   );
       case 'HT':
         return (
           <p className="text-gray-500 dark:text-white text-sm md:text-base text-center">
             Descanso
           </p>
         );
-      case 'SecondHalf':
-        return (
-          <p className="text-gray-500 dark:text-white text-sm md:text-base text-center">
-            Segunda parte
-          </p>
-        );
+      // case 'SecondHalf':
+      //   return (
+      //     <p className="text-gray-500 dark:text-white text-sm md:text-base text-center">
+      //       Segunda parte
+      //     </p>
+      //   );
       case 'Canc.':
         return (
           <p className="text-gray-500 dark:text-white text-sm md:text-base text-center">
