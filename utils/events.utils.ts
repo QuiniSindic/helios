@@ -2,8 +2,9 @@ import { leaguesIdMap, sportsList } from '@/constants/mappers';
 import { MatchData, MatchStatus } from '@/types/custom.types';
 import dayjs from 'dayjs';
 
-const NOT_LIVE: MatchStatus[] = ['NS', 'FT', 'Canc.'];
-const IS_LIVE: MatchStatus[] = ['HT', 'OT'];
+export const NOT_LIVE: MatchStatus[] = ['NS', 'FT', 'Canc.'];
+export const IS_LIVE: MatchStatus[] = ['HT', 'OT'];
+export const IS_FINISHED: MatchStatus[] = ['FT', 'AET', 'AP'];
 
 export function isLive(status: MatchStatus) {
   if (IS_LIVE.includes(status)) return true;

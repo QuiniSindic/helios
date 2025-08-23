@@ -1,4 +1,4 @@
-import { getLive, getUpcoming } from '@/services/matches.service';
+import { getLive, getResults, getUpcoming } from '@/services/matches.service';
 import { useQuery } from '@tanstack/react-query';
 
 export const useUpcomingEventsQuery = (
@@ -23,6 +23,19 @@ export const useLiveEventsQuery = (sport?: string, competitionId?: number) => {
     refetchOnReconnect: true, // al reconectar
     refetchOnMount: false, // al montar
     refetchOnWindowFocus: false, // al enfocar ventana
+    staleTime: 1000 * 60 * 5, // 5 minutos
+  });
+};
+
+export const useResultsEventsQuery = (
+  sport?: string,
+  competitionId?: number,
+) => {
+  return useQuery({
+    queryKey: ['resutls', sport, competitionId],
+    queryFn: () => getResults(sport, competitionId),
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
     staleTime: 1000 * 60 * 5, // 5 minutos
   });
 };

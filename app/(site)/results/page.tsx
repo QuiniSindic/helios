@@ -1,11 +1,5 @@
+import EventsList from '@/components/home/events/EventsList';
 import FilterBar from '@/components/results/FilterBar';
-
-// interface ResultsPageProps {
-//   full?: boolean;
-//   results: Match[];
-//   loading: boolean;
-//   error: Error | null;
-// }
 
 export default function ResultsPage() {
   return (
@@ -15,13 +9,8 @@ export default function ResultsPage() {
           <h1 className="text-2xl font-bold text-center bg-secondary text-white rounded-lg p-2 mb-4">
             Resultados
           </h1>
-          <FilterBar />
-          {/* <ResultsList
-            full
-            results={results}
-            isLoading={loading}
-            error={error}
-          /> */}
+          <FilterBar mode="results" />
+          <EventsList full mode="results" />
         </main>
       </div>
     </div>

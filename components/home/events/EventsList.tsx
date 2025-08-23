@@ -3,25 +3,38 @@
 import MatchWidget from '@/components/ui/matchWidget/MatchWidget';
 import { leaguesIdMap } from '@/constants/mappers';
 import { useMatchesStore } from '@/store/matchesStore';
+import { useResultsStore } from '@/store/resultsStore';
 import { useSportsFilter } from '@/store/sportsLeagueFilterStore';
-import { competitionIdsForSport } from '@/utils/events.utils';
+import { parseKickoff } from '@/utils/date.utils';
+import {
+  competitionIdsForSport,
+  IS_FINISHED,
+  IS_LIVE,
+} from '@/utils/events.utils';
 import Link from 'next/link';
 
 interface EventsListProps {
   full?: boolean;
   isLoading?: boolean;
+  mode?: 'events' | 'results';
 }
 
 export default function EventsList({
   full = false,
   isLoading = false,
+  mode = 'events',
 }: EventsListProps) {
   const { events } = useMatchesStore();
-  const { selectedSport, selectedLeague } = useSportsFilter();
+  const { results } = useResultsStore();
+  const { selectedSport, selectedLeague, selectedFrom, selectedTo } =
+    useSportsFilter();
 
-  const base = Array.isArray(events)
-    ? events.filter((e) => e && !['FT', 'Canc.'].includes(e.status))
-    : [];
+  const base =
+    mode === 'results'
+      ? results
+      : Array.isArray(events)
+        ? events.filter((e) => e && !['FT', 'Canc.'].includes(e.status))
+        : [];
 
   const leagueId = selectedLeague ? leaguesIdMap[selectedLeague] : undefined;
 
@@ -32,6 +45,31 @@ export default function EventsList({
   } else if (selectedSport) {
     const sportIds = competitionIdsForSport(selectedSport);
     filtered = base.filter((event) => sportIds.has(event.competitionid));
+  }
+
+  if (mode === 'results' && (selectedFrom || selectedTo)) {
+    filtered = filtered.filter((event) => {
+      const d = parseKickoff(event.kickoff); // Date
+
+      if (!d) return null;
+
+      if (Number.isNaN(d.getTime())) return false;
+
+      const y = d.getFullYear();
+      const m = d.getMonth();
+      const day = d.getDate();
+      const start = new Date(y, m, day, 0, 0, 0);
+      const end = new Date(y, m, day, 23, 59, 59);
+
+      const fromOk = selectedFrom
+        ? end >= new Date(`${selectedFrom}T00:00:00`)
+        : true;
+      const toOk = selectedTo
+        ? start <= new Date(`${selectedTo}T23:59:59`)
+        : true;
+
+      return fromOk && toOk;
+    });
   }
 
   const displayedEvents = full ? filtered : filtered.slice(0, 6);
@@ -46,11 +84,15 @@ export default function EventsList({
         <>
           {displayedEvents.map((event) => {
             const status = event.status;
-            const isLive =
-              status !== 'NS' && status !== 'FT' && status !== 'Canc.';
+            const isLive = IS_LIVE.includes(status);
+            const isFinished = IS_FINISHED.includes(status);
             return (
               <Link prefetch={true} href={`/event/${event.id}`} key={event.id}>
-                <MatchWidget event={event} isLive={isLive} />
+                <MatchWidget
+                  event={event}
+                  isLive={isLive}
+                  isFinished={isFinished}
+                />
               </Link>
             );
           })}

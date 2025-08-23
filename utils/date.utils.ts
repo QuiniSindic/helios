@@ -29,7 +29,7 @@ export function formatWithDayjs(dateStr: string): string {
     djs = dayjs(dateStr);
   }
 
-  // formato
+  // formato final -> "Domingo 24 de Agosto a las 17:30h"
   return (
     djs
       .locale('es')
@@ -43,10 +43,46 @@ export function formatWithDayjs(dateStr: string): string {
   );
 }
 
-export const parseKickoff = (kickoff: string) => {
-  // ej format: '19:00 15/06/2025'
-  const [time, date] = kickoff.split(' ');
-  const [hour, minute] = time.split(':');
-  const [day, month, year] = date.split('/');
-  return new Date(`${year}-${month}-${day}T${hour}:${minute}:00`);
+export const parseKickoff = (kickoff?: string | Date | number): Date | null => {
+  if (kickoff === null || kickoff === undefined) return null;
+
+  // checks para parsear guay
+  if (kickoff instanceof Date) {
+    return isNaN(kickoff.getTime()) ? null : kickoff;
+  }
+  if (typeof kickoff === 'number') {
+    const d = new Date(kickoff);
+    return isNaN(d.getTime()) ? null : d;
+  }
+
+  const s = String(kickoff).trim();
+  if (!s) return null;
+
+  if (s.includes('T')) {
+    const d = new Date(s);
+    return isNaN(d.getTime()) ? null : d;
+  }
+
+  // Formato 'HH:mm DD/MM/YYYY'
+  const parts = s.split(' ');
+  if (parts.length === 2) {
+    const [time, date] = parts;
+    const [hour, minute] = time.split(':').map(Number);
+    const [day, month, year] = date.split('/').map(Number);
+
+    if (
+      Number.isFinite(hour) &&
+      Number.isFinite(minute) &&
+      Number.isFinite(day) &&
+      Number.isFinite(month) &&
+      Number.isFinite(year)
+    ) {
+      const d = new Date(year, month - 1, day, hour, minute, 0);
+      return isNaN(d.getTime()) ? null : d;
+    }
+  }
+
+  // por si falla
+  const d = new Date(s);
+  return isNaN(d.getTime()) ? null : d;
 };

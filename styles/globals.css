@@ -47,3 +47,19 @@ body {
 .no-arrows {
   -moz-appearance: textfield;
 }
+
+/* CHECK Icono calendario lo sustituimos, queda un poco feo pero bueno */
+input[type='date']::-webkit-calendar-picker-indicator {
+  opacity: 1; /* asegúrate de que se vea */
+  background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ffffff'><path d='M7 2a1 1 0 0 0-1 1v1H5a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3h-1V3a1 1 0 1 0-2 0v1H8V3a1 1 0 0 0-1-1Zm12 6H5v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8Z'/></svg>")
+    no-repeat center;
+  background-size: 1.1em;
+  color: transparent; /* oculta cualquier “tinta” del UA */
+  filter: none; /* evita inversiones automáticas */
+}
+
+/* Quita posibles iconos auxiliares que algunos temas invierten */
+input[type='date']::-webkit-inner-spin-button,
+input[type='date']::-webkit-clear-button {
+  display: none;
+}

@@ -62,12 +62,8 @@ export const MATCH_STATUSES = [
   'FT', // Full Time
   'OT', // Overtime no se si existe
   'AET', // After Extra Time
+  'AP', // After Penalties
   'Canc.', // Cancelled
-  // editar los siguientes en funcón de livescore, porque estos son de la liga
-  'PreMatch',
-  'FirstHalf',
-  'HalfTime',
-  'SecondHalf',
 ] as const;
 
 export type MatchStatus = (typeof MATCH_STATUSES)[number];

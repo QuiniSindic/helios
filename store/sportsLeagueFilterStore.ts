@@ -6,6 +6,13 @@ interface SportsFilter {
   selectedLeague: string | null;
   setSelectedSport: (sport: string | null) => void;
   setSelectedLeague: (league: string | null) => void;
+
+  selectedFrom?: string | null;
+  selectedTo?: string | null;
+  setSelectedFrom: (d?: string | null) => void;
+  setSelectedTo: (d?: string | null) => void;
+
+  clearDates: () => void;
 }
 
 export const useSportsFilter = create<SportsFilter>((set) => ({
@@ -35,4 +42,10 @@ export const useSportsFilter = create<SportsFilter>((set) => ({
         selectedLeague: league,
       };
     }),
+
+  selectedFrom: null,
+  selectedTo: null,
+  setSelectedFrom: (d) => set({ selectedFrom: d }),
+  setSelectedTo: (d) => set({ selectedTo: d }),
+  clearDates: () => set({ selectedFrom: null, selectedTo: null }),
 }));

@@ -45,7 +45,7 @@ export const AvatarActions = () => {
         <Avatar
           isBordered
           as="button"
-          className="transition-transform cursor-pointer text-foreground-50"
+          className="transition-transform cursor-pointer text-foreground-50 dark:text-foreground-900 hover:scale-105"
           color="secondary"
           name={user.email?.substring(0, 2).toUpperCase()}
           size="sm"
