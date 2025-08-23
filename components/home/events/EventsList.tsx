@@ -6,11 +6,7 @@ import { useMatchesStore } from '@/store/matchesStore';
 import { useResultsStore } from '@/store/resultsStore';
 import { useSportsFilter } from '@/store/sportsLeagueFilterStore';
 import { parseKickoff } from '@/utils/date.utils';
-import {
-  competitionIdsForSport,
-  IS_FINISHED,
-  IS_LIVE,
-} from '@/utils/events.utils';
+import { competitionIdsForSport } from '@/utils/events.utils';
 import Link from 'next/link';
 
 interface EventsListProps {
@@ -84,14 +80,15 @@ export default function EventsList({
         <>
           {displayedEvents.map((event) => {
             const status = event.status;
-            const isLive = IS_LIVE.includes(status);
-            const isFinished = IS_FINISHED.includes(status);
+            const isLive =
+              status !== 'NS' && status !== 'FT' && status !== 'Canc.';
+
             return (
               <Link prefetch={true} href={`/event/${event.id}`} key={event.id}>
                 <MatchWidget
                   event={event}
                   isLive={isLive}
-                  isFinished={isFinished}
+                  // isFinished={isFinished}
                 />
               </Link>
             );
