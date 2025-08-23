@@ -40,10 +40,11 @@ export const getMatches = async ({
     })),
   );
   const events = allMatches
-    .sort(
-      (a, b) =>
-        parseKickoff(a.kickoff).getTime() - parseKickoff(b.kickoff).getTime(),
-    )
+    .sort((a, b) => {
+      const aKickoff = a.kickoff ? parseKickoff(a.kickoff)?.getTime() : 0;
+      const bKickoff = b.kickoff ? parseKickoff(b.kickoff)?.getTime() : 0;
+      return (aKickoff ?? 0) - (bKickoff ?? 0);
+    })
 
     .filter((match: MatchData) => {
       return match.status === 'NS' || match.status !== 'FT';
