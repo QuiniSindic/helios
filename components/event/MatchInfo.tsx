@@ -38,7 +38,7 @@ const MatchInfo: React.FC<MatchInfoProps> = ({
 
   const notStarted = event.status === 'NS';
   const isFinished = event.status === 'FT';
-  const isInProgress = ['FirstHalf', 'HT', 'SecondHalf'].includes(event.status);
+  const isInProgress = event.status.includes("'") || event.status === 'HT';
 
   const {
     data: userPred,
@@ -128,7 +128,7 @@ const MatchInfo: React.FC<MatchInfoProps> = ({
 
         {/* mensajes de estado */}
         {isInProgress && (
-          <p className="text-center text-primary mt-4">
+          <p className="text-center text-secondary mt-4">
             El partido está en juego.
           </p>
         )}

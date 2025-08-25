@@ -66,6 +66,8 @@ export const MATCH_STATUSES = [
   'Canc.', // Cancelled
 ] as const;
 
+export const FINAL_STATUSES: MatchStatus[] = ['FT', 'AET', 'AP', 'Canc.'];
+
 export type MatchStatus = (typeof MATCH_STATUSES)[number];
 
 export interface CompetitionData {

@@ -10,6 +10,25 @@ export enum MatchEventType {
   None,
 }
 
+export const eventTypeLabels: Record<MatchEventType, string> = {
+  [MatchEventType.Goal]: 'Gol',
+  [MatchEventType.PenaltyGoal]: 'Gol de penalti',
+  [MatchEventType.FailedPenalty]: 'Penalti fallado',
+  [MatchEventType.YellowCard]: 'Tarjeta amarilla',
+  [MatchEventType.RedCard]: 'Tarjeta roja',
+  [MatchEventType.HalfTime]: 'Descanso',
+  [MatchEventType.FinalTime]: 'Final',
+  [MatchEventType.Overtime]: 'Prórroga',
+  [MatchEventType.None]: '',
+};
+
+export type ParsedMinute = {
+  min: number;
+  extra: number;
+  total: number;
+  label: string;
+};
+
 export type MatchEvent = {
   type: MatchEventType;
   minute?: number | string;
@@ -57,4 +76,12 @@ export interface EventsSportsResponse {
   motor: {
     matches: MatchFullData[];
   };
+}
+
+export interface ActionGroups {
+  firstHalf: MatchEvent[];
+  secondHalf: MatchEvent[];
+  breaks?: MatchEvent[];
+  finals?: MatchEvent[];
+  overtime?: MatchEvent[]; // pal futuro igual lo necesito
 }
