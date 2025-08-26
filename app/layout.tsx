@@ -11,7 +11,7 @@ const leagueSpartan = League_Spartan({
 });
 
 export const metadata: Metadata = {
-  title: 'Helios',
+  title: 'Quinisindic',
   description:
     'Pronostica con tus amigos los resultados de los eventos deportivos más relevantes',
 };
