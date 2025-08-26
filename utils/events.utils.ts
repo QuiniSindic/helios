@@ -87,6 +87,12 @@ export function parseMinute(
 }
 
 export function makeActionGroupsForMatch(actions: MatchEvent[]) {
+  if (!actions || actions.length === 0) {
+    return {
+      firstHalf: [],
+      secondHalf: [],
+    };
+  }
   const sorted = [...actions].sort((a, b) => {
     const pa = parseMinute(a.minute, a.extraMinute);
     const pb = parseMinute(b.minute, b.extraMinute);
