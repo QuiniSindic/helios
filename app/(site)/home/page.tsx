@@ -48,7 +48,7 @@ export default function Home() {
     <div className="mb-4 mx-4 sm:mx-8 md:mx-8 lg:mx-12 xl:mx-12 min-h-screen">
       {/* <Welcome /> */}
       <>
-        <div className="flex flex-col lg:flex-row lg:gap-4">
+        <div className="flex flex-col lg:flex-row lg:gap-4 mt-4">
           <SportsList />
           <div className="flex flex-col lg:flex-row lg:gap-4 flex-1">
             <EventsContainer isLoading={isLoading} />
