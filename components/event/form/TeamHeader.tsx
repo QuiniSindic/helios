@@ -7,6 +7,15 @@ interface TeamHeaderProps {
 }
 
 export default function TeamHeader({ event }: TeamHeaderProps) {
+  const isHT = event.status === 'HT';
+  const isFT = event.status === 'FT';
+
+  const renderStatus = () => {
+    if (isHT) return 'Descanso';
+    if (isFT) return 'Finalizado';
+    return `Minuto ${event.status}`;
+  };
+
   return (
     <div className="flex justify-around items-center w-full">
       <div className="flex flex-col items-center space-y-2">
@@ -26,9 +35,8 @@ export default function TeamHeader({ event }: TeamHeaderProps) {
         </h2>
       </div>
 
-      {/* CHECK Fer un pensament sobre esto */}
       <div className="flex flex-col items-center">
-        <span className="text-sm text-gray-400">Marcador</span>
+        <span className="text-sm text-gray-400">{renderStatus()}</span>
         <div className="text-2xl sm:text-3xl md:text-4xl font-bold opacity-90">
           {event.result ? event.result : 'vs'}
         </div>

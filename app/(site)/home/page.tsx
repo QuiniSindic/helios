@@ -45,7 +45,7 @@ export default function Home() {
   }, [mergedEvents, setEvents, results_matches, setResults]);
 
   return (
-    <div className="mb-4 mx-4 sm:mx-8 md:mx-8 lg:mx-12 xl:mx-12 min-h-screen">
+    <div className="mb-4 mx-4 sm:mx-8 md:mx-8 lg:mx-12 xl:mx-12 ">
       {/* <Welcome /> */}
       <>
         <div className="flex flex-col lg:flex-row lg:gap-4 mt-4">

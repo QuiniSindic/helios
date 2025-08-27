@@ -85,3 +85,5 @@ export interface ActionGroups {
   finals?: MatchEvent[];
   overtime?: MatchEvent[]; // pal futuro igual lo necesito
 }
+
+export type FormValues = { home: string; away: string };

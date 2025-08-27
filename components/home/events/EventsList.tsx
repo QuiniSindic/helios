@@ -71,7 +71,7 @@ export default function EventsList({
   const displayedEvents = full ? filtered : filtered.slice(0, 6);
 
   return (
-    <div className=" rounded-lg mb-4 cursor-pointer">
+    <div className=" rounded-lg cursor-pointer">
       {isLoading ? (
         <p className="text-center text-gray-500">Cargando eventos...</p>
       ) : events.length === 0 ? (

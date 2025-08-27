@@ -1,6 +1,7 @@
 'use client';
 
 import { useAuth } from '@/hooks/useAuth';
+import { useGetMatchQuery } from '@/hooks/useUpcomingEvents';
 import {
   useGetEventPredictions,
   useMyPrediction,
@@ -36,9 +37,14 @@ const MatchInfo: React.FC<MatchInfoProps> = ({
   const userId = user?.id ?? '';
   const { events } = useMatchesStore();
 
-  const notStarted = event.status === 'NS';
-  const isFinished = event.status === 'FT';
-  const isInProgress = event.status.includes("'") || event.status === 'HT';
+  const { data: matchData } = useGetMatchQuery(event.id);
+
+  const liveEvent = matchData ?? event;
+
+  const notStarted = liveEvent.status === 'NS';
+  const isFinished = liveEvent.status === 'FT';
+  const isInProgress =
+    liveEvent.status.includes("'") || liveEvent.status === 'HT';
 
   const {
     data: userPred,
@@ -115,8 +121,8 @@ const MatchInfo: React.FC<MatchInfoProps> = ({
         )}
 
         <PredictionForm
-          key={event.id}
-          event={event}
+          key={liveEvent.id}
+          event={liveEvent}
           initialPrediction={{
             home: userPred?.homeScore ?? '',
             away: userPred?.awayScore ?? '',
@@ -132,11 +138,11 @@ const MatchInfo: React.FC<MatchInfoProps> = ({
             El partido está en juego.
           </p>
         )}
-        {isFinished && (
+        {/* {isFinished && (
           <p className="text-red-500 text-center mt-2">
             El partido ha finalizado
           </p>
-        )}
+        )} */}
 
         {loadingAllPreds && (
           <div className="text-center mb-4">
@@ -147,7 +153,7 @@ const MatchInfo: React.FC<MatchInfoProps> = ({
         <Divider className="my-4" />
 
         <MatchInfoTabs
-          event={event}
+          event={liveEvent}
           predictions={allPredictions ?? []}
           isFinished={isFinished}
           isInProgress={isInProgress}

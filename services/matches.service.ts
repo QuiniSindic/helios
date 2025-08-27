@@ -54,7 +54,9 @@ export const getMatches = async ({
 };
 
 export const getMatchData = async (id: number): Promise<MatchData> => {
-  const response = await fetch(`${BACKEND_URL}/football/match/${id}`);
+  const response = await fetch(`${BACKEND_URL}/football/match/${id}`, {
+    cache: 'no-store',
+  });
   const data = await response.json();
 
   if (!data.ok) {
