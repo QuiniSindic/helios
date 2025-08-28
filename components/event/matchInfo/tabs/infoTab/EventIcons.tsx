@@ -2,7 +2,7 @@
 import FootballBall from '@/components/ui/icons/FootballBallIcon';
 import PenaltyIcon from '@/components/ui/icons/PenaltyIcon';
 import PenaltyMissedIcon from '@/components/ui/icons/PenaltyMissedIcon';
-import { MatchEventType } from '@/types/custom.types';
+import { MatchEventType } from '@/types/events/events.types';
 import { CircleDot, Flag, Pause, RotateCcw } from 'lucide-react';
 
 export function TypeIcon({ type }: { type: MatchEventType }) {

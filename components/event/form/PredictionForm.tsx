@@ -1,7 +1,6 @@
 'use client';
 
-import { MatchData } from '@/types/custom.types';
-import { FormValues } from '@/types/events/events.types';
+import { FormValues, MatchData } from '@/types/events/events.types';
 import { Button } from '@heroui/react';
 import { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';

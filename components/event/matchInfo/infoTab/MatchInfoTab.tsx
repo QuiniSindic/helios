@@ -1,6 +1,10 @@
 'use client';
 
-import { MatchData, MatchEvent, MatchEventType } from '@/types/custom.types';
+import {
+  eventTypeLabels,
+  MatchData,
+  MatchEvent,
+} from '@/types/events/events.types';
 import React from 'react';
 
 interface MatchInfoProps {
@@ -9,18 +13,6 @@ interface MatchInfoProps {
   notStarted?: boolean;
   isFinished?: boolean;
 }
-
-const eventTypeLabels: Record<MatchEventType, string> = {
-  [MatchEventType.Goal]: 'Gol',
-  [MatchEventType.PenaltyGoal]: 'Gol de penalti',
-  [MatchEventType.FailedPenalty]: 'Penalti fallado',
-  [MatchEventType.YellowCard]: 'Tarjeta amarilla',
-  [MatchEventType.RedCard]: 'Tarjeta roja',
-  [MatchEventType.HalfTime]: 'Descanso',
-  [MatchEventType.FinalTime]: 'Final',
-  [MatchEventType.Overtime]: 'Prórroga',
-  [MatchEventType.None]: '',
-};
 
 // TODO: implementar backend con los incidentes de partido porque ahora no hay nada
 export const MatchInfoTab: React.FC<MatchInfoProps> = ({

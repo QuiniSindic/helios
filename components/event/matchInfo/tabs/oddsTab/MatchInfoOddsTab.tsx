@@ -1,4 +1,4 @@
-import type { MatchData } from '@/types/custom.types';
+import type { MatchData } from '@/types/events/events.types';
 import { Spinner } from '@heroui/react';
 import React from 'react';
 

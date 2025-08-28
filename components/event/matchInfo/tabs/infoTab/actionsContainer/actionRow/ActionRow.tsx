@@ -1,5 +1,5 @@
 'use client';
-import { MatchData, MatchEvent } from '@/types/custom.types';
+import { MatchData, MatchEvent } from '@/types/events/events.types';
 import { parseMinute } from '@/utils/events.utils';
 import React from 'react';
 import { TypeIcon } from '../../EventIcons';

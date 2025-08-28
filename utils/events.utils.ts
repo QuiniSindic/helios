@@ -1,9 +1,10 @@
 import { leaguesIdMap, sportsList } from '@/constants/mappers';
-import { MatchData, MatchStatus } from '@/types/custom.types';
 import {
   ActionGroups,
+  MatchData,
   MatchEvent,
   MatchEventType,
+  MatchStatus,
   ParsedMinute,
 } from '@/types/events/events.types';
 import dayjs from 'dayjs';

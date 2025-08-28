@@ -1,7 +1,6 @@
 'use client';
 
-import { MatchData } from '@/types/custom.types';
-import { MatchEvent } from '@/types/events/events.types';
+import { MatchData, MatchEvent } from '@/types/events/events.types';
 import { makeActionGroupsForMatch } from '@/utils/events.utils';
 import React from 'react';
 import { ActionsContainer } from './actionsContainer/ActionsContainer';

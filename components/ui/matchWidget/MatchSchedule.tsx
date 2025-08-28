@@ -1,4 +1,4 @@
-import { MatchData } from '@/types/custom.types';
+import { MatchData } from '@/types/events/events.types';
 import { formatWithDayjs } from '@/utils/date.utils';
 
 interface MatchScheduleProps {

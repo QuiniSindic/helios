@@ -1,5 +1,9 @@
-import { FINAL_STATUSES, MatchData } from '@/types/custom.types';
-import { ActionGroups, MatchEvent } from '@/types/events/events.types';
+import {
+  ActionGroups,
+  FINAL_STATUSES,
+  MatchData,
+  MatchEvent,
+} from '@/types/events/events.types';
 import { Divider } from '@heroui/react';
 import { ActionRow } from './actionRow/ActionRow';
 import { TimelineDivider } from './actionRow/TimelineDivider';

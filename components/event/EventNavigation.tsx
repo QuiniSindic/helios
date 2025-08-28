@@ -1,6 +1,6 @@
 import ArrowLeft from '@/components/ui/icons/ArrowLeft';
 import ArrowRight from '@/components/ui/icons/ArrowRight';
-import { MatchData } from '@/types/custom.types';
+import { MatchData } from '@/types/events/events.types';
 import Link from 'next/link';
 
 interface EventNavigationProps {

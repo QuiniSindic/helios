@@ -11,8 +11,8 @@ import {
   updateEventPrediction,
 } from '@/services/predictions.service';
 import { useMatchesStore } from '@/store/matchesStore';
-import { MatchData } from '@/types/custom.types';
 import { Prediction } from '@/types/database/table.types';
+import { MatchData } from '@/types/events/events.types';
 import {
   PredictionPayload,
   PredictionUpdatePayload,

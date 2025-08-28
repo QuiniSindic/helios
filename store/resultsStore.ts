@@ -1,4 +1,4 @@
-import { MatchData } from '@/types/custom.types';
+import { MatchData } from '@/types/events/events.types';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 

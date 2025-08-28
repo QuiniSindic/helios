@@ -1,7 +1,7 @@
 'use client';
 
 import MatchWidget from '@/components/ui/matchWidget/MatchWidget';
-import { MatchData } from '@/types/custom.types';
+import { MatchData } from '@/types/events/events.types';
 import Link from 'next/link';
 
 interface ResultsListProps {

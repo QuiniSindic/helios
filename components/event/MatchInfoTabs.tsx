@@ -1,5 +1,5 @@
-import { MatchData } from '@/types/custom.types';
 import { Prediction } from '@/types/database/table.types';
+import { MatchData } from '@/types/events/events.types';
 import { useState } from 'react';
 import { MatchInfoTab } from './matchInfo/tabs/infoTab/MatchInfoTab';
 import MatchInfoOddsTab from './matchInfo/tabs/oddsTab/MatchInfoOddsTab';
