@@ -4,6 +4,12 @@ export enum MatchEventType {
   FailedPenalty = 40,
   YellowCard = 43,
   RedCard = 45,
+  // TODO COMPROBAR ESTO SI ES CIERTO XD
+  // Sustitución
+  // jugador entrante
+  // PlayerIn = 5,
+  // jugador saliente
+  // PlayerOut = 4,
   HalfTime,
   FinalTime,
   Overtime,
