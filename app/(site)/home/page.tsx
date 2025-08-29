@@ -1,7 +1,8 @@
 'use client';
 
 import EventsContainer from '@/components/home/events/EventsContainer';
-import SportsList from '@/components/home/SportsList';
+import { MobileOverlays } from '@/components/home/overlays/MobileOverlays';
+import SportsList from '@/components/home/sportsList/SportsList';
 import StandingsContainer from '@/components/home/standings/StandingsContainer';
 import { leaguesIdMap, leaguesMap, sportsMap } from '@/constants/mappers';
 import {
@@ -28,6 +29,9 @@ export default function Home() {
     competitionId,
   );
   const { data: live_matches } = useLiveEventsQuery();
+
+  // TODO fer un pensa si dejarlo o ponerlo cuando entremos en la page de results
+  // (creo que mejor moverlo)
   const { data: results_matches } = useResultsEventsQuery();
 
   const mergedEvents = React.useMemo(
@@ -46,13 +50,13 @@ export default function Home() {
 
   return (
     <div className="mb-4 mx-4 sm:mx-8 md:mx-8 lg:mx-12 xl:mx-12 ">
-      {/* <Welcome /> */}
       <>
         <div className="flex flex-col lg:flex-row lg:gap-4 mt-4">
           <SportsList />
           <div className="flex flex-col lg:flex-row lg:gap-4 flex-1">
             <EventsContainer isLoading={isLoading} />
             <StandingsContainer />
+            <MobileOverlays />
           </div>
         </div>
       </>

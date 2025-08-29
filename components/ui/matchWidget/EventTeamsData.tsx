@@ -1,5 +1,5 @@
 import { API_LOGO_COMPETITION_URL } from '@/core/config';
-import { MatchData } from '@/types/custom.types';
+import { MatchData } from '@/types/events/events.types';
 import Image from 'next/image';
 
 interface EventTeamsProps {

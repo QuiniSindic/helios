@@ -112,3 +112,8 @@ export const logout = async (): Promise<IResponse<null>> => {
     data: null,
   };
 };
+
+export const handleGoogleAuth = () => {
+  const url = `${BACKEND_URL}/auth/google/login`;
+  window.location.href = url;
+};

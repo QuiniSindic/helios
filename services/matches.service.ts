@@ -1,6 +1,6 @@
 import { leaguesMap, sportsMap } from '@/constants/mappers';
 import { BACKEND_URL } from '@/core/config';
-import { CompetitionData, MatchData } from '@/types/custom.types';
+import { CompetitionData, MatchData } from '@/types/events/events.types';
 import { parseKickoff } from '@/utils/date.utils';
 
 export const getMatches = async ({
