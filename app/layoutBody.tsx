@@ -12,7 +12,7 @@ export default function LayoutBody({
 }) {
   const pathname = usePathname();
   const isAuthPage =
-    pathname?.startsWith('/login') || pathname?.startsWith('/signup');
+    pathname?.startsWith('/login') || pathname?.startsWith('/sign-up');
 
   return (
     <div className="flex min-h-screen flex-col">

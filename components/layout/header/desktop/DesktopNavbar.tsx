@@ -59,7 +59,7 @@ export const DesktopNavbar = ({ onDesktopMenuToggle }: DesktopNavbarProps) => {
               Iniciar sesión
             </Link>
             <Link
-              href="/signup"
+              href="/sign-up"
               className="inline-flex items-center justify-center h-9 px-3 rounded-full text-sm font-semibold bg-secondary text-white hover:bg-secondary/90"
             >
               Regístrate
