@@ -1,6 +1,6 @@
-import { handleGoogleSubmit } from '@/actions/actions';
 import AppleIcon from '@/components/ui/icons/AppleIcon';
 import GoogleIcon from '@/components/ui/icons/GoogleIcon';
+import { handleGoogleAuth } from '@/services/auth.service';
 
 interface SignInWithSocialsProps {
   isLogin?: boolean;
@@ -10,7 +10,7 @@ const SignInWithSocials = ({ isLogin }: SignInWithSocialsProps) => {
   return isLogin ? (
     <div className="flex flex-col space-y-4 justify-center">
       <button
-        onClick={() => handleGoogleSubmit()}
+        onClick={() => handleGoogleAuth()}
         className="flex items-center justify-center gap-4 px-6 py-3 border rounded-lg shadow-sm text-gray-700 bg-white hover:bg-gray-50"
       >
         <GoogleIcon className="h-6 w-6" />
@@ -27,7 +27,7 @@ const SignInWithSocials = ({ isLogin }: SignInWithSocialsProps) => {
   ) : (
     <div className="flex flex-col space-y-4 justify-center">
       <button
-        onClick={() => handleGoogleSubmit()}
+        onClick={() => handleGoogleAuth()}
         className="flex items-center justify-center gap-4 px-6 py-3 border rounded-lg shadow-sm text-gray-700 bg-white hover:bg-gray-50"
       >
         <GoogleIcon className="h-6 w-6" />

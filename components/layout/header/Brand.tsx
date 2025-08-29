@@ -9,7 +9,7 @@ interface BrandProps {
 
 export const Brand = (props: BrandProps) => {
   return (
-    <NavbarBrand className="flex items-center justify-center w-full sm:justify-start sm:w-auto">
+    <NavbarBrand className="flex items-center justify-start w-auto">
       <Link href={props.href || '/'} onClick={props.onClick}>
         <QuinisindicLogo />
       </Link>

@@ -14,7 +14,7 @@ export function formattedDate(eventDate: Date): string {
     .replace(/^\w/, (c) => c.toUpperCase());
 }
 
-export function formatWithDayjs(dateStr: string): string {
+export function formatMatchWidget(dateStr: string): string {
   // regex HH:mm DD/MM/YYYY
   const m = dateStr.match(/^(\d{2}):(\d{2}) (\d{2})\/(\d{2})\/(\d{4})$/);
   let djs;
@@ -86,3 +86,21 @@ export const parseKickoff = (kickoff?: string | Date | number): Date | null => {
   const d = new Date(s);
   return isNaN(d.getTime()) ? null : d;
 };
+
+export function formatKickoffBadge(
+  kickoff?: string | Date | number,
+): string | null {
+  const d = parseKickoff(kickoff);
+  if (!d) return null;
+
+  const dj = dayjs(d);
+  const today = dayjs().startOf('day');
+  const diff = dj.startOf('day').diff(today, 'day');
+
+  let prefix: string;
+  if (diff === 0) prefix = 'Hoy';
+  else if (diff === 1) prefix = 'Mañana';
+  else prefix = dj.locale('es').format('ddd D MMM'); // ej: "sáb. 30 ago"
+
+  return `${prefix} • ${dj.locale('es').format('HH:mm')}`;
+}
