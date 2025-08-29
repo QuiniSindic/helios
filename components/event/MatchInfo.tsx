@@ -42,15 +42,17 @@ const MatchInfo: React.FC<MatchInfoProps> = ({
   const liveEvent = matchData ?? event;
 
   const notStarted = liveEvent.status === 'NS';
-  const isFinished = liveEvent.status === 'FT';
+  const isFinished =
+    liveEvent.status === 'FT' ||
+    liveEvent.status === 'AET' ||
+    liveEvent.status === 'AP';
   const isInProgress =
     liveEvent.status.includes("'") || liveEvent.status === 'HT';
 
-  const {
-    data: userPred,
-    refetch: refetchUserPred,
-    error: userPredError,
-  } = useMyPrediction(userId, event.id);
+  const { data: userPred, refetch: refetchUserPred } = useMyPrediction(
+    userId,
+    event.id,
+  );
 
   const {
     data: allPredictions,
@@ -107,18 +109,13 @@ const MatchInfo: React.FC<MatchInfoProps> = ({
   return (
     <>
       <Toaster />
+
       {events?.length > 0 && (
         <EventNavigation currentId={event.id} events={events} />
       )}
 
-      <div className="match-info-container flex flex-col min-h-screen">
+      <div className="match-info-container flex flex-col min-h-screen px-3 sm:px-4">
         <NoPredictionWarn status={event.status} prediction={userPred} />
-
-        {userPredError && (
-          <div className="text-center text-red-500 mb-4">
-            <p>Error: {(userPredError as Error).message}</p>
-          </div>
-        )}
 
         <PredictionForm
           key={liveEvent.id}
@@ -127,28 +124,10 @@ const MatchInfo: React.FC<MatchInfoProps> = ({
             home: userPred?.homeScore ?? '',
             away: userPred?.awayScore ?? '',
           }}
-          disabled={!notStarted}
+          disabled={!(liveEvent.status === 'NS')}
           isLoggedIn={!!user}
           onSubmit={userPred ? handleUpdate : handleSave}
         />
-
-        {/* mensajes de estado */}
-        {isInProgress && (
-          <p className="text-center text-secondary mt-4">
-            El partido está en juego.
-          </p>
-        )}
-        {/* {isFinished && (
-          <p className="text-red-500 text-center mt-2">
-            El partido ha finalizado
-          </p>
-        )} */}
-
-        {loadingAllPreds && (
-          <div className="text-center mb-4">
-            <p>Cargando predicciones...</p>
-          </div>
-        )}
 
         <Divider className="my-4" />
 

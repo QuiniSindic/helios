@@ -1,5 +1,5 @@
 import { MatchData } from '@/types/events/events.types';
-import { formatWithDayjs } from '@/utils/date.utils';
+import { formatMatchWidget } from '@/utils/date.utils';
 
 interface MatchScheduleProps {
   date: string;
@@ -14,7 +14,7 @@ export const MatchSchedule = ({
   isFinished,
   event,
 }: MatchScheduleProps) => {
-  const dateFormatted = formatWithDayjs(date);
+  const dateFormatted = formatMatchWidget(date);
 
   // regex minutos ("65'", "45+2", "90+3'", "105+1", etc.)
   const minuteMatch = event.status.match(/^(\d+)(?:\+(\d+))?'?$/);
@@ -57,24 +57,12 @@ export const MatchSchedule = ({
       );
     }
     switch (event.status) {
-      // case 'FirstHalf':
-      //   return (
-      //     <p className="text-gray-500 dark:text-white text-sm md:text-base text-center">
-      //       Primera parte
-      //     </p>
-      //   );
       case 'HT':
         return (
           <p className="text-gray-500 dark:text-white text-sm md:text-base text-center">
             Descanso
           </p>
         );
-      // case 'SecondHalf':
-      //   return (
-      //     <p className="text-gray-500 dark:text-white text-sm md:text-base text-center">
-      //       Segunda parte
-      //     </p>
-      //   );
       case 'Canc.':
         return (
           <p className="text-gray-500 dark:text-white text-sm md:text-base text-center">

@@ -10,12 +10,16 @@ import {
 import dayjs from 'dayjs';
 
 export const NOT_LIVE: MatchStatus[] = ['NS', 'FT', 'Canc.'];
+export const CANCELED: MatchStatus[] = ['Canc.'];
 export const IS_LIVE: MatchStatus[] = ['HT', 'OT'];
 export const IS_FINISHED: MatchStatus[] = ['FT', 'AET', 'AP'];
 
 export function isLive(status: MatchStatus) {
-  if (IS_LIVE.includes(status)) return true;
-  return !NOT_LIVE.includes(status);
+  return !(status === 'NS' || isFinished(status));
+}
+
+export function isFinished(status: MatchStatus) {
+  return IS_FINISHED.includes(status) || CANCELED.includes(status);
 }
 
 export const concatenateAndSortEvents = ({
@@ -87,29 +91,75 @@ export function parseMinute(
   return { min, extra: 0, total: min, label: `${min}'` };
 }
 
-export function makeActionGroupsForMatch(actions: MatchEvent[]) {
+const isNumericMinute = (m: unknown): m is number =>
+  typeof m === 'number' && !Number.isNaN(m);
+
+const safeTotal = (ev: MatchEvent): number => {
+  // Si no hay minuto numérico, devolvemos -Infinity para que queden al final
+  if (!isNumericMinute(ev.minute)) return Number.NEGATIVE_INFINITY;
+  const { total } = parseMinute(ev.minute, ev.extraMinute);
+  return total;
+};
+
+export function makeActionGroupsForMatch(
+  actions: MatchEvent[] = [],
+): ActionGroups {
   if (!actions || actions.length === 0) {
     return {
       firstHalf: [],
       secondHalf: [],
+      breaks: [],
+      finals: [],
+      overtime: [],
+      penalties: [],
     };
   }
-  const sorted = [...actions].sort((a, b) => {
-    const pa = parseMinute(a.minute, a.extraMinute);
-    const pb = parseMinute(b.minute, b.extraMinute);
-    return pb.total - pa.total;
-  });
-  const groups: ActionGroups = {
-    firstHalf: [],
-    secondHalf: [],
+
+  // Localiza marcadores de fase
+  const idxHT = actions.findIndex((a) => a.type === MatchEventType.HalfTime);
+  const idxFT = actions.findIndex((a) => a.type === MatchEventType.FinalTime);
+  const idxOT = actions.findIndex((a) => a.type === MatchEventType.Overtime);
+
+  // Slices útiles
+  const beforeHT = idxHT >= 0 ? actions.slice(0, idxHT) : actions.slice();
+  const betweenHTFT =
+    idxHT >= 0 && idxFT >= 0 ? actions.slice(idxHT + 1, idxFT) : [];
+  const afterOT = idxOT >= 0 ? actions.slice(idxOT + 1) : [];
+
+  // Clasificación tras OT:
+  // - Prórroga: eventos con minuto numérico (95, 105, 120…)
+  // - Tanda: goles (36) SIN minuto numérico (el feed los manda así)
+  const overtime = afterOT.filter(
+    (e) => e.type !== MatchEventType.Overtime && isNumericMinute(e.minute),
+  );
+  const rawPens = afterOT.filter(
+    (e) => e.type === MatchEventType.Goal && !isNumericMinute(e.minute),
+  );
+
+  // Ordena grupos por minuto descendente (donde aplique)
+  const sortByDescTotal = (arr: MatchEvent[]) =>
+    arr.slice().sort((a, b) => safeTotal(b) - safeTotal(a));
+
+  const firstHalf = sortByDescTotal(
+    beforeHT.filter((e) => e.type !== MatchEventType.HalfTime),
+  );
+  const secondHalf = sortByDescTotal(
+    betweenHTFT.filter((e) => e.type !== MatchEventType.FinalTime),
+  );
+  const overtimeSorted = sortByDescTotal(overtime);
+
+  // Penaltis: mantener orden de llegada (P1, P2, …). Si quieres al revés, invierte el array.
+  const penalties = rawPens.slice().reverse();
+
+  const breaks = actions.filter((a) => a.type === MatchEventType.HalfTime);
+  const finals = actions.filter((a) => a.type === MatchEventType.FinalTime);
+
+  return {
+    firstHalf,
+    secondHalf,
+    breaks,
+    finals,
+    overtime: overtimeSorted,
+    penalties, // ← usa este grupo para pintar la tanda
   };
-
-  for (const action of sorted) {
-    const { total } = parseMinute(action.minute, action.extraMinute);
-
-    if (total <= 45) groups.firstHalf.push(action);
-    else groups.secondHalf.push(action);
-  }
-
-  return groups;
 }

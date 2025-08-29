@@ -6,7 +6,11 @@ import { useMatchesStore } from '@/store/matchesStore';
 import { useResultsStore } from '@/store/resultsStore';
 import { useSportsFilter } from '@/store/sportsLeagueFilterStore';
 import { parseKickoff } from '@/utils/date.utils';
-import { competitionIdsForSport } from '@/utils/events.utils';
+import {
+  competitionIdsForSport,
+  isFinished,
+  isLive,
+} from '@/utils/events.utils';
 import Link from 'next/link';
 
 interface EventsListProps {
@@ -29,7 +33,7 @@ export default function EventsList({
     mode === 'results'
       ? results
       : Array.isArray(events)
-        ? events.filter((e) => e && !['FT', 'Canc.'].includes(e.status))
+        ? events.filter((e) => e && !isFinished(e.status))
         : [];
 
   const leagueId = selectedLeague ? leaguesIdMap[selectedLeague] : undefined;
@@ -71,33 +75,33 @@ export default function EventsList({
   const displayedEvents = full ? filtered : filtered.slice(0, 6);
 
   return (
-    <div className=" rounded-lg cursor-pointer">
+    <div className="space-y-2">
       {isLoading ? (
-        <p className="text-center text-gray-500">Cargando eventos...</p>
-      ) : events.length === 0 ? (
-        <p className="text-center text-gray-500">No hay eventos para hoy.</p>
+        <p className="text-center text-gray-500 py-8">Cargando eventos...</p>
+      ) : displayedEvents.length === 0 ? (
+        <p className="text-center text-gray-500 py-8">
+          No hay eventos en este momento.
+        </p>
       ) : (
         <>
           {displayedEvents.map((event) => {
             const status = event.status;
-            const isLive =
-              status !== 'NS' && status !== 'FT' && status !== 'Canc.';
+            const live = isLive(status);
+            const finished = isFinished(status);
 
             return (
-              <Link prefetch={true} href={`/event/${event.id}`} key={event.id}>
+              <Link prefetch href={`/event/${event.id}`} key={event.id}>
                 <MatchWidget
                   event={event}
-                  isLive={isLive}
-                  // isFinished={isFinished}
+                  isLive={live}
+                  isFinished={finished}
                 />
               </Link>
             );
           })}
-          {!full && events.length > 6 && (
-            <div className="text-center text-gray-500">
-              <Link href="/events">
-                <p>Ver todos los eventos</p>
-              </Link>
+          {!full && filtered.length > 6 && (
+            <div className="text-center text-gray-500 py-2">
+              <Link href="/events">Ver todos los eventos</Link>
             </div>
           )}
         </>

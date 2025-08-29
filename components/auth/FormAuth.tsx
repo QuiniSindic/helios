@@ -8,7 +8,7 @@ import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import SubmitButton from '../ui/buttons/AuthSubmitButton';
 import AuthErrorText from '../ui/errors/AuthErrorText';
-import AuthInput from '../ui/inputs/AuthInput';
+import TextField from '../ui/inputs/TextField';
 import { Credentials } from './Credentials';
 import HasAccount from './HasAccount';
 
@@ -75,24 +75,20 @@ const FormAuth = ({ isLogin = false }: FormAuthProps) => {
       noValidate
     >
       {!isLogin && (
-        <AuthInput
-          name="username"
+        <TextField
           label="Nombre de usuario"
-          placeholder="Nombre de usuario"
-          register={register}
-          rules={
-            isLogin
-              ? {}
-              : {
-                  required: 'El nombre de usuario es obligatorio',
-                  minLength: { value: 3, message: 'Mínimo 3 caracteres' },
-                }
-          }
-          error={errors.username}
+          placeholder="Username"
+          {...register('username', {
+            required: 'El nombre de usuario es obligatorio',
+            minLength: { value: 3, message: 'Mínimo 3 caracteres' },
+          })}
+          errorText={errors.username?.message}
+          autoComplete="username"
+          enterKeyHint="next"
         />
       )}
 
-      <Credentials register={register} errors={errors} />
+      <Credentials register={register} errors={errors} isLogin={isLogin} />
 
       <AuthErrorText message={error} />
 

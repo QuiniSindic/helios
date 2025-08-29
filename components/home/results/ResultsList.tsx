@@ -26,11 +26,11 @@ export default function ResultsList({
   return (
     <div className="bg-white dark:bg-[#272727] rounded-lg mb-4 cursor-pointer">
       {isLoading ? (
-        <p className="text-center text-gray-500">Cargando eventos...</p>
+        <p className="text-center text-gray-500">Cargando resultados...</p>
       ) : error ? (
         <p className="text-center text-gray-500">{(error as Error).message}</p>
       ) : results.length === 0 ? (
-        <p className="text-center text-gray-500">No hay eventos para hoy.</p>
+        <p className="text-center text-gray-500">No hay resultados.</p>
       ) : (
         <>
           {displayedResults.map((result) => {

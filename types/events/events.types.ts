@@ -1,20 +1,57 @@
 export enum MatchEventType {
   Goal = 36,
-  PenaltyGoal = 41,
   FailedPenalty = 40,
+  PenaltyGoal = 41,
   YellowCard = 43,
+  // Segunda Amarilla y roja? = 44
   RedCard = 45,
+  HalfTime = 46,
+  FinalTime = 47,
+  Overtime = 48,
+  None,
   // TODO COMPROBAR ESTO SI ES CIERTO XD
   // Sustitución
   // jugador entrante
   // PlayerIn = 5,
   // jugador saliente
   // PlayerOut = 4,
-  HalfTime,
-  FinalTime,
-  Overtime,
-  None,
 }
+// ejemplo de cambio
+/**
+ * {
+				"Min": 66,
+				"Nm": 2,
+				"Sor": 1,
+				"Incs": [
+					{
+						"Min": 66,
+						"Nm": 2,
+						"Aid": "91166",
+						"ID": "91166",
+						"Fn": "Emmanuel Ofori",
+						"Ln": "Agyemang",
+						"Pnt": "emmanuel-ofori-agyemang",
+						"Pn": "Emmanuel Agyemang",
+						"IDo": "1349",
+						"AIDo": "1349",
+						"IT": 5,
+						"Sor": 1
+					},
+					{
+						"Min": 66,
+						"Nm": 2,
+						"Aid": "1349",
+						"ID": "1349",
+						"Fn": "Simon",
+						"Ln": "Piesinger",
+						"Pnt": "simon-piesinger",
+						"Pn": "Simon Piesinger",
+						"IDo": "91166",
+						"AIDo": "91166",
+						"IT": 4,
+						"Sor": 0
+					}
+ */
 
 export const eventTypeLabels: Record<MatchEventType, string> = {
   [MatchEventType.Goal]: 'Gol',
@@ -122,7 +159,8 @@ export interface ActionGroups {
   secondHalf: MatchEvent[];
   breaks?: MatchEvent[];
   finals?: MatchEvent[];
-  overtime?: MatchEvent[]; // pal futuro igual lo necesito
+  overtime?: MatchEvent[];
+  penalties?: MatchEvent[]; // tanda de penaltis
 }
 
 export type FormValues = { home: string; away: string };

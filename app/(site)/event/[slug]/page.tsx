@@ -35,7 +35,7 @@ export default async function EventDetailPage({
           <h1>Debes iniciar sesión para poder guardar tus predicciones</h1>
         </div>
       )}
-      <div className="p-4 flex-grow">
+      <div className="p-2 flex-grow">
         <MatchInfo event={match} predictions={predictions} />
       </div>
     </div>

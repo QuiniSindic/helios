@@ -4,13 +4,17 @@ import { Navbar } from '@heroui/navbar';
 import { usePathname, useRouter } from 'next/navigation';
 import React from 'react';
 import { DesktopNavbar } from './desktop/DesktopNavbar';
+import { DesktopNavbarMenu } from './desktop/DesktopNavbarMenu';
 import { MobileNavbar } from './mobile/MobileNavbar';
 import { MobileNavbarMenu } from './mobile/MobileNavbarMenu';
 
 export default function Header() {
   const pathname = usePathname();
   const router = useRouter();
-  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
+  const [isDesktopMenuOpen, setIsDesktopMenuOpen] = React.useState(false);
+
   const [isSticky, setIsSticky] = React.useState<'sticky' | 'static'>('sticky');
 
   // Evitar salto de layout por SSR: decide stickiness en cliente
@@ -21,27 +25,42 @@ export default function Header() {
 
   React.useEffect(() => {
     // cada vez que cambia la ruta, cerramos el menú móvil
-    setIsMenuOpen(false);
+    setIsMobileMenuOpen(false);
+    setIsDesktopMenuOpen(false);
   }, [pathname]);
 
   const handleNavigate = (path: string) => {
-    setIsMenuOpen(false);
+    setIsMobileMenuOpen(false);
+    setIsDesktopMenuOpen(false);
     setTimeout(() => router.push(path), 0);
   };
 
   return (
     <Navbar
-      onMenuOpenChange={setIsMenuOpen}
-      isMenuOpen={isMenuOpen}
+      onMenuOpenChange={setIsMobileMenuOpen}
+      isMenuOpen={isMobileMenuOpen}
       maxWidth="full"
       position={isSticky}
       isBlurred={false}
     >
-      <MobileNavbar isMenuOpen={isMenuOpen} />
+      {/* se ve siempre pero solo resolucion movil */}
+      <MobileNavbar isMenuOpen={isMobileMenuOpen} />
 
-      <DesktopNavbar onNavigate={handleNavigate} />
+      {/* se ve siempre pero solo resolucion pc */}
+      <DesktopNavbar
+        onNavigate={handleNavigate}
+        onDesktopMenuToggle={() => setIsDesktopMenuOpen(!isDesktopMenuOpen)}
+      />
 
+      {/* solo se ve en movil */}
       <MobileNavbarMenu onNavigate={handleNavigate} />
+
+      {/* crear un drawer para desktop para abrir ese y no el del mobile */}
+      <DesktopNavbarMenu
+        open={isDesktopMenuOpen}
+        onClose={() => setIsDesktopMenuOpen(false)}
+        onNavigate={handleNavigate}
+      />
     </Navbar>
   );
 }

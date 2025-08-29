@@ -1,41 +1,47 @@
 import { FormData } from '@/types/auth/auth.types';
 import { FieldErrors, UseFormRegister } from 'react-hook-form';
-import AuthInput from '../ui/inputs/AuthInput';
-import AuthPasswordInput from '../ui/inputs/AuthPasswordInput';
+import PasswordField from '../ui/inputs/PasswordField';
+import TextField from '../ui/inputs/TextField';
 
 interface CredentialsProps {
   register: UseFormRegister<FormData>;
   errors: FieldErrors<FormData>;
+  isLogin: boolean;
 }
 
-export const Credentials = ({ register, errors }: CredentialsProps) => {
+export const Credentials = ({
+  register,
+  errors,
+  isLogin,
+}: CredentialsProps) => {
   return (
     <div className="space-y-4">
-      <AuthInput
-        name="email"
-        type="email"
+      <TextField
         label="Correo electrónico"
-        placeholder="Correo electrónico"
-        register={register}
-        rules={{
+        type="email"
+        placeholder="email@email.com"
+        {...register('email', {
           required: 'El correo es obligatorio',
           pattern: {
             value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-            message: 'Correo invalido',
+            message: 'Correo inválido',
           },
-        }}
-        error={errors.email}
+        })}
+        errorText={errors.email?.message}
+        autoComplete="email"
+        inputMode="email"
+        enterKeyHint="next"
       />
 
-      <AuthPasswordInput
-        name="password"
+      <PasswordField
+        label="Contraseña"
         placeholder="Contraseña"
-        register={register}
-        rules={{
+        {...register('password', {
           required: 'La contraseña es obligatoria',
           minLength: { value: 6, message: 'Mínimo 6 caracteres' },
-        }}
-        error={errors.password}
+        })}
+        errorText={errors.password?.message}
+        autoComplete={isLogin ? 'current-password' : 'new-password'}
       />
     </div>
   );
