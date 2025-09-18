@@ -2,16 +2,29 @@ import MatchInfo from '@/components/event/MatchInfo';
 import { BACKEND_URL } from '@/core/config';
 import { getMatchData } from '@/services/matches.service';
 import { getEventPredictions } from '@/services/predictions.service';
-import { headers } from 'next/headers';
+import { cookies } from 'next/headers';
 
 async function getServerUser() {
-  const header = await headers();
+  const jar = await cookies();
+
+  const parts: string[] = [];
+  const access = jar.get('access_token')?.value;
+  if (access) parts.push(`access_token=${access}`);
+  const refresh = jar.get('refresh_token')?.value;
+  if (refresh) parts.push(`refresh_token=${refresh}`);
+
+  const cookieHeader = parts.join('; ');
+
+  if (!cookieHeader) return null;
+
   const res = await fetch(`${BACKEND_URL}/auth/me`, {
-    headers: { cookie: header.get('cookie') ?? '' },
+    headers: { cookie: cookieHeader },
     cache: 'no-store',
   });
+
   if (res.status === 204) return null;
   const json = await res.json().catch(() => null);
+
   return json?.ok ? json.data : null;
 }
 

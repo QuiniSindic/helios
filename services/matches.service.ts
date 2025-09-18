@@ -201,3 +201,35 @@ export const getResults = async (sport?: string, competitionId?: number) => {
 
   return matches;
 };
+
+export const getResultsPaginated = async (params: {
+  sport?: string;
+  competition?: number;
+  from?: string;
+  to?: string;
+  matchweek?: number;
+  page: number;
+  pageSize: number;
+}) => {
+  const queryString = new URLSearchParams(
+    Object.entries(params)
+      .filter(([, v]) => v !== undefined && v !== null && v !== '')
+      .map(([k, v]) => [k, String(v)]),
+  ).toString();
+
+  const url = `${BACKEND_URL}/events/results/paged?${queryString}`;
+
+  const res = await fetch(url, {
+    cache: 'no-store',
+  });
+
+  if (!res.ok) {
+    const { error } = await res.json();
+    throw new Error(error);
+  }
+
+  return res.json() as Promise<{
+    ok: boolean;
+    data: { items: any[]; total: number };
+  }>;
+};

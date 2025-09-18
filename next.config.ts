@@ -13,6 +13,10 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'lsm-static-prod.livescore.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'storage.livescore.com',
+      },
     ],
   },
   async redirects() {

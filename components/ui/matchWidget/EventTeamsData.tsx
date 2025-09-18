@@ -1,6 +1,7 @@
 import { API_LOGO_COMPETITION_URL } from '@/core/config';
 import { MatchData } from '@/types/events/events.types';
-import Image from 'next/image';
+import { getTeamLogoSrc } from '@/utils/images.utils';
+import TeamLogo from '../TeamLogo';
 
 interface EventTeamsProps {
   event: MatchData;
@@ -15,40 +16,33 @@ export default function EventTeamsData({
   const hasResult = resultParts.length === 2;
 
   const homeScore = hasResult ? parseInt(resultParts[0], 10) : null;
+  const homeLogo = getTeamLogoSrc(API_LOGO_COMPETITION_URL, event.homeTeam.img);
   const awayScore = hasResult ? parseInt(resultParts[1], 10) : null;
+  const awayLogo = getTeamLogoSrc(API_LOGO_COMPETITION_URL, event.awayTeam.img);
 
   return (
     <>
       {/* Vista para PC (pantallas grandes) */}
-      <div className="hidden sm:grid grid-cols-[1fr_40px_80px_40px_1fr] items-center mt-4">
+      <div className="hidden sm:grid grid-cols-[1fr_40px_80px_40px_1fr] items-center">
         <span className="text-base font-medium text-right mt-2">
-          {/* TODO: fix el name */}
           {event.homeTeam.name}
         </span>
-        <Image
-          src={
-            `${API_LOGO_COMPETITION_URL}${event.homeTeam.img as string}` ||
-            '/globe.svg'
-          }
+        <TeamLogo
+          src={homeLogo}
           alt={event.homeTeam.abbr}
-          width={28}
-          height={28}
+          size={28}
           className="justify-self-end"
         />
+
         <div className="text-center">
-          {/* TODO: fix la manera en que el back deveuelve el resultado */}
-          {/* {showScore ? `${event.home_score} - ${event.away_score}` : 'vs'} */}
           {showScore ? `${event.result}` : 'vs'}
         </div>
-        <Image
-          src={
-            `${API_LOGO_COMPETITION_URL}${event.awayTeam.img as string}` ||
-            '/globe.svg'
-          }
+
+        <TeamLogo
+          src={awayLogo}
           alt={event.awayTeam.abbr}
-          width={28}
-          height={28}
-          className=" justify-self-start"
+          size={28}
+          className="justify-self-start"
         />
         <span className="text-base font-medium text-left mt-2">
           {event.awayTeam.name}
@@ -56,38 +50,18 @@ export default function EventTeamsData({
       </div>
 
       {/* Vista para móvil */}
-      <div className="sm:hidden w-2/3 grid grid-cols-[auto_1fr_auto] gap-x-2 gap-y-4 items-center mr-1 mt-4">
+      <div className="sm:hidden w-2/3 grid grid-cols-[auto_1fr_auto] gap-x-2 gap-y-3 items-center mr-1">
         {/* Fila del equipo local */}
-        <Image
-          src={
-            `${API_LOGO_COMPETITION_URL}${event.homeTeam.img as string}` ||
-            '/globe.svg'
-          }
-          alt={event.homeTeam.abbr}
-          width={20}
-          height={20}
-          // className="w-6 h-6"
-        />
+        <TeamLogo src={homeLogo} alt={event.homeTeam.abbr} size={20} />
         <span className="text-sm font-medium">{event.homeTeam.name}</span>
         <span className="text-sm font-medium text-right">
-          {/* TODO: fix la manera en que el back deveuelve el resultado */}
           {showScore ? homeScore : ''}
         </span>
 
         {/* Fila del equipo visitante */}
-        <Image
-          src={
-            `${API_LOGO_COMPETITION_URL}${event.awayTeam.img as string}` ||
-            '/globe.svg'
-          }
-          alt={event.awayTeam.name}
-          width={20}
-          height={20}
-          // className="w-6 h-6"
-        />
+        <TeamLogo src={awayLogo} alt={event.awayTeam.abbr} size={20} />
         <span className="text-sm font-medium">{event.awayTeam.name}</span>
         <span className="text-sm font-medium text-right">
-          {/* TODO: fix la manera en que el back deveuelve el resultado */}
           {showScore ? awayScore : ''}
         </span>
       </div>

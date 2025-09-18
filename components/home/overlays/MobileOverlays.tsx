@@ -1,17 +1,41 @@
 'use client';
 
 import { BottomSheet } from '@/components/ui/BottomSheet';
+import { leaguesIdMap, leaguesMap, sportsMap } from '@/constants/mappers';
+import { useResultsEventsQuery } from '@/hooks/useUpcomingEvents';
+import { useResultsStore } from '@/store/resultsStore';
 import { useSportsFilter } from '@/store/sportsLeagueFilterStore';
 import { useEffect, useState } from 'react';
+import ResultsList from '../results/ResultsList';
 import StandingsTable from '../standings/Standing';
-// Si tienes un componente de resultados, impórtalo aquí
-// import ResultsList from './ResultsList';
 
 type View = 'standings' | 'results' | null;
 
 export function MobileOverlays() {
   const [view, setView] = useState<View>(null);
-  const { selectedLeague } = useSportsFilter();
+  const isResultsOpen = view === 'results';
+  // const isStandingsOpen = view === 'standings';
+
+  const { selectedLeague, selectedSport } = useSportsFilter();
+  const sportSlug = sportsMap[selectedSport as keyof typeof sportsMap];
+  const competitionId = leaguesIdMap[selectedLeague as keyof typeof leaguesMap];
+
+  const { results, setResults } = useResultsStore();
+
+  const { data: results_matches } = useResultsEventsQuery(
+    sportSlug,
+    competitionId,
+    {
+      enabled: isResultsOpen,
+    },
+  );
+  console.log('results_matches', results_matches);
+
+  useEffect(() => {
+    if (results_matches) {
+      setResults(results_matches);
+    }
+  }, [results_matches, setResults]);
 
   useEffect(() => {
     const onStandings = () => setView('standings');
@@ -44,11 +68,11 @@ export function MobileOverlays() {
       </BottomSheet>
 
       <BottomSheet open={view === 'results'} onClose={close} title="Resultados">
-        {/* Reemplaza por tu lista real de resultados */}
-        <p className="text-center text-gray-500">
-          Pronto: resultados de la liga.
-        </p>
-        {/* <ResultsList results={[]} league={selectedLeague} sport={selectedSport} /> pasarle deporte y liga pra pillar results dentro y asi no pillarlos en /home */}
+        {selectedLeague ? (
+          <ResultsList results={results} league={selectedLeague} compact />
+        ) : (
+          <p className="text-center text-gray-500">Selecciona una liga.</p>
+        )}
       </BottomSheet>
     </>
   );

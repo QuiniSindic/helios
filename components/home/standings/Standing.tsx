@@ -1,9 +1,10 @@
 'use client';
 
-import { API_LOGO_COMPETITION_URL_LOW } from '@/core/config';
+import TeamLogo from '@/components/ui/TeamLogo';
+import { API_LOGO_COMPETITION_URL } from '@/core/config';
 import { useStandingsQuery } from '@/hooks/useStandingLeague';
 import { TeamStandingData } from '@/types/standings/standings.types';
-import Image from 'next/image';
+import { getTeamLogoSrc } from '@/utils/images.utils';
 
 interface StandingsTableProps {
   competition?: string;
@@ -63,31 +64,36 @@ export default function StandingsTable({ competition }: StandingsTableProps) {
         </tr>
       </thead>
       <tbody>
-        {standing.map((team: TeamStandingData) => (
-          <tr
-            key={team.position}
-            className="border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-[#333]"
-          >
-            <td className="px-2 py-1 text-center font-bold">{team.position}</td>
-            <td className="px-2 py-1 flex items-center">
-              <Image
-                className="size-6 mr-2"
-                src={API_LOGO_COMPETITION_URL_LOW + team.badge}
-                alt={team.name}
-                width={24}
-                height={24}
-              />
-              <span className="truncate">{team.name}</span>
-            </td>
-            <td className="px-2 py-1 text-center">{team.played}</td>
-            <td className="px-2 py-1 text-center">{team.wins}</td>
-            <td className="px-2 py-1 text-center">{team.draws}</td>
-            <td className="px-2 py-1 text-center">{team.losses}</td>
-            <td className="px-2 py-1 text-center font-semibold">
-              {team.points}
-            </td>
-          </tr>
-        ))}
+        {standing.map((team: TeamStandingData) => {
+          const teamLogo = getTeamLogoSrc(API_LOGO_COMPETITION_URL, team.badge);
+
+          return (
+            <tr
+              key={team.position}
+              className="border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-[#333]"
+            >
+              <td className="px-2 py-1 text-center font-bold">
+                {team.position}
+              </td>
+              <td className="px-2 py-1 flex items-center">
+                <TeamLogo
+                  alt={team.name}
+                  src={teamLogo}
+                  size={24}
+                  className="size-6 mr-2"
+                />
+                <span className="truncate">{team.name}</span>
+              </td>
+              <td className="px-2 py-1 text-center">{team.played}</td>
+              <td className="px-2 py-1 text-center">{team.wins}</td>
+              <td className="px-2 py-1 text-center">{team.draws}</td>
+              <td className="px-2 py-1 text-center">{team.losses}</td>
+              <td className="px-2 py-1 text-center font-semibold">
+                {team.points}
+              </td>
+            </tr>
+          );
+        })}
       </tbody>
     </table>
   );

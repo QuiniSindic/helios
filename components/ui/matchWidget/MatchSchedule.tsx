@@ -51,7 +51,7 @@ export const MatchSchedule = ({
   if (isLive) {
     if (isMinute) {
       return (
-        <p className="text-gray-500 dark:text-white text-sm md:text-base text-center">
+        <p className="text-gray-500 dark:text-white text-sm md:text-base text-center whitespace-nowrap leading-tight min-h-[20px]">
           {phaseLabel} {displayMinute}
         </p>
       );
@@ -59,19 +59,19 @@ export const MatchSchedule = ({
     switch (event.status) {
       case 'HT':
         return (
-          <p className="text-gray-500 dark:text-white text-sm md:text-base text-center">
+          <p className="text-gray-500 dark:text-white text-sm md:text-base text-center whitespace-nowrap leading-tight min-h-[20px]">
             Descanso
           </p>
         );
       case 'Canc.':
         return (
-          <p className="text-gray-500 dark:text-white text-sm md:text-base text-center">
+          <p className="text-gray-500 dark:text-white text-sm md:text-base text-center whitespace-nowrap leading-tight min-h-[20px]">
             Cancelado
           </p>
         );
       default:
         return (
-          <p className="text-gray-500 dark:text-white text-sm md:text-base text-center">
+          <p className="text-gray-500 dark:text-white text-sm md:text-base text-center whitespace-nowrap leading-tight min-h-[20px]">
             {dateFormatted}
           </p>
         );
@@ -80,14 +80,14 @@ export const MatchSchedule = ({
 
   if (isFinished) {
     return (
-      <p className="text-gray-500 dark:text-white text-sm md:text-base text-center">
+      <p className="text-gray-500 dark:text-white text-sm md:text-base text-center whitespace-nowrap leading-tight min-h-[20px]">
         Finalizado
       </p>
     );
   }
 
   return (
-    <p className="text-gray-500 dark:text-white text-sm md:text-base text-center">
+    <p className="text-gray-500 dark:text-white text-sm md:text-base text-center whitespace-nowrap leading-tight min-h-[20px]">
       {dateFormatted}
     </p>
   );

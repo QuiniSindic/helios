@@ -3,8 +3,15 @@
 import { ThemeSwitcher } from '@/components/ui/ThemeSwitcher';
 import { menuItems } from '@/constants/menuLinks';
 import { useAuth } from '@/hooks/useAuth';
-import { Avatar, Divider, NavbarMenu, NavbarMenuItem } from '@heroui/react';
+import {
+  Avatar,
+  Button,
+  Divider,
+  NavbarMenu,
+  NavbarMenuItem,
+} from '@heroui/react';
 import Link from 'next/link';
+import React from 'react';
 
 interface MobileNavbarMenuProps {
   onNavigate: (path: string) => void;
@@ -21,37 +28,49 @@ export const MobileNavbarMenu = ({ onNavigate }: MobileNavbarMenuProps) => {
         // Si es el item de perfil, mostramos avatar + username + email
         if (isProfile && user) {
           return (
-            <NavbarMenuItem key={item.path} className="w-full">
-              <Link
-                href={item.path}
-                onClick={() => onNavigate(item.path)}
-                className="
+            <React.Fragment key={item.path}>
+              <NavbarMenuItem key={item.path} className="w-full">
+                <Link
+                  href={item.path}
+                  onClick={() => onNavigate(item.path)}
+                  className="
                   block w-full text-foreground rounded-xl
                   hover:bg-white/10 transition
                   px-2 py-2
                 "
-              >
-                <div className="grid grid-cols-[44px_1fr] items-center gap-3">
-                  <Avatar
-                    color="secondary"
-                    name={user.email?.substring(0, 2).toUpperCase()}
-                    classNames={{
-                      base: 'text-white bg-secondary flex items-center justify-center',
-                      icon: 'text-white',
-                    }}
-                    showFallback
-                  />
-                  <div className="min-w-0">
-                    <p className="font-semibold truncate">
-                      {user.username ?? 'Usuario'}
-                    </p>
-                    <p className="text-xs opacity-70 truncate">
-                      {user.email ?? '—'}
-                    </p>
+                >
+                  <div className="grid grid-cols-[44px_1fr] items-center gap-3">
+                    <Avatar
+                      color="secondary"
+                      name={user.email?.substring(0, 2).toUpperCase()}
+                      classNames={{
+                        base: 'text-white bg-secondary flex items-center justify-center',
+                        icon: 'text-white',
+                      }}
+                      showFallback
+                    />
+                    <div className="min-w-0">
+                      <p className="font-semibold truncate">
+                        {user.username ?? 'Usuario'}
+                      </p>
+                      <p className="text-xs opacity-70 truncate">
+                        {user.email ?? '—'}
+                      </p>
+                    </div>
                   </div>
+                </Link>
+              </NavbarMenuItem>
+
+              <div className="p-4 border-t border-divider">
+                <div className="flex flex-col gap-2">
+                  <form action="/api/logout" method="post" className="w-full">
+                    <Button type="submit" color="danger" radius="md" fullWidth>
+                      Cerrar sesión
+                    </Button>
+                  </form>
                 </div>
-              </Link>
-            </NavbarMenuItem>
+              </div>
+            </React.Fragment>
           );
         }
 

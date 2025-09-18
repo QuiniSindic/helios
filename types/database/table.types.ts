@@ -9,3 +9,13 @@ export interface Prediction {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface Competition {
+  id: number;
+  name: string;
+  fullname: string;
+  badge: string;
+  type?: number;
+  //   matches: Match[];
+  //   predictions: Prediction[];
+}

@@ -1,25 +1,36 @@
 'use client';
 
 import MatchWidget from '@/components/ui/matchWidget/MatchWidget';
+import { leaguesIdMap } from '@/constants/mappers';
 import { MatchData } from '@/types/events/events.types';
 import Link from 'next/link';
+import ResultRowCompact from './ResultCompactView';
 
 interface ResultsListProps {
   full?: boolean;
+  compact?: boolean;
   results: MatchData[];
   isLoading?: boolean;
   error?: Error | null;
+  selectedSport?: string | null;
+  league?: string | null;
 }
 
 export default function ResultsList({
   full = false,
+  compact = false,
   results,
   isLoading,
   error,
+  league,
 }: ResultsListProps) {
-  const eventsPlayed = results.filter(
-    (event: MatchData) => event.status === 'FT',
-  );
+  const id = leaguesIdMap[league as string] || null;
+
+  const eventsPlayed = results
+    .filter((event: MatchData) => event.status === 'FT')
+    .filter((event: MatchData) => (id ? event.competitionid === id : true));
+
+  console.log({ eventsPlayed });
 
   const displayedResults = full ? eventsPlayed : eventsPlayed.slice(0, 6);
 
@@ -34,6 +45,10 @@ export default function ResultsList({
       ) : (
         <>
           {displayedResults.map((result) => {
+            if (compact) {
+              return <ResultRowCompact key={result.id} event={result} />;
+            }
+
             switch (result.status) {
               case 'FT':
                 const isFinished = true;

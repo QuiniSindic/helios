@@ -2,6 +2,7 @@ import {
   getLive,
   getMatchData,
   getResults,
+  getResultsPaginated,
   getUpcoming,
 } from '@/services/matches.service';
 import { useQuery } from '@tanstack/react-query';
@@ -19,6 +20,9 @@ export const useUpcomingEventsQuery = (
   });
 };
 
+// TODO: improve para que
+// cuando el getLive devuelva partidos que no esten live (ninguno con status NS), no se haga refetch
+// y si devuelve live (status HT, minuto etc), si se haga refetch
 export const useLiveEventsQuery = (sport?: string, competitionId?: number) => {
   return useQuery({
     queryKey: ['live_events', sport, competitionId],
@@ -36,6 +40,7 @@ export const useLiveEventsQuery = (sport?: string, competitionId?: number) => {
 export const useResultsEventsQuery = (
   sport?: string,
   competitionId?: number,
+  options?: { enabled: boolean },
 ) => {
   return useQuery({
     queryKey: ['results', sport, competitionId],
@@ -43,6 +48,7 @@ export const useResultsEventsQuery = (
     refetchOnMount: false,
     refetchOnWindowFocus: false,
     staleTime: 1000 * 60 * 5, // 5 minutos
+    enabled: options?.enabled ?? true,
   });
 };
 
@@ -55,5 +61,21 @@ export const useGetMatchQuery = (matchId: number) => {
     refetchOnWindowFocus: false,
     refetchInterval: 1000 * 30, // 30 segundos
     staleTime: 0,
+  });
+};
+
+export const useResultsPaginated = (params: {
+  sport?: string;
+  competition?: number;
+  from?: string;
+  to?: string;
+  matchweek?: number;
+  page: number;
+  pageSize: number;
+}) => {
+  return useQuery({
+    queryKey: ['results-paged', params],
+    queryFn: () => getResultsPaginated(params),
+    placeholderData: (prev) => prev, // keepPreviousData
   });
 };

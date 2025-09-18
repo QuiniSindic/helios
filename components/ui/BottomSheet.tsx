@@ -21,12 +21,17 @@ export function BottomSheet({
       onOpenChange={(isOpen) => !isOpen && onClose()}
       onClose={onClose}
       placement="bottom"
-      size="3xl" // o full
+      size="xl" // o full
       backdrop="opaque" // "transparent" | "blur"
-      // shouldBlockScroll={true} // ya viene true por defecto
+      shouldBlockScroll={false} // viene true por defecto
       classNames={{
-        base: 'rounded-t-2xl', // esquinas superiores redondeadas
+        base: 'rounded-t-2xl',
         header: 'border-b border-black/5 dark:border-white/10',
+      }}
+      motionProps={{
+        initial: { y: 100, opacity: 0 },
+        animate: { y: 0, opacity: 1 },
+        exit: { y: 100, opacity: 0 },
       }}
     >
       <DrawerContent>

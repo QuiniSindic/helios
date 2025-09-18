@@ -2,6 +2,7 @@
 
 import MatchWidget from '@/components/ui/matchWidget/MatchWidget';
 import { leaguesIdMap } from '@/constants/mappers';
+import { useCompetitionsByIdsQuery } from '@/hooks/useCompetitions';
 import { useMatchesStore } from '@/store/matchesStore';
 import { useResultsStore } from '@/store/resultsStore';
 import { useSportsFilter } from '@/store/sportsLeagueFilterStore';
@@ -11,7 +12,9 @@ import {
   isFinished,
   isLive,
 } from '@/utils/events.utils';
+import { useQueryClient } from '@tanstack/react-query';
 import Link from 'next/link';
+import { useEffect, useMemo } from 'react';
 
 interface EventsListProps {
   full?: boolean;
@@ -24,8 +27,10 @@ export default function EventsList({
   isLoading = false,
   mode = 'events',
 }: EventsListProps) {
+  const queryClient = useQueryClient();
   const { events } = useMatchesStore();
   const { results } = useResultsStore();
+  console.log('results from store', results);
   const { selectedSport, selectedLeague, selectedFrom, selectedTo } =
     useSportsFilter();
 
@@ -39,6 +44,24 @@ export default function EventsList({
   const leagueId = selectedLeague ? leaguesIdMap[selectedLeague] : undefined;
 
   let filtered = base;
+
+  const ids = useMemo(() => {
+    const s = new Set<number>();
+    for (const e of filtered)
+      if (e?.competitionid) s.add(Number(e.competitionid));
+    return Array.from(s);
+  }, [filtered]);
+
+  const { data: competitions } = useCompetitionsByIdsQuery(ids);
+
+  useEffect(() => {
+    if (!competitions || competitions.length === 0) return;
+
+    // cargar store
+    competitions.forEach((comp) => {
+      queryClient.setQueryData(['competition', comp.id], comp);
+    });
+  }, [competitions, queryClient]);
 
   if (leagueId) {
     filtered = base.filter((event) => event.competitionid === leagueId);
