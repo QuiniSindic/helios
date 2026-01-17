@@ -11,14 +11,14 @@ const SignInWithSocials = ({ isLogin }: SignInWithSocialsProps) => {
     <div className="flex flex-col space-y-4 justify-center">
       <button
         onClick={() => handleGoogleAuth()}
-        className="flex items-center justify-center gap-4 px-6 py-3 border rounded-lg shadow-sm text-gray-700 bg-white hover:bg-gray-50"
+        className="flex items-center justify-center gap-4 px-6 py-3 border rounded-lg shadow-xs text-gray-700 bg-white hover:bg-gray-50"
       >
         <GoogleIcon className="h-6 w-6" />
         <span>Iniciar sesión con Google</span>
       </button>
       <button
         // onClick={handleAppleSubmit}
-        className="flex items-center justify-center gap-4 px-6 py-3 border rounded-lg shadow-sm text-gray-700 bg-white hover:bg-gray-50"
+        className="flex items-center justify-center gap-4 px-6 py-3 border rounded-lg shadow-xs text-gray-700 bg-white hover:bg-gray-50"
       >
         <AppleIcon className="h-6 w-6 text-black" />
         <span>Iniciar sesión con Apple</span>
@@ -28,14 +28,14 @@ const SignInWithSocials = ({ isLogin }: SignInWithSocialsProps) => {
     <div className="flex flex-col space-y-4 justify-center">
       <button
         onClick={() => handleGoogleAuth()}
-        className="flex items-center justify-center gap-4 px-6 py-3 border rounded-lg shadow-sm text-gray-700 bg-white hover:bg-gray-50"
+        className="flex items-center justify-center gap-4 px-6 py-3 border rounded-lg shadow-xs text-gray-700 bg-white hover:bg-gray-50"
       >
         <GoogleIcon className="h-6 w-6" />
         <span>Registrarse con Google</span>
       </button>
       <button
         // onClick={handleAppleSubmit}
-        className="flex items-center justify-center gap-4 px-6 py-3 border rounded-lg shadow-sm text-gray-700 bg-white hover:bg-gray-50"
+        className="flex items-center justify-center gap-4 px-6 py-3 border rounded-lg shadow-xs text-gray-700 bg-white hover:bg-gray-50"
       >
         <AppleIcon className="h-6 w-6 text-black" />
         <span>Registrarse con Apple</span>

@@ -29,13 +29,13 @@ export default async function EventDetailPage({
   const predictions = await getEventPredictions(match.id);
 
   return (
-    <div className="flex flex-col flex-grow">
+    <div className="flex flex-col grow">
       {user === null && (
         <div className="text-center bg-yellow-200 py-1 dark:text-black">
           <h1>Debes iniciar sesión para poder guardar tus predicciones</h1>
         </div>
       )}
-      <div className="p-2 flex-grow">
+      <div className="p-2 grow">
         <MatchInfo event={match} predictions={predictions} />
       </div>
     </div>

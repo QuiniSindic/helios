@@ -33,7 +33,7 @@ const PasswordField = forwardRef<HTMLInputElement, PasswordFieldProps>(
             className="
               grid place-items-center h-9 w-9
               rounded-lg text-default-400 hover:text-default-500
-              focus:outline-none focus-visible:ring-2 focus-visible:ring-secondary
+              focus:outline-hidden focus-visible:ring-2 focus-visible:ring-secondary
             "
           >
             <EyeIcon className={clsx('h-5 w-5', visible && 'opacity-90')} />

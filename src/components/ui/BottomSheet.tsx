@@ -22,7 +22,7 @@ export function BottomSheet({
       onClose={onClose}
       placement="bottom"
       size="3xl" // o full
-      backdrop="opaque" // "transparent" | "blur"
+      backdrop="opaque" // "transparent" | "blur-sm"
       // shouldBlockScroll={true} // ya viene true por defecto
       classNames={{
         base: 'rounded-t-2xl', // esquinas superiores redondeadas

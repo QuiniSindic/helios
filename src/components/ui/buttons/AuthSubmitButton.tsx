@@ -19,7 +19,7 @@ export default function SubmitButton({
       isLoading={isLoading}
       isDisabled={disabled}
       className={`group w-full justify-center py-2 px-4 text-sm font-medium rounded-md text-white transition-colors
-        ${disabled ? 'bg-gray-400 cursor-not-allowed' : 'bg-secondary hover:bg-secondary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary'}
+        ${disabled ? 'bg-gray-400 cursor-not-allowed' : 'bg-secondary hover:bg-secondary/90 focus:outline-hidden focus:ring-2 focus:ring-offset-2 focus:ring-secondary'}
       `}
     >
       {children}

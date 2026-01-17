@@ -4,7 +4,7 @@ type OptionsListButtonProps = {
   onClick: () => void;
   disabled?: boolean;
   roleType?: 'toggle' | 'tab'; // según uses toggle o tabs
-  variant?: 'solid' | 'outline'; // estilo base
+  variant?: 'solid' | 'outline-solid'; // estilo base
   size?: 'sm' | 'md'; // tamaños
 };
 
@@ -26,7 +26,7 @@ export const OptionsListButton = ({
     size === 'sm' ? 'h-9 px-3 text-sm' : 'h-10 px-3 text-[0.95rem]';
 
   const base =
-    'snap-center rounded-lg font-semibold whitespace-nowrap truncate transition-colors duration-300 transition-transform duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-focus/70 ring-offset-background motion-reduce:transition-none motion-reduce:transform-none';
+    'snap-center rounded-lg font-semibold whitespace-nowrap truncate transition-colors duration-300 transition-transform duration-150 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-focus/70 ring-offset-background motion-reduce:transition-none motion-reduce:transform-none';
 
   const stateHover =
     'sm:hover:shadow-lg sm:hover:scale-[1.02] active:scale-[0.98] sm:active:scale-100';
@@ -39,9 +39,9 @@ export const OptionsListButton = ({
     'bg-muted text-foreground border border-transparent hover:bg-muted/80';
   const solidSelected = 'bg-secondary text-white border border-transparent';
 
-  const selected = variant === 'outline' ? outlineSelected : solidSelected;
+  const selected = variant === 'outline-solid' ? outlineSelected : solidSelected;
   const unselected =
-    variant === 'outline' ? outlineUnselected : solidUnselected;
+    variant === 'outline-solid' ? outlineUnselected : solidUnselected;
 
   return (
     <button

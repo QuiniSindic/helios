@@ -21,7 +21,7 @@ export default function EventNavigation({
     currentIndex < events.length - 1 ? events[currentIndex + 1] : events[0];
 
   return (
-    <div className="sticky top-[var(--header-h)] z-30 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/70">
+    <div className="sticky top-(--header-h) z-30 bg-background/95 backdrop-blur-sm supports-[backdrop-filter]:bg-background/70">
       <div className="mx-3 sm:mx-4 py-2 flex items-center justify-between">
         <Link href={`/event/${previousEvent.id}`} aria-label="Partido anterior">
           <span className="bg-secondary text-white py-2 px-4 rounded-lg inline-flex items-center">

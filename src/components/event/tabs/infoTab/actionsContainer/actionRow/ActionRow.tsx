@@ -30,7 +30,7 @@ export const ActionRow: React.FC<ActionRowProps> = ({
         items-center gap-3 rounded-xl
         border border-gray-200 dark:border-gray-700
         bg-white/70 dark:bg-black/30
-        px-4 py-3 shadow-sm
+        px-4 py-3 shadow-xs
         hover:bg-white hover:shadow-md dark:hover:bg-black/50
         transition
       `}

@@ -39,7 +39,7 @@ export const LeagueListButton = ({
         'sm:hover:shadow-lg sm:hover:scale-[1.02]',
         'active:scale-[0.98] sm:active:scale-100',
         // focus accesible
-        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-focus/70',
+        'focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-focus/70',
         'ring-offset-background',
         // respeta reduced motion
         'motion-reduce:transition-none motion-reduce:transform-none',

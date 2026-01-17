@@ -62,7 +62,7 @@ export default function FilterBar({ mode }: FilterBarProps) {
       <select
         value={selectedSport || ''}
         onChange={handleSportChange}
-        className="bg-secondary text-white border border-white rounded p-2 cursor-pointer"
+        className="bg-secondary text-white border border-white rounded-sm p-2 cursor-pointer"
       >
         <option value="">Todos los deportes</option>
         {sportsList.map((sport) => (
@@ -75,7 +75,7 @@ export default function FilterBar({ mode }: FilterBarProps) {
       <select
         value={selectedLeague || ''}
         onChange={handleLeagueChange}
-        className="bg-secondary text-white border border-white rounded p-2 cursor-pointer"
+        className="bg-secondary text-white border border-white rounded-sm p-2 cursor-pointer"
         disabled={!selectedSport}
       >
         <option value="">Todas las ligas</option>
@@ -94,7 +94,7 @@ export default function FilterBar({ mode }: FilterBarProps) {
               type="date"
               value={selectedFrom || ''}
               onChange={(e) => setSelectedFrom(e.target.value || undefined)}
-              className="bg-secondary text-white border border-white rounded p-2 cursor-pointer"
+              className="bg-secondary text-white border border-white rounded-sm p-2 cursor-pointer"
             />
           </div>
           <div className="flex items-center gap-2">
@@ -103,7 +103,7 @@ export default function FilterBar({ mode }: FilterBarProps) {
               type="date"
               value={selectedTo || ''}
               onChange={(e) => setSelectedTo(e.target.value || undefined)}
-              className="bg-secondary text-white border border-white rounded p-2 cursor-pointer"
+              className="bg-secondary text-white border border-white rounded-sm p-2 cursor-pointer"
             />
           </div>
 
@@ -111,25 +111,25 @@ export default function FilterBar({ mode }: FilterBarProps) {
           <div className="flex items-center gap-2">
             <button
               onClick={setHoy}
-              className="px-3 py-2 rounded border border-white hover:bg-white/10 transition"
+              className="px-3 py-2 rounded-sm border border-white hover:bg-white/10 transition"
             >
               Hoy
             </button>
             <button
               onClick={setAyer}
-              className="px-3 py-2 rounded border border-white hover:bg-white/10 transition"
+              className="px-3 py-2 rounded-sm border border-white hover:bg-white/10 transition"
             >
               Ayer
             </button>
             <button
               onClick={setUltimos7}
-              className="px-3 py-2 rounded border border-white hover:bg-white/10 transition"
+              className="px-3 py-2 rounded-sm border border-white hover:bg-white/10 transition"
             >
               Últimos 7 días
             </button>
             <button
               onClick={clearDates}
-              className="px-3 py-2 rounded border border-white hover:bg-white/10 transition"
+              className="px-3 py-2 rounded-sm border border-white hover:bg-white/10 transition"
             >
               Limpiar
             </button>

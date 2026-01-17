@@ -40,7 +40,7 @@ const UsersPredictions = ({ predictions }: UsersPredictionsProps) => {
       className="
         rounded-xl border bg-white/70 dark:bg-black/20
         border-secondary dark:border-secondary
-        backdrop-blur p-2 sm:p-3
+        backdrop-blur-sm p-2 sm:p-3
       "
     >
       <ul className="divide-y divide-gray-200/70 dark:divide-white/10">

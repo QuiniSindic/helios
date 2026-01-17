@@ -90,7 +90,7 @@ const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
                   : undefined
             }
             className={clsx(
-              'peer w-full bg-transparent outline-none placeholder:text-gray-400 dark:placeholder:text-white/40',
+              'peer w-full bg-transparent outline-hidden placeholder:text-gray-400 dark:placeholder:text-white/40',
               leftIcon ? 'px-3 py-2 pl-2' : 'px-3 py-2',
               'h-11 rounded-xl',
               rightSlot ? 'pr-12' : '',

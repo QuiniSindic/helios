@@ -40,7 +40,7 @@ export const SportListButton = memo(function SportListButton({
         'sm:hover:shadow-lg sm:hover:scale-[1.02]',
         'active:scale-[0.98] sm:active:scale-100',
         // Accesibilidad focus
-        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-focus/70',
+        'focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-focus/70',
         'ring-offset-background',
         // Respeta reduced motion
         'motion-reduce:transition-none motion-reduce:transform-none',

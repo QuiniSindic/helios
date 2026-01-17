@@ -43,7 +43,7 @@ export const DesktopNavbarMenu = ({
     <>
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40"
+        className="fixed inset-0 bg-black/50 backdrop-blur-xs z-40"
         onClick={onClose}
       />
 

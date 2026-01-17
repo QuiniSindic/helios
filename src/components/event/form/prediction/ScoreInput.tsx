@@ -23,7 +23,7 @@ export default function ScoreInput({
       onChange={(e) => onChange(e.target.value)}
       className={`
         no-arrows w-16 h-16 rounded-2xl text-center text-2xl font-bold tabular-nums
-        transition-all duration-200 outline-none
+        transition-all duration-200 outline-hidden
         ${
           disabled
             ? 'bg-gray-200 dark:bg-gray-700 text-gray-400'

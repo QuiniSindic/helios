@@ -25,7 +25,7 @@ export default function PredictionButton({
     <>
       {/* Mobile: botón fijo */}
       <div className="fixed bottom-0 inset-x-0 z-40 lg:hidden mb-4">
-        <div className="px-3 pb-[env(safe-area-inset-bottom)] bg-background/80 backdrop-blur border-t border-white/10">
+        <div className="px-3 pb-[env(safe-area-inset-bottom)] bg-background/80 backdrop-blur-sm border-t border-white/10">
           {isLoggedIn ? (
             <Button
               type="submit"

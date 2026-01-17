@@ -21,7 +21,7 @@ export default async function PredictionsPage() {
   //           <select
   //             value={sport}
   //             onChange={() => {}}
-  //             className="border rounded p-2"
+  //             className="border rounded-sm p-2"
   //           >
   //             <option value="">Select Sport</option>
   //             <option value="football"><Link href={`?allUsers=true&sport=football`}>Football</Link></option>
@@ -32,7 +32,7 @@ export default async function PredictionsPage() {
   //           <select
   //             value={competition}
   //             onChange={() => {}}
-  //             className="border rounded p-2"
+  //             className="border rounded-sm p-2"
   //           >
   //             <option value="">Select Competition</option>
   //             <option value="laliga"><Link href={`?allUsers=true&sport=${sport}&competition=laliga`}>La Liga</Link></option>
@@ -42,7 +42,7 @@ export default async function PredictionsPage() {
   //           <select
   //             value={event}
   //             onChange={() => {}}
-  //             className="border rounded p-2"
+  //             className="border rounded-sm p-2"
   //           >
   //             <option value="">Select Event</option>
   //             <option value="event1"><Link href={`?allUsers=true&sport=${sport}&competition=${competition}&event=event1`}>Event 1</Link></option>
@@ -54,7 +54,7 @@ export default async function PredictionsPage() {
   //       <div className="grid grid-cols-1 gap-4">
   //         {predictions.length === 0 && <p>No predictions available.</p>}
   //         {predictions.map((prediction) => (
-  //           <div key={prediction.id} className="border rounded p-4">
+  //           <div key={prediction.id} className="border rounded-sm p-4">
   //             <div className="mb-2">
   //               <p>{prediction.profiles.username}</p>
   //               <strong>{prediction.event_name}</strong>
