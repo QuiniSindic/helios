@@ -17,6 +17,7 @@ export default {
         primary: 'var(--primary)',
         secondary: 'var(--secondary)',
         focus: 'var(--focus)',
+        'quinisindic-grey': 'var(--grey-background)',
       },
     },
   },

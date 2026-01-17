@@ -1,4 +1,4 @@
-import { ThemeSwitcher } from '@/src/components/ui/ThemeSwitcher';
+import { ThemeSwitcher } from '@/src/components/ui/theme/ThemeSwitcher';
 import { menuItems } from '@/src/constants/menuLinks';
 import { useAuth } from '@/src/hooks/useAuth';
 import { Button, Divider, User } from '@heroui/react';

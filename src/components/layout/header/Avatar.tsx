@@ -1,4 +1,4 @@
-import { ThemeSwitcher } from '@/src/components/ui/ThemeSwitcher';
+import { ThemeSwitcher } from '@/src/components/ui/theme/ThemeSwitcher';
 import { useAuth } from '@/src/hooks/useAuth';
 import { logout } from '@/src/services/auth.service';
 import {

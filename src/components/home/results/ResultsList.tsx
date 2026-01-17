@@ -24,7 +24,7 @@ export default function ResultsList({
   const displayedResults = full ? eventsPlayed : eventsPlayed.slice(0, 6);
 
   return (
-    <div className="bg-white dark:bg-[#272727] rounded-lg mb-4 cursor-pointer">
+    <div className="bg-white dark:bg-quinisindic-grey rounded-lg mb-4 cursor-pointer">
       {isLoading ? (
         <p className="text-center text-gray-500">Cargando resultados...</p>
       ) : error ? (

@@ -1,17 +1,7 @@
-/* @import '@fontsource-variable/league-spartan'; */
-
 @import 'tailwindcss';
 
 @config "../../tailwind.config.ts";
 
-/*
-  The default border color has changed to `currentcolor` in Tailwind CSS v4,
-  so we've added these compatibility styles to make sure everything still
-  looks the same as it did with Tailwind CSS v3.
-
-  If we ever want to remove these styles, we need to add an explicit border
-  color utility to any element that depends on these defaults.
-*/
 @layer base {
   *,
   ::after,
@@ -28,6 +18,9 @@
   --primary: #fff;
   --secondary: #5502a6;
   --focus: #00bcd4;
+
+  /*Colores relevantes pero no muy usados*/
+  --grey-background: #272727;
 }
 
 .dark {
@@ -40,18 +33,9 @@
 
 html,
 body {
-  /* color: var(--foreground);
-  background: var(--background); */
   font-family: 'League Spartan Variable', sans-serif;
   height: 100%;
 }
-
-/* @media (prefers-color-scheme: dark) {
-  :root {
-    --background: #121212;
-    --foreground: #fff;
-  }
-} */
 
 /* Remove arrows from number inputs */
 /* Para Chrome, Safari, Edge y Opera */

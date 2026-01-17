@@ -63,7 +63,7 @@ const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
           className={clsx(
             'relative flex items-center rounded-xl border transition-colors',
             'bg-white/80 border-gray-300 text-gray-900',
-            'dark:bg-[#272727] dark:border-gray-600 dark:text-white',
+            'dark:bg-quinisindic-grey dark:border-gray-600 dark:text-white',
             hasError
               ? 'ring-2 ring-danger/60 border-danger'
               : 'focus-within:ring-2 focus-within:ring-secondary focus-within:border-secondary',
