@@ -14,7 +14,7 @@ export const OptionsListButton = ({
   onClick,
   disabled = false,
   roleType = 'toggle',
-  variant = 'outline',
+  variant = 'outline-solid',
   size = 'md',
 }: OptionsListButtonProps) => {
   const ariaProps =
@@ -39,7 +39,8 @@ export const OptionsListButton = ({
     'bg-muted text-foreground border border-transparent hover:bg-muted/80';
   const solidSelected = 'bg-secondary text-white border border-transparent';
 
-  const selected = variant === 'outline-solid' ? outlineSelected : solidSelected;
+  const selected =
+    variant === 'outline-solid' ? outlineSelected : solidSelected;
   const unselected =
     variant === 'outline-solid' ? outlineUnselected : solidUnselected;
 

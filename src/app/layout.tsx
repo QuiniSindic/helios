@@ -1,4 +1,4 @@
-import '@/styles/globals.css';
+import '@/src/styles/globals.css';
 import type { Metadata } from 'next';
 import { League_Spartan } from 'next/font/google';
 import LayoutBody from './layoutBody';
